@@ -1,0 +1,3 @@
+server:
+  context-path: /
+  address: 8080
