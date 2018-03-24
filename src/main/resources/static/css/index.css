@@ -1,0 +1,106 @@
+#main{
+	margin: auto; margin-top: 70px;width: 1200px;
+}
+#back-to-top{
+	position: fixed;display: none;bottom: 100px;right: 30px;width: 30px;background-color: white
+}
+#type-list{
+	float: left; width: 100px;margin-right: 10px;padding: 0 0;
+	background-color: white;
+	text-align: center;
+}
+#type-list a{
+	display: block;
+	text-decoration: none;
+	padding: 5px 4px;
+}
+#type-list a:hover{
+	background-color: red;
+	color: white;
+}
+#articles{
+	float: right;
+	padding: 0 0;
+	width: 780px;
+	margin-right: 10px;
+}
+.article{
+	padding: 10px 20px;
+	background-color: white;
+	margin-bottom: 10px
+}
+.detail{
+	margin-top: 5px;
+}
+.detail a{
+	text-decoration: none;color: black;font-weight: bold; font-size: 18px;line-height: 1.6
+}
+.detail a:nth-child(2){
+	float: right;
+	font-size: 13px;
+	font-weight: lighter;
+}
+.detail p{
+	line-height: 1.83m;color: #333;font-size: 12px;margin: 5px 0px;
+}
+.other a{
+	text-decoration: none;
+	color: inherit;
+}
+.other a img{
+	width: 24px;
+	height: 24px;
+}
+.other > span{
+	margin-left: 15px;
+}
+.other a span{
+	font-size: 15px;font-weight: 600
+}
+.other span:nth-child(3){
+	float: right;
+	margin-left: 15px;
+}
+.other span:nth-child(4){
+	float: right;
+}
+#page{
+	margin-top: 10px;
+	background-color: white;
+}
+#side{
+	float: right;
+	width: 300px;
+}
+#blogstar{
+	background-color: white;
+	padding: 12px;
+}
+#blogstar h3{
+	border-left: 3px solid #cf2730;padding-left: 6px;line-height: 16px;font-size: 18px;margin: 10px 0px 15px 0px;
+}
+#blogstar .star{
+	margin-top: 10px;border:1px solid #e9e9e9;border-radius: 3px; padding: 8px;
+}
+
+.star a{
+	text-decoration: none;
+	color: black;
+}
+.star a .pic{
+	float: left;
+	margin-right: 5px;
+}
+.pic img{
+	width: 50px;
+	height: 50px;
+}
+.star a .info p{
+	font-size: 14px;font-weight: bold;color: #4f4f4f;
+}
+.star a .info span{
+	font-size: 12px;
+}
+.layui-icon{
+	font-size: 14px;
+}

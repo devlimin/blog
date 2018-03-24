@@ -1,0 +1,37 @@
+/*body {  */
+	/*margin: 0;  */
+	/*background-image: url('../../img/bg.jpg');    */
+	/*background-repeat:no-repeat;*/
+	/*background-position:0% 0%;*/
+	/*background-size:cover;*/
+	/*background-color: darkgray;*/
+/*} */
+#title{
+	color: rgb(0, 187, 255);
+	margin-top: 30px;
+	margin-bottom: 20px;
+
+}
+#panel{
+	width: 555px;
+	margin: 0 auto;
+	margin-top: 70px;
+}
+#reg-email-input{
+	display: inline;
+	width: 73%;
+}
+#reg-email-btn{
+	width: 25%;
+}
+.verify-code{
+	width: 48%;
+	display: inline;
+}
+.verify-img{
+	height: 34px;
+	width: 25%;
+}
+.verify-btn{
+	width: 25%;
+}

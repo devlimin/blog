@@ -1,0 +1,261 @@
+#main{
+	margin: auto; margin-top: 70px;width: 1150px;
+}
+#left-side{
+	float: left;width: 835px;
+}
+#article{
+	background-color: white;padding: 20px 30px;
+	
+}
+#title{
+	padding-bottom: 10px;
+	border-bottom: 1px solid #e5e5e5;
+}
+#title h3{
+	color: #2c3033;
+	font-size: 24px;
+	font-weight: 700;
+	line-height: 38px;
+}
+#title div span{
+	color: #bbb;
+}
+#title div span:first-child{
+	margin-right: 10px;
+
+}
+#title div span:nth-child(2) a{
+	text-decoration: none;
+	color: #4093c6;
+}
+#title div span:nth-child(2) a:hover{
+	color: red;
+}
+#title div span:nth-child(3){
+	margin-left: 10px;
+}
+#content{
+	padding: 20px 0px;
+	color: #454545;
+	line-height: 24px;
+	font-size: 16px;
+	font-weight: 400
+}
+
+#comment{
+	background-color: white;padding: 20px 30px;
+	margin-top: 20px;
+	margin-bottom: 30px;
+}
+.comment-write{
+	padding-bottom: 10px;
+	height: 140px;
+}
+.comment-write img{
+	width: 35px;
+	height: 35px;
+	float: left;
+	margin-right: 5px;
+}
+.comment-input{
+
+	float: right;
+}
+.comment-input textarea{
+	width: 730px;
+	height: 90px;
+	/*transition: height 0.5s;*/
+}
+.comment-input a{
+	margin-top: 10px;
+	float: right;
+}
+.comment-input a:nth-child(2){
+	background-color: #42c02e;
+	color: #fff;
+	margin-left: 10px;
+	width: 78px;
+	font-size: 16px;
+	border-radius: 20px;
+	display: block;
+	text-align: center;
+	vertical-align: middle;
+	line-height: 1.42857;
+	padding: 8px 18px;
+}
+.comment-input a:nth-child(3){
+	color: #2f2f2f;
+	margin-left: 10px;
+	font-size: 16px;
+	margin: 18px 30px 0 0;
+}
+
+
+
+#comment-list{
+	margin-top: 40px;
+}
+.comment{
+	margin-top: 15px;
+	margin-bottom: 20px;
+	padding-bottom: 10px;
+	border-bottom: 1px solid #f0f0f0;
+}
+#comment a{
+	cursor: pointer;
+	text-decoration: none;
+}
+.parent-comment a{
+	text-decoration: none;
+	color: #4093c6;
+}
+.parent-comment a img{
+	width: 35px;
+	height: 35px;
+	margin-right: 10px;
+	border-radius:50%;
+}
+.parent-comment a span{
+	margin-right: 10px;
+}
+.parent-comment a:nth-child(4){
+	margin-top: 5px;
+	float: right;
+	color: #969696;
+}
+.parent-comment a:nth-child(4):hover{
+	color: black;
+}
+.parent-comment p{
+	margin-top: 10px;
+}
+.parent-comment span:nth-child(3){
+	margin-top: 5px;
+	float: right;
+	margin-left: 15px;
+	color: #969696;
+}
+.parent-comment  a+span{
+	color: #969696;
+}
+.sub-comment-list{
+	margin-top: 10px;
+	padding: 5px 0 5px 20px;
+	border-left: 2px solid #d9d9d9;
+}
+.sub-comment-list .sub-comment{
+	margin-top: 15px;
+	margin-bottom: 15px;
+	padding-bottom: 15px;
+	border-bottom: 1px dashed #f0f0f0;
+}
+.sub-comment+div{
+	margin: 0px;
+}
+.sub-comment div a:first-child{
+	text-decoration: none;
+	color: #4093c6;
+}
+.sub-comment div a:nth-child(2){
+	text-decoration: none;
+	color: #4093c6;
+}
+.sub-comment div span{
+	box-sizing: border-box;
+}
+.sub-comment>div+span{
+	font-size: 12px;
+	color: #969696;
+	margin-right: 10px;
+}
+.sub-comment span+a{
+	font-size: 12px;
+	text-decoration: none;
+	color: #969696
+}
+.sub-comment span+a:hover{
+	color: black;
+}
+
+#side{
+	float: right;width: 300px;
+	margin-bottom: 20px;
+}
+#side #user-info{
+	background-color: white
+}
+#user-info #header{
+	padding: 20px;
+}
+#header > img{
+	width: 48px; height: 48px;float: left;margin-right: 20px;margin-left: 10px;
+}
+#header div span{
+	display: block;margin-bottom: 5px;
+}
+#header div span{
+	font-weight: 700;
+}
+#header div button{
+	border-color: #006ec6;color: #006ec6; width: 64px;
+}
+#num{
+	border-top: 1px solid #e6e6e6;
+	border-bottom: 1px solid #e6e6e6;
+	text-align: center;
+	padding-top: 16px;
+	padding-bottom: 8px;
+}
+dl,dl,dt{
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+#num dl{
+	display: inline-block;
+	text-align: center;
+	width: 25%;
+}
+#num dl dt{
+	font-size: 14px;
+	color: #788087;
+	display: block;
+}
+#num dl dd{
+	color: #4f4f4f;
+	width: 100%;
+	font-size: 14px;
+	font-weight: 700;
+	display: block;
+}
+.side-list{
+	padding: 20px 20px 5px;margin-bottom: 20px;margin-top: 10px; background-color: white;box-shadow: 0 2px 4px 0 rgba(0,0,0,.05);
+}
+.side-list h3{
+	border-left: 3px solid #cf2730;font-size: 16px;line-height: 16px;color: #333;margin: 0;padding: 0;padding-left: 6px; margin-bottom: 12px;
+}
+.list{
+	overflow-y: hidden;
+}
+.list li{
+	display: list-item;
+	overflow-y: hidden;
+	margin-top: 8px;
+}
+.list li a{
+	text-decoration: none;
+	color: #757a7e;
+	line-height: 20px;
+	width: 78%;
+	display: block;
+	overflow: hidden;
+	float: left;
+}
+.list li span{
+	float: right;
+	font-size: 14px;
+}
+.layui-icon{
+	font-size: 14px;
+}

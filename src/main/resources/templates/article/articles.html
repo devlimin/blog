@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="Pragma" content="no-cache">
+	<meta http-equiv="Cache-Control" content="no-cache">
+	<meta http-equiv="Expires" content="0">
+	<title>博客</title>
+	<link th:href="@{/css/user/articles.css}" rel="stylesheet">
+</head>
+<body>
+<div th:replace="common/head"></div>
+	<div id="main">
+		<div id="top">
+			<p>东方不败的博客</p>
+			<p>座右铭座右铭座右铭座右铭座右铭座右铭座右铭座右铭</p>
+		</div>
+		<div id="articles">
+			<div class="pull-right">
+				<input type="text" name="keywords" class="form-control " placeholder="搜博主文章">
+				<a  class="layui-icon">&#xe615;</a>
+			</div>
+			<div style="clear: both;margin-top: 50px;">
+				<div class="article">
+					<a href="#" class="title">Ubuntu16.04升级内核</a>
+					<p class="detail">
+						一、查看内核版本 uname -r 二、下载指定内核版本 打开内核文件下载并选择列表中需要的版本 注意区分系统位数下载 我的系统是64位的，所以下载如下 $ wget http://kernel.ubuntu.com/~kernel-ppa/mainline/v4.13/linux-...
+					</p>
+					<div class="other">
+						<span>2018-01-18 20:34:28</span>
+						<span class="layui-icon">&#xe6b2 200</span>
+						<span class="layui-icon">&#xe705 34</span>
+					</div>
+				</div>
+				<div class="article">
+					<a href="#" class="title">Ubuntu16.04升级内核</a>
+					<p class="detail">
+						一、查看内核版本 uname -r 二、下载指定内核版本 打开内核文件下载并选择列表中需要的版本 注意区分系统位数下载 我的系统是64位的，所以下载如下 $ wget http://kernel.ubuntu.com/~kernel-ppa/mainline/v4.13/linux-...
+					</p>
+					<div class="other">
+						<span>2018-01-18 20:34:28</span>
+						<span class="layui-icon">&#xe6b2 200</span>
+						<span class="layui-icon">&#xe705 34</span>
+					</div>
+				</div>
+				<div class="article">
+					<a href="#" class="title">Ubuntu16.04升级内核</a>
+					<p class="detail">
+						一、查看内核版本 uname -r 二、下载指定内核版本 打开内核文件下载并选择列表中需要的版本 注意区分系统位数下载 我的系统是64位的，所以下载如下 $ wget http://kernel.ubuntu.com/~kernel-ppa/mainline/v4.13/linux-...
+					</p>
+					<div class="other">
+						<span>2018-01-18 20:34:28</span>
+						<span class="layui-icon">&#xe6b2 200</span>
+						<span class="layui-icon">&#xe705 34</span>
+					</div>
+				</div>
+				<div class="article">
+					<a href="#" class="title">Ubuntu16.04升级内核</a>
+					<p class="detail">
+						一、查看内核版本 uname -r 二、下载指定内核版本 打开内核文件下载并选择列表中需要的版本 注意区分系统位数下载 我的系统是64位的，所以下载如下 $ wget http://kernel.ubuntu.com/~kernel-ppa/mainline/v4.13/linux-...
+					</p>
+					<div class="other">
+						<span>2018-01-18 20:34:28</span>
+						<span class="layui-icon">&#xe6b2 200</span>
+						<span class="layui-icon">&#xe705 34</span>
+					</div>
+				</div>
+				<div class="text-center" id="page"></div>
+			</div>
+		</div>
+		<div id="side">
+			<div id="user-info">
+				<div id="header">
+					<img src="https://images.nowcoder.net/head/349m.png@0e_100w_100h_0c_1i_1o_90Q_1x.png">
+					<div>
+						<span>东方不败东方不败</span>
+						<button class="btn btn-default">关注</button>
+					</div>
+				</div>
+				<div id="num">
+					<dl>
+						<dt>入驻时间</dt>
+						<dd>12年12个月</dd>
+					</dl>
+					<dl>
+						<dt>文章</dt>
+						<dd>12</dd>
+					</dl>
+					<dl>
+						<dt>关注</dt>
+						<dd>32</dd>
+					</dl>
+				</div>
+			</div>
+			<div class="side-list">
+				<h3>文章分类</h3>
+				<ul class="list">
+					<li>
+						<a href="#">Java基础知识Java基础知识Java基础知识</a>
+						<span>4篇</span>
+					</li>
+					<li>
+						<a href="#">Java基础知识</a>
+						<span>3篇</span>
+					</li>
+				</ul>
+				<div style="clear: both"></div>
+			</div>
+			<div class="side-list">
+				<h3>热门文章</h3>
+				<ul class="list">
+					<li>
+						<a href="#">Java基础知识Java基础知识Java基础知识</a>
+						<span class="layui-icon">&#xe705 200</span>
+					</li>
+					<li>
+						<a href="#">Java基础知识</a>
+						<span class="layui-icon">&#xe705 30</span>
+					</li>
+				</ul>
+				<div style="clear: both"></div>
+			</div>
+		</div>
+		<div style="clear: both;"></div>
+	</div>
+
+<script th:src="@{/js/user/articles.js}"></script>
+</body>
+</html>

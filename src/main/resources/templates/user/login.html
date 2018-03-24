@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="Pragma" content="no-cache">
+	<meta http-equiv="Cache-Control" content="no-cache">
+	<meta http-equiv="Expires" content="0">
+	<title>博客</title>
+
+	<link th:href="@{/css/user/login.css}" rel="stylesheet">
+</head>
+<body>
+<div th:replace="common/head"></div>
+	<div class="panel panel-default" id="panel">
+		<div class="text-center" id="title">
+			<h1>xx博客</h1>
+			<p>这里是开发者分享交流的乐园</p>
+		</div>
+		<div class="layui-tab layui-tab-brief">
+			<ul class="layui-tab-title text-center">
+				<li class="layui-this">登陆</li>
+				<li>注册</li>
+			</ul>
+			<div class="layui-tab-content">
+				<div class="layui-tab-item layui-show">
+					<div class="panel-body">
+						<form class="layui-form" id="login" method="post">
+							<div class="form-group">
+								<input type="text" name="email" placeholder="邮箱" autocomplete="off" class="layui-input form-control" lay-verify="required|email">
+							</div>
+							<div class="form-group">
+								<input type="password" name="password" placeholder="密码" autocomplete="off" class="layui-input form-control" lay-verify="required">
+							</div>
+							<div class="form-group">
+								<input type="text" style="width: 48%;display: inline;" id="login-verify-code" name="code" placeholder="验证码" autocomplete="off" class="layui-input form-control verify-code" lay-verify="required" maxlength="4">
+								<img th:src="@{/account/verifyImg/2}" class="verify-img" id="login-verify-img">
+								<button class="btn btn-success verify-btn" id="login-verify-btn">换一张</button>
+							</div>
+							<div class="form-group">
+								<button class="layui-btn btn btn-block btn-info" lay-submit lay-filter="login">登陆</button>
+							</div>
+							<div class="text-center">
+								<input type="checkbox" name="rememberme" title="记住密码" lay-skin="primary" checked>
+								<button class="btn btn-default" id="findPass">忘记密码</button>
+							</div>
+						</form>
+					</div>
+				</div>
+				<div class="layui-tab-item">
+					<div class="panel-body">
+						<form class="layui-form" id="regist" method="post">
+							<div class="form-group">
+								<input type="text" id="reg-email-input" name="email" placeholder="邮箱" autocomplete="off" class="layui-input form-control" lay-verify="required|email">
+								<button class="btn btn-success" id="reg-email-btn">邮箱唯一校验</button>
+							</div>
+							<div class="form-group">
+								<input type="name" name="name" placeholder="用户名" autocomplete="off" class="layui-input form-control" lay-verify="required">
+							</div>
+							<div class="form-group">
+								<input type="password" name="password" placeholder="密码" autocomplete="off" class="layui-input form-control" lay-verify="required">
+							</div>
+							<div class="form-group">
+								<input type="password" name="repassword" placeholder="重复密码" autocomplete="off" class="layui-input form-control" lay-verify="required">
+							</div>
+							<div class="form-group">
+								<input type="text" style="width: 48%;display: inline;" id="reg-verify-code" name="code" placeholder="验证码" autocomplete="off" class="verify-code layui-input form-control" lay-verify="required" maxlength="4">
+								<img th:src="@{/account/verifyImg/1}" class="verify-img" id="reg-verify-img">
+								<button class="btn btn-success verify-btn" id="reg-verify-btn">换一张</button>
+							</div>
+							<div class="form-group">
+								<button class="layui-btn btn btn-block btn-info" lay-submit lay-filter="regist">注册</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+<script th:src="@{/js/user/login.js}"></script>
+</body>
+</html>

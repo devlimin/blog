@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="Pragma" content="no-cache">
+	<meta http-equiv="Cache-Control" content="no-cache">
+	<meta http-equiv="Expires" content="0">
+	<title>博客</title>
+	<link th:href="@{/css/manage/article/list.css}" rel="stylesheet">
+<body>
+	<div th:replace="common/head"></div>
+	<div id="main">
+		<div id="type-list">
+			<a href="#">文章编辑</a>
+			<a href="#">文章管理</a>
+			<a href="#">评论管理</a>
+			<a href="#">个人分类管理</a>
+		</div>
+		<div id="right">
+			<div id="nav-tabs">
+				<span><a href="#">全部</a></span>
+				<span><a href="#">已发表</a></span>
+				<span><a href="#">草稿箱</a></span>
+				<span><a href="#">回收站</a></span>
+				<div>
+					<input type="text" class="form-control" name="key">
+					<a href="#" class="layui-icon">&#xe615;</a>
+				</div>
+			</div>
+			<div id="tab-pane">
+				<div class="article">
+					<div class="title"><a href="#">java基础</a></div>
+					<div class="info">
+						<div class="left">
+							<span>原创</span>
+							<span>2018年02月26日 11:09:21</span>
+							<span class="layui-icon">&#xe6b2 200</span>
+							<span class="layui-icon">&#xe705 34</span>
+						</div>
+						<div class="right">
+							<a href="#">查看</a>
+							<a href="#">禁止评论</a>
+							<a href="#">置顶</a>
+							<a href="#">删除</a>
+						</div>
+						<div style="clear: both;"></div>
+					</div>
+				</div>
+				<div class="article">
+					<div class="title"><a href="#">html基础</a></div>
+					<div class="info">
+						<div class="left">
+							<span>原创</span>
+							<span>2018年02月26日 11:09:21</span>
+							<span class="layui-icon">&#xe6b2 200</span>
+							<span class="layui-icon">&#xe705 34</span>
+						</div>
+						<div class="right">
+							<a href="#">查看</a>
+							<a href="#">禁止评论</a>
+							<a href="#">置顶</a>
+							<a href="#">删除</a>
+						</div>
+						<div style="clear: both;"></div>
+					</div>
+				</div>
+				<div class="article">
+					<div class="title"><a href="#">mysql基础</a></div>
+					<div class="info">
+						<div class="left">
+							<span>原创</span>
+							<span>2018年02月26日 11:09:21</span>
+							<span class="layui-icon">&#xe6b2 200</span>
+							<span class="layui-icon">&#xe705 34</span>
+						</div>
+						<div class="right">
+							<a href="#">查看</a>
+							<a href="#">禁止评论</a>
+							<a href="#">置顶</a>
+							<a href="#">删除</a>
+						</div>
+						<div style="clear: both;"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div style="clear: both;"></div>
+	</div>
+
+<script th:src="@{/js/manage/article/list.js}"></script>
+</body>
+</html>

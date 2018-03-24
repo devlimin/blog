@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="Pragma" content="no-cache">
+	<meta http-equiv="Cache-Control" content="no-cache">
+	<meta http-equiv="Expires" content="0">
+	<title>博客</title>
+
+	<link th:href="@{/css/index.css}" rel="stylesheet">
+</head>
+<body>
+	<div th:replace="common/head"></div>
+
+	<p id="back-to-top"><a href="#main">返回顶部</a></p>
+	<div id="main">
+		<div style="float: left">
+			<div id="type-list">
+				<div th:each="sysCategory : ${sysCategories}">
+					<a th:href="@{/article/sys/{id}/(id=${sysCategory.id})}" th:text="${sysCategory.name}"></a>
+				</div>
+			</div>
+
+			<div id="articles">
+				<div class="article">
+					<div class="detail">
+						<div>
+							<a href="#">费曼技巧---以教促学</a>
+							<a href="">推荐</a>
+						</div>
+						<p>
+							扯淡 一年又一年，过的真快，又到了做总结的日子了，回想过去的一年中，有迷茫，有收获，值得高兴的是收获更多一点。 看了下 "2017年的总结" ，写的较多的是比较迷茫和抓不住重点，今年再看这两点，稍有了不错的提升，之前比较迷茫就在于要学的比较多，互联网技术更新较快，因此较为急躁，也花了很多时间在这上面 ...
+						</p>
+					</div>
+					<div class="other">
+						<a href="#">
+							<img src="https://images.nowcoder.net/head/349m.png@0e_100w_100h_0c_1i_1o_90Q_1x.png" class="img-circle">
+							<span>东方不败东方不败东方不败东方不败东方不败</span>
+						</a>
+						<span>2018年1月1日</span>
+						<span class="layui-icon">&#xe6b2 200</span>
+						<span class="layui-icon">&#xe705 34</span>
+					</div>
+				</div>
+				<div class="article">
+					<div class="detail">
+						<div>
+							<a href="#">费曼技巧---以教促学</a>
+							<a href="">推荐</a>
+						</div>
+						<p>
+							扯淡 一年又一年，过的真快，又到了做总结的日子了，回想过去的一年中，有迷茫，有收获，值得高兴的是收获更多一点。 看了下 "2017年的总结" ，写的较多的是比较迷茫和抓不住重点，今年再看这两点，稍有了不错的提升，之前比较迷茫就在于要学的比较多，互联网技术更新较快，因此较为急躁，也花了很多时间在这上面 ...
+						</p>
+					</div>
+					<div class="other">
+						<a href="#">
+							<img src="https://images.nowcoder.net/head/349m.png@0e_100w_100h_0c_1i_1o_90Q_1x.png" class="img-circle">
+							<span>东方不败东方不败东方不败东方不败东方不败</span>
+						</a>
+						<span>2018年1月1日</span>
+						<span class="layui-icon">&#xe6b2 200</span>
+						<span class="layui-icon">&#xe705 34</span>
+					</div>
+				</div>
+				<div class="article">
+					<div class="detail">
+						<div>
+							<a href="#">费曼技巧---以教促学</a>
+							<a href="">推荐</a>
+						</div>
+						<p>
+							扯淡 一年又一年，过的真快，又到了做总结的日子了，回想过去的一年中，有迷茫，有收获，值得高兴的是收获更多一点。 看了下 "2017年的总结" ，写的较多的是比较迷茫和抓不住重点，今年再看这两点，稍有了不错的提升，之前比较迷茫就在于要学的比较多，互联网技术更新较快，因此较为急躁，也花了很多时间在这上面 ...
+						</p>
+					</div>
+					<div class="other">
+						<a href="#">
+							<img src="https://images.nowcoder.net/head/349m.png@0e_100w_100h_0c_1i_1o_90Q_1x.png" class="img-circle">
+							<span>东方不败东方不败</span>
+						</a>
+						<span>2018年1月1日</span>
+						<span class="layui-icon">&#xe6b2 200</span>
+						<span class="layui-icon">&#xe705 34</span>
+					</div>
+				</div>
+				<div class="article">
+					<div class="detail">
+						<div>
+							<a href="#">费曼技巧---以教促学</a>
+							<a href="">推荐</a>
+						</div>
+						<p>
+							扯淡 一年又一年，过的真快，又到了做总结的日子了，回想过去的一年中，有迷茫，有收获，值得高兴的是收获更多一点。 看了下 "2017年的总结" ，写的较多的是比较迷茫和抓不住重点，今年再看这两点，稍有了不错的提升，之前比较迷茫就在于要学的比较多，互联网技术更新较快，因此较为急躁，也花了很多时间在这上面 ...
+						</p>
+					</div>
+					<div class="other">
+						<a href="#">
+							<img src="https://images.nowcoder.net/head/349m.png@0e_100w_100h_0c_1i_1o_90Q_1x.png" class="img-circle">
+							<span>东方不败东方不败东方不败东方不败东方不败</span>
+						</a>
+						<span>2018年1月1日</span>
+						<span class="layui-icon">&#xe6b2 200</span>
+						<span class="layui-icon">&#xe705 34</span>
+					</div>
+				</div>
+				<div id="page" class="text-center"></div>
+			</div>
+		</div>		
+		<div id="side">
+			<div id="blogstar">
+				<h3>博客之星</h3>
+				<div class="star">
+					<a href="#">
+						<div class="pic">
+							<img src="https://images.nowcoder.net/head/349m.png@0e_100w_100h_0c_1i_1o_90Q_1x.png" class="img-circle" >
+						</div>
+						<div class="info">
+							<p>东方不败东方不败东方不败东方不败东方不败东方不败</p>
+							<span>软件工程师</span>
+							<span class="pull-right">1000篇</span>
+						</div>
+					</a>
+				</div>
+				<div class="star">
+					<a href="#">
+						<div class="pic">
+							<img src="https://images.nowcoder.net/head/349m.png@0e_100w_100h_0c_1i_1o_90Q_1x.png" class="img-circle" >
+						</div>
+						<div class="info">
+							<p>东方不败</p>
+							<span>软件工程师</span>
+							<span class="pull-right">1000篇</span>
+						</div>
+					</a>
+				</div>
+				<div class="star">
+					<a href="#">
+						<div class="pic">
+							<img src="https://images.nowcoder.net/head/349m.png@0e_100w_100h_0c_1i_1o_90Q_1x.png" class="img-circle" >
+						</div>
+						<div class="info">
+							<p>东方不败东方不败</p>
+							<span>软件工程师</span>
+							<span class="pull-right">1000篇</span>
+						</div>
+					</a>
+				</div>
+			</div>
+			<br>
+			<div style="height: 450px;background-color: white"></div>
+			<br>
+			<div style="height: 450px;background-color: white"></div>
+			<br>
+		</div>
+		<div style="clear: both;"></div>
+	</div>
+</div>
+<script th:src="@{/js/index.js}"></script>
+</body>
+</html>

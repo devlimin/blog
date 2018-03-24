@@ -1,0 +1,93 @@
+#main{
+	margin: auto; margin-top: 70px;width: 1190px;
+	background-color: white;
+	margin-bottom: 100px;
+	padding-top: 20px;
+}
+
+#type-list{
+	float: left; width: 145px;padding: 0 0;
+}
+#type-list a{
+	display: block;
+	text-decoration: none;
+	padding: 12px 30px;
+	height: 45px;
+}
+#type-list a:hover{
+	background-color: red;
+	color: white;
+}
+
+#right{
+	float: right;
+	width: 1045px;
+	border-left: 1px solid #e9e9e9;
+	padding-right: 20px;
+	padding-left: 20px;
+}
+
+#nav-tabs{
+	border-bottom: 1px solid #e9e9e9;
+	align-items: center;
+	margin-top: 10px;
+
+}
+#nav-tabs span{
+	height: 38px;
+	display: inline-block;
+}
+#nav-tabs span a{
+	margin-right: 24px;
+	padding-bottom: 14px;
+	color: #999;
+	text-decoration: none;
+}
+#nav-tabs>div{
+	float: right;
+}
+#nav-tabs>div>input{
+	width: 200px;
+	display: inline-block;
+	margin-right: -20px;
+
+	padding-right: 27px;
+}
+#nav-tabs>div>a{
+	position: relative;
+	right: 10px;
+	text-decoration: none;
+}
+#tab-pane{
+	padding: 10px 0 16px 0;
+
+}
+.article{
+	margin-top: 18px;
+	color: #999;
+	font-size: 12px;
+	padding-bottom: 15px;
+	border-bottom: 1px dotted #ddd;
+}
+.article .title{
+	font-size: 18px;
+	color: black;
+	margin-bottom: 10px;
+}
+.article .title a{
+	text-decoration: none;
+}
+.article .info .left{
+	float: left;
+}
+.article .info .left span{
+	margin-right: 10px;
+	font-size: 12px;
+}
+.article .info .right{
+	float: right;
+}
+.article .info .right a{
+	text-decoration: none;
+	margin-left: 10px;
+}
