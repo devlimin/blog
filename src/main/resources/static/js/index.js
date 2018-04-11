@@ -10,8 +10,8 @@ layui.use('laypage', function(){
 					//ajax
 					var cur = obj.curr;
 					var limit = obj.limit;
-				}
-			});
+			}
+		});
 });
 $(".list-group a").hover(
 	function(){

@@ -1,13 +1,12 @@
 package com.limin.blog.enums;
 
-public enum UserEnum {
-    INITED(0,"初始"),ACTIVED(1,"激活");
-
+public enum ResponseEnum {
+    SUCCESS(1,"success"),NO_LOGIN(2,"");
     private Integer val;
     private String msg;
-    private UserEnum(Integer val, String msg) {
+    private ResponseEnum(Integer val, String value){
         this.val = val;
-        this.msg = msg;
+        this.msg = value;
     }
 
     public Integer getVal() {
@@ -18,11 +17,11 @@ public enum UserEnum {
         this.val = val;
     }
 
-    public String getMsg() {
+    public String getValue() {
         return msg;
     }
 
-    public void setMsg(String msg) {
-        this.msg = msg;
+    public void setValue(String value) {
+        this.msg = value;
     }
 }

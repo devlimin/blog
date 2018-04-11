@@ -1,84 +1,62 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{common/backend}">
 <head>
-	<meta charset="utf-8">
-	<meta http-equiv="Pragma" content="no-cache">
-	<meta http-equiv="Cache-Control" content="no-cache">
-	<meta http-equiv="Expires" content="0">
 	<title>博客</title>
 	<link rel="stylesheet" th:href="@{/summernote/summernote.css}">
 	<link th:href="@{/css/manage/article/edit.css}" rel="stylesheet">
+	<script th:src="@{/summernote/summernote.js}"></script>
+	<script th:src="@{/summernote/lang/summernote-zh-CN.js}"></script>
+	<script th:src="@{/js/manage/article/edit.js}"></script>
 <body>
-<div th:replace="common/head"></div>
-	<div id="main">
-		<div id="type-list">
-			<a href="#">文章编辑</a>
-			<a href="#">文章管理</a>
-			<a href="#">评论管理</a>
-			<a href="#">个人分类管理</a>
+<div layout:fragment="right">
+	<form method="post" class="layui-form">
+		<div class="layui-form-item">
+			<div class="layui-input-block" style="margin: 0">
+				<div style="display: inline-block;width: 100px;">
+					<select name="type" lay-verify="required">
+						<option value="">请选择</option>
+						<option th:value="${type.val}" th:text="${type.msg}" th:each="type : ${types}">
+						</option>
+					</select>
+				</div>
+				<input type="text" name="title" required style="display: inline-block;width: 900px" lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">
+			</div>
 		</div>
-		<div id="right">
-			<form method="post" class="layui-form">
-				<div class="layui-form-item">
-					<div class="layui-input-block" style="margin: 0">
-						<div style="display: inline-block;width: 100px;">
-							<select name="isOriginal" lay-verify="required">
-								<option value="">请选择</option>
-								<option value="0">原创</option>
-								<option value="1">转载</option>
-							</select>
-						</div>
-						<input type="text" name="title" required style="display: inline-block;width: 900px" lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">
-					</div>
-				</div>
-				<div>
-					<textarea id="summernote" name="content"></textarea>
-				</div>
-				<div class="layui-form-item">
-					<label class="layui-form-label" style="width: 100px;">个人分类：</label>
-					<div class="layui-input-block">
-						<input type="checkbox" name="like[write]" title="java">
-						<input type="checkbox" name="like[read]" title="html" checked>
-						<input type="checkbox" name="like[dai]" title="mysql">
-					</div>
-				</div>
-				<div class="layui-form-item">
-					<label class="layui-form-label" style="width: 100px;">博客分类：</label>
-					<div class="layui-input-block" style="padding-right: 10px; width: 300px;">
-						<select name="sysCateId" lay-verify="required">
-							<option value=""></option>
-							<option value="0">北京</option>
-							<option value="1">上海</option>
-							<option value="2">广州</option>
-							<option value="3">深圳</option>
-							<option value="4">杭州</option>
-						</select>
-					</div>
-				</div>
-				<div class="layui-form-item">
-					<label class="layui-form-label" style="width: 100px;">私密文章：</label>
-					<div class="layui-input-block">
-						<input type="checkbox" name="isPublic" title="私密">
-					</div>
-				</div>
-				
-				<div class="layui-form-item">
-					<div class="layui-input-block">
-						<button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
-						<button class="layui-btn" lay-submit lay-filter="formDemo">保存草稿</button>
-						<button type="reset" class="layui-btn layui-btn-primary">返回</button>
-					</div>
-				</div>
-			</form>
-			
+		<div>
+			<textarea id="summernote" name="content"></textarea>
 		</div>
-		<div style="clear: both;"></div>
-	</div>
-
-
-
-<script th:src="@{/summernote/summernote.js}"></script>
-<script th:src="@{/summernote/lang/summernote-zh-CN.js}"></script>
-<script th:src="@{/js/manage/article/edit.js}"></script>
+		<div class="layui-form-item">
+			<label class="layui-form-label" style="width: 100px;">个人分类：</label>
+			<div class="layui-input-block">
+				<input type="checkbox" name="cId" th:each="category : ${categories}" th:title="${category.name}" th:value="${category.id}"/>
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label" style="width: 100px;">博客分类：</label>
+			<div class="layui-input-block" style="padding-right: 10px; width: 300px;">
+				<select name="sysCateId" lay-verify="required">
+					<option value=""></option>
+					<option th:value="${sysCategory.id}" th:text="${sysCategory.name}" th:each="sysCategory : ${sysCategories}">
+					</option>
+				</select>
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label" style="width: 100px;">私密文章：</label>
+			<div class="layui-input-block">
+				<input type="checkbox" name="isPrivate" title="私密">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<div class="layui-input-block">
+				<button class="layui-btn" lay-submit lay-filter="publish">立即提交</button>
+				<button class="layui-btn" lay-submit lay-filter="draft">保存草稿</button>
+				<button type="reset" class="layui-btn layui-btn-primary">返回</button>
+			</div>
+		</div>
+	</form>
+</div>
 </body>
 </html>

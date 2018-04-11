@@ -1,11 +1,11 @@
 package com.limin.blog.enums;
 
-public enum UserEnum {
-    INITED(0,"初始"),ACTIVED(1,"激活");
+public enum ArticleTypeEnum {
+    ORIGINAL(1,"原创"),REPRINTED(2,"转载");
 
     private Integer val;
     private String msg;
-    private UserEnum(Integer val, String msg) {
+    private ArticleTypeEnum(Integer val, String msg) {
         this.val = val;
         this.msg = msg;
     }

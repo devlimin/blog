@@ -1,15 +1,14 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{common/head}">
 <head>
-	<meta charset="utf-8">
-	<meta http-equiv="Pragma" content="no-cache">
-	<meta http-equiv="Cache-Control" content="no-cache">
-	<meta http-equiv="Expires" content="0">
 	<title>博客</title>
 	<link th:href="@{/css/user/article.css}" rel="stylesheet">
+	<script th:src="@{/js/user/article.js}"></script>
 </head>
 <body>
-	<div th:replace="common/head"></div>
+<div layout:fragment="content">
 	<div id="main">
 		<div id="left-side">
 			<div id="article">
@@ -230,7 +229,7 @@
 		</div>
 		<div style="clear: both;"></div>
 	</div>
+</div>
 
-<script th:src="@{/js/user/article.js}"></script>
 </body>
 </html>

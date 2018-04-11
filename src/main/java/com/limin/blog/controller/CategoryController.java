@@ -2,15 +2,16 @@ package com.limin.blog.controller;
 
 import com.limin.blog.model.Category;
 import com.limin.blog.model.CategoryExample;
+import com.limin.blog.model.User;
 import com.limin.blog.service.CategoryService;
+import com.limin.blog.util.ResponseUtil;
+import com.limin.blog.vo.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -22,28 +23,34 @@ public class CategoryController {
 
     @GetMapping("man/list")
     public ModelAndView list(){
-        ModelAndView mv = new ModelAndView("category/list");
         CategoryExample categoryExample = new CategoryExample();
         categoryExample.createCriteria().andUserIdEqualTo(1);
         List<Category> categories = categoryService.selectByExample(categoryExample);
-
+        ModelAndView mv = new ModelAndView("category/list");
         mv.addObject("categories", categories);
         return mv;
     }
 
-    @GetMapping("man/delete")
-    public void delete(@RequestParam(value = "id") Integer id) {
+    @PostMapping("man/delete")
+    @ResponseBody
+    public Response delete(@RequestParam(value = "id") Integer id) {
         categoryService.delete(id);
+        return ResponseUtil.success();
     }
 
-    @PostMapping("man/updatename")
-    public void updateName(Category category) {
-        categoryService.updateName(category);
+    @PostMapping("man/update")
+    @ResponseBody
+    public Response updateName(@RequestParam(value = "id") Integer id,
+                               @RequestParam(value = "name") String name) {
+        categoryService.updateName(id, name);
+        return ResponseUtil.success();
     }
 
     @PostMapping("man/add")
-    public void add(Category category) {
-        category.setUserId(1);
-        categoryService.add(category);
+    @ResponseBody
+    public Response add(@RequestParam(value = "name") String name, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        Integer id  = categoryService.add(1, name);
+        return ResponseUtil.success(id);
     }
 }

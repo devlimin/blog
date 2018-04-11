@@ -56,7 +56,7 @@ public class CommentService {
         if (comment == null) {
 
         }
-        comment.setStatus(CommentEnum.DELETED.getKey());
+        comment.setStatus(CommentEnum.DELETED.getVal());
         commentMapper.updateByPrimaryKeySelective(comment);
     }
 

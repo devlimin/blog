@@ -17,12 +17,14 @@ public class CategoryService {
         return categoryMapper.selectByPrimaryKey(id);
     }
 
-    public List<Category> selectByExample(CategoryExample categoryExample) {
-        return categoryMapper.selectByExample(categoryExample);
+    public List<Category> selectByUserId(Integer userId){
+        CategoryExample example = new CategoryExample();
+        example.createCriteria().andUserIdEqualTo(userId);
+        return categoryMapper.selectByExample(example);
     }
 
-    public void add(Category category) {
-        categoryMapper.insertSelective(category);
+    public List<Category> selectByExample(CategoryExample categoryExample) {
+        return categoryMapper.selectByExample(categoryExample);
     }
 
     public void delete(Integer id) {
@@ -32,10 +34,19 @@ public class CategoryService {
         categoryMapper.deleteByPrimaryKey(id);
     }
 
-    public void updateName(Category category) {
-        if (categoryMapper.selectByPrimaryKey(category.getId()) == null) {
-
-        }
+    public void updateName(Integer id, String name) {
+        Category category = new Category();
+        category.setId(id);
+        category.setName(name);
         categoryMapper.updateByPrimaryKeySelective(category);
+    }
+
+    public Integer add(Integer userId, String categoryName) {
+        Category category = new Category();
+        category.setUserId(userId);
+        category.setName(categoryName);
+        category.setArticleNum(0);
+        categoryMapper.insert(category);
+        return category.getId();
     }
 }

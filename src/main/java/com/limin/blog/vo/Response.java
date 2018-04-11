@@ -1,6 +1,7 @@
 package com.limin.blog.vo;
 
 public class Response<T> {
+
     private Integer code;
     private String msg;
     private T data;

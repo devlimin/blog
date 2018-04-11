@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{common/head}">
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="Pragma" content="no-cache">
@@ -8,10 +10,11 @@
 	<title>博客</title>
 
 	<link th:href="@{/css/user/login.css}" rel="stylesheet">
+	<script th:src="@{/js/user/login.js}"></script>
 </head>
 <body>
-<div th:replace="common/head"></div>
-	<div class="panel panel-default" id="panel">
+	<div layout:fragment="content">
+		<div class="panel panel-default" id="panel">
 		<div class="text-center" id="title">
 			<h1>xx博客</h1>
 			<p>这里是开发者分享交流的乐园</p>
@@ -22,7 +25,7 @@
 				<li>注册</li>
 			</ul>
 			<div class="layui-tab-content">
-				<div class="layui-tab-item layui-show">
+				<div id="login-tab" class="layui-tab-item layui-show">
 					<div class="panel-body">
 						<form class="layui-form" id="login" method="post">
 							<div class="form-group">
@@ -46,7 +49,7 @@
 						</form>
 					</div>
 				</div>
-				<div class="layui-tab-item">
+				<div id="regist-tab" class="layui-tab-item">
 					<div class="panel-body">
 						<form class="layui-form" id="regist" method="post">
 							<div class="form-group">
@@ -76,6 +79,6 @@
 			</div>
 		</div>
 	</div>
-<script th:src="@{/js/user/login.js}"></script>
+	</div>
 </body>
 </html>

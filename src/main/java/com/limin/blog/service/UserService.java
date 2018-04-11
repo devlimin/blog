@@ -23,7 +23,7 @@ public class UserService {
     @Autowired
     private EmailHelper emailHelper;
 
-    public void regist(String email, String name, String password){
+    public User regist(String email, String name, String password){
         User user = new User();
         user.setEmail(email);
         user.setName(name);
@@ -32,9 +32,10 @@ public class UserService {
         String head = String.format("http://images.nowcoder.com/head/%dt.png", new Random().nextInt(1000));
         user.setHeadUrl(head);
         user.setBirth(new Date());
-        user.setState(UserEnum.INITED.getKey());
+        user.setState(UserEnum.INITED.getVal());
         userMapper.insert(user);
         emailHelper.sendEmail();
+        return user;
     }
 
     public User selectById(Integer id) {

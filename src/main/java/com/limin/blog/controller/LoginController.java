@@ -70,7 +70,7 @@ public class LoginController {
         if (users == null || users.size() >= 1) {
             return ResponseUtil.error(2,"此邮箱已被注册");
         }
-        return ResponseUtil.sucess();
+        return ResponseUtil.success();
     }
 
     @PostMapping(value = "regist")
@@ -89,8 +89,9 @@ public class LoginController {
         if (users == null || users.size() >= 1) {
             return ResponseUtil.error(2,"此邮箱已被注册");
         }
-        userService.regist(email, name, password);
-        return ResponseUtil.sucess();
+        User user = userService.regist(email, name, password);
+        session.setAttribute("user",user);
+        return ResponseUtil.success();
     }
 
     @PostMapping(value = "login")
@@ -114,16 +115,7 @@ public class LoginController {
         if (!EncryptUtil.MD5(EncryptUtil.MD5(password + user.getSalt())).equals(user.getPassword())) {
             return ResponseUtil.error(2,"密码不正确");
         }
-
-//        Cookie cookie = new Cookie("token",EncryptUtil.MD5(user.getName()));
-//        cookie.setHttpOnly(true);
-//        cookie.setPath("/");
-//        if(rememberme) {
-//            cookie.setMaxAge(60*60*24*30);
-//        }
-//        response.addCookie(cookie);
-        return ResponseUtil.sucess();
+        session.setAttribute("user",user);
+        return ResponseUtil.success();
     }
-
-
 }

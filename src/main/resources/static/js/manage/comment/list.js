@@ -1,9 +1,11 @@
-$(".comment").mouseover(function(){
-	$(this).find(".action")[0].style.display="block";
-})
-$(".comment").mouseout(function(){
-	$(this).find(".action")[0].style.display="none";
-})
+$(function() {
+    $(".comment").mouseover(function(){
+        $(this).find(".action")[0].style.display="block";
+    })
+    $(".comment").mouseout(function(){
+        $(this).find(".action")[0].style.display="none";
+    })
+
 $(document).on("click",".comment-btn",function() {
 	console.log($(this).parent().parent().next(".detail").children(".reply-div").length);
 	if($(this).parent().parent().next(".detail").children(".reply-div").length != 0) {
@@ -24,3 +26,4 @@ $(document).on("click",".reply-btn",function() {
 $(document).on("click",".comment-del",function() {
 	$(this).parent().parent().parent().remove();
 });
+})

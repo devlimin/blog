@@ -21,8 +21,9 @@ mybatis:
     cache-enabled: true
     use-generated-keys: true
     jdbc-type-for-null: null
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   mapper-locations: classpath:mapper/*.xml
 
 pagehelper:
-  helper-dialect: mysql
+  reasonable: true
 

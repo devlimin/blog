@@ -1,26 +1,16 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{common/backend}">
 <head>
-	<meta charset="utf-8">
-	<meta http-equiv="Pragma" content="no-cache">
-	<meta http-equiv="Cache-Control" content="no-cache">
-	<meta http-equiv="Expires" content="0">
 	<title>博客</title>
 	<link th:href="@{/css/manage/category/list.css}" rel="stylesheet">
-
+	<script th:src="@{/js/manage/category/list.js}"></script>
 <body>
-	<div th:replace="common/head"></div>
-	<div id="main">
-		<div id="type-list">
-			<a href="#">文章编辑</a>
-			<a href="#">文章管理</a>
-			<a href="#">评论管理</a>
-			<a href="#">个人分类管理</a>
-		</div>
-		<div id="right">
+<div layout:fragment="right">
 			<div>
 				<input id="category-input" type="text" class="form-control" name="">
-				<a id="category-btn" class="cate-btn" href="#"> 添加分类</a>
+				<a id="category-btn" class="cate-btn"> 添加分类</a>
 			</div>
 			<div style="margin-top: 20px;">
 				<table class="table table-hover"  id="category-table">
@@ -29,36 +19,17 @@
 						<th>文章数</th>
 						<th>操作</th>
 					</tr>
-					<tr id="1">
-						<td>java</td>
-						<td>3</td>
+					<tr th:each="category : ${categories}" th:id="${category.id}">
+						<td th:text="${category.name}"></td>
+						<td th:text="${category.articleNum}"></td>
 						<td>
-							<a href="#" class="cate-btn">编辑</a> |
-							<a href="#" class="cate-cal">删除</a>
-						</td>
-					</tr>
-					<tr id="2">
-						<td>python</td>
-						<td>3</td>
-						<td>
-							<a href="#" class="cate-btn">编辑</a> |
-							<a href="#" class="cate-cal">删除</a>
-						</td>
-					</tr>
-					<tr id="3">
-						<td>mysql</td>
-						<td>3</td>
-						<td>
-							<a href="#" class="cate-btn">编辑</a> |
-							<a href="#" class="cate-cal">删除</a>
+							<a class="cate-btn">编辑</a> |
+							<a class="cate-cal">删除</a>
 						</td>
 					</tr>
 				</table>
 			</div>
-		</div>
-		<div style="clear: both;"></div>
-	</div>
+</div>
 
-<script th:src="@{/js/manage/category/list.js}"></script>
 </body>
 </html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/head}">
+<head>
+    <title>博客</title>
+    <link th:href="@{/css/common/backend.css}" rel="stylesheet">
+    <script th:src="@{/js/backend.js}"></script>
+</head>
+<body>
+<div layout:fragment="content">
+    <div id="main">
+        <div id="type-list">
+            <div>
+                <span>博客</span>
+                <a th:href="@{/article/man/edit}">文章编辑</a>
+                <a th:href="@{/article/man/list}">文章管理</a>
+                <a th:href="@{/comment/man/list/in}">评论管理</a>
+                <a th:href="@{/category/man/list}">个人分类管理</a>
+            </div>
+            <div>
+                <span>论坛</span>
+                <a>添加板块</a>
+                <a>评论管理</a>
+            </div>
+            <div>
+                <span>设置</span>
+                <a>博客设置</a>
+                <a>账户管理</a>
+            </div>
+        </div>
+        <div id="right" layout:fragment="right">
+
+        </div>
+        <div style="clear: both;"></div>
+    </div>
+</div>
+</body>
+</html>

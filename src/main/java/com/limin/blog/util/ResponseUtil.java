@@ -10,7 +10,7 @@ public class ResponseUtil {
         response.setData(data);
         return response;
     }
-    public static Response sucess() {
+    public static Response success() {
         return success(null);
     }
     public static Response error(Integer code, String msg) {

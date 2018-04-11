@@ -8,6 +8,8 @@
 	float: left; width: 100px;margin-right: 10px;padding: 0 0;
 	background-color: white;
 	text-align: center;
+	padding-top: 8px;
+	padding-bottom: 8px;
 }
 #type-list a{
 	display: block;

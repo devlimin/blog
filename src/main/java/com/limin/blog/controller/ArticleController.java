@@ -1,20 +1,18 @@
 package com.limin.blog.controller;
 
-import com.limin.blog.enums.ArticleEnum;
+import com.github.pagehelper.PageInfo;
+import com.limin.blog.enums.ArticleTypeEnum;
 import com.limin.blog.enums.CommentEnum;
 import com.limin.blog.model.*;
-import com.limin.blog.service.ArticleCategoryService;
-import com.limin.blog.service.ArticleService;
-import com.limin.blog.service.CategoryService;
-import com.limin.blog.service.CommentService;
+import com.limin.blog.service.*;
+import com.limin.blog.util.ResponseUtil;
+import com.limin.blog.vo.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +31,9 @@ public class ArticleController {
 
     @Autowired
     private CommentService commentService;
+
+    @Autowired
+    private SysCategoryService sysCategoryService;
 
     /**
      * 查看文章
@@ -55,7 +56,7 @@ public class ArticleController {
         }
 
         //文章评论
-        List<Comment> comments = commentService.selectPageByEntityWithBlog(CommentEnum.PUBLISHED.getKey(),id,0,10);
+        List<Comment> comments = commentService.selectPageByEntityWithBlog(CommentEnum.PUBLISHED.getVal(),id,0,10);
 
         //所有个人分类
         CategoryExample categoryExample = new CategoryExample();
@@ -78,7 +79,7 @@ public class ArticleController {
     public String articles(@PathVariable("id") Integer id){
         ModelAndView mv = new ModelAndView();
         ArticleExample articleExample = new ArticleExample();
-        articleExample.setOrderByClause("releaseDate decs");
+        articleExample.setOrderByClause("releaseDate desc");
         List<Article> articles = articleService.selectByExampleWithBLOBS(articleExample);
 
         //所有个人分类
@@ -93,55 +94,55 @@ public class ArticleController {
 
 
     //全部
-    @GetMapping("man/list/all")
-    public String listAll(){
-        ArticleExample articleExample = new ArticleExample();
-        articleExample.createCriteria().andUserIdEqualTo(1);
-        List<Article> articles = articleService.selectPageByExample(articleExample, 1,10);
+    @GetMapping("man/list")
+    public String listAll(Integer pageNum, Integer pageSize){
         return "/article/list";
     }
 
-    //已发表
-    @GetMapping("man/list/published")
-    public String listPublished(){
+    @GetMapping("man/page")
+    @ResponseBody
+    public Response page(@RequestParam(value = "status") Integer status,
+                         @RequestParam(value = "pageNum") Integer pageNum,
+                         @RequestParam(value = "pageSize") Integer pageSize) {
         ArticleExample articleExample = new ArticleExample();
-        articleExample.createCriteria().andUserIdEqualTo(1).andStatusEqualTo(ArticleEnum.PUBLISHED.getKey());
-        List<Article> articles = articleService.selectPageByExample(articleExample, 1,10);
-        return "/article/list";
+        articleExample.createCriteria().andUserIdEqualTo(1).andStatusEqualTo(status);
+        articleExample.setOrderByClause("release_date desc");
+        PageInfo page = articleService.selectPageByExample(articleExample, pageNum, pageSize);
+        return ResponseUtil.success(page);
     }
 
-    //草稿
-    @GetMapping("man/list/draft")
-    public String listDraft(){
-        ArticleExample articleExample = new ArticleExample();
-        articleExample.createCriteria().andUserIdEqualTo(1).andStatusEqualTo(ArticleEnum.DRAFT.getKey());
-        List<Article> articles = articleService.selectPageByExample(articleExample, 1,10);
-        return "/article/list";
-    }
-
-    //垃圾箱
-    @GetMapping("man/list/garbage")
-    public String listGarbage(){
-        ArticleExample articleExample = new ArticleExample();
-        articleExample.createCriteria().andUserIdEqualTo(1).andStatusEqualTo(ArticleEnum.GARBAGE.getKey());
-        List<Article> articles = articleService.selectPageByExample(articleExample, 1,10);
-        return "/article/list";
-    }
 
     @GetMapping("man/edit")
-    public String edit() {
-        return "/article/edit";
+    public ModelAndView edit(HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        CategoryExample categoryExample = new CategoryExample();
+        categoryExample.createCriteria().andUserIdEqualTo(1);
+        List<Category> categories = categoryService.selectByExample(categoryExample);
+        List<SysCategory> sysCategories = sysCategoryService.selectAll();
+        ModelAndView mv = new ModelAndView("/article/edit");
+        //个人分类
+        mv.addObject("categories",categories);
+        //系统分类
+        mv.addObject("sysCategories", sysCategories);
+        //文章类型，是否原创
+        mv.addObject("types", ArticleTypeEnum.values());
+        return mv;
     }
 
     @PostMapping("man/publish")
-    public String publish(Article article) {
+    @ResponseBody
+    public Response publish(Article article,@RequestParam(value = "cId") List<Integer> cIds, HttpSession session) {
+        User user = (User) session.getAttribute("user");
         article.setUserId(1);
-        articleService.publish(article);
-        return "/";
+        articleService.publish(article,cIds);
+        return ResponseUtil.success();
     }
+
     @PostMapping("man/draft")
-    public String draft(Article article) {
-        articleService.draft(article);
-        return "";
+    public Response draft(Article article,@RequestParam(value = "cId") List<Integer> cIds, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        article.setUserId(1);
+        articleService.draft(article, cIds);
+        return ResponseUtil.success();
     }
 }
