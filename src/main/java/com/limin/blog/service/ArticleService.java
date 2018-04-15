@@ -40,39 +40,35 @@ public class ArticleService {
     public PageInfo selectPageByExample(ArticleExample articleExample, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<Article> articles = articleMapper.selectByExample(articleExample);
-
         return new PageInfo(articles);
     }
 
-    public List<Article> selectPageByExampleWithBLOBS(ArticleExample articleExample, Integer pageNum, Integer pageSize) {
+    public PageInfo selectPageByExampleWithBLOBS(ArticleExample articleExample, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-        return articleMapper.selectByExampleWithBLOBs(articleExample);
+        List<Article> articles = articleMapper.selectByExampleWithBLOBs(articleExample);
+        return new PageInfo(articles);
     }
 
     /**
      * 发表文章
      * @param article
      */
-    public void publish(Article article,  List<Integer> cIds) {
-        //发表状态
-        article.setStatus(ArticleEnum.PUBLISHED.getVal());
-        //默认公开
-        if(article.getIsPrivate() == null) {
-            article.setIsPrivate(false);
-        }
-        //默认能评论
-        if (article.getIsComment() == null) {
-            article.setIsComment(true);
-        }
+    public Integer publish(Article article,  List<Integer> cIds) {
+
         //若已存在则修改
         if (article.getId() != null && articleMapper.selectByPrimaryKey(article.getId()) != null) {
             articleMapper.updateByPrimaryKeySelective(article);
+        } else {
+            //发表状态
+            article.setStatus(ArticleEnum.PUBLISHED.getVal());
+            article.setIsPrivate(false);
+            article.setIsComment(true);
+            article.setReleaseDate(new Date());
+            article.setReadNum(0);
+            article.setCommentNum(0);
+            //新增文章
+            articleMapper.insert(article);
         }
-        //新增文章
-        article.setReleaseDate(new Date());
-        article.setReadNum(0);
-        article.setCommentNum(0);
-        articleMapper.insert(article);
 
         //修改文章个人分类
         ArticleCategoryExample example = new ArticleCategoryExample();
@@ -86,24 +82,34 @@ public class ArticleService {
                 articleCategoryService.add(articleCategory);
             }
         }
+        return article.getId();
     }
 
     /**
      * 保存草稿
      * @param article
      */
-    public void draft(Article article, List<Integer> cIds) {
+    public Integer draft(Article article, List<Integer> cIds) {
         article.setStatus(ArticleEnum.DRAFT.getVal());
-        //新文章直接保存
-        if (articleMapper.selectByPrimaryKey(article.getId()) == null) {
-            article.setReleaseDate(new Date());
-            article.setReadNum(0);
-            article.setCommentNum(0);
-            articleMapper.insert(article);
-        } else {
-            //旧文章更新文章
-            articleMapper.updateByPrimaryKeyWithBLOBs(article);
+        article.setIsPrivate(false);
+        article.setIsComment(true);
+        article.setReleaseDate(new Date());
+        article.setReadNum(0);
+        article.setCommentNum(0);
+        articleMapper.insert(article);
+        //修改文章个人分类
+        ArticleCategoryExample example = new ArticleCategoryExample();
+        example.createCriteria().andArticleIdEqualTo(article.getId());
+        articleCategoryService.deleteByExample(example);
+        if (cIds != null && cIds.size() > 0) {
+            for (Integer id : cIds) {
+                ArticleCategory articleCategory = new ArticleCategory();
+                articleCategory.setArticleId(article.getId());
+                articleCategory.setCategoryId(id);
+                articleCategoryService.add(articleCategory);
+            }
         }
+        return article.getId();
     }
 
 
@@ -112,32 +118,26 @@ public class ArticleService {
      * @param id 文章ID
      * @return
      */
-    public boolean delete(Integer id) {
-        Article article = articleMapper.selectByPrimaryKey(id);
-        if (article == null) {
-            return false;
-        }
+    public boolean del(Integer id) {
+        Article article = new Article();
+        article.setId(id);
+        article.setStatus(ArticleEnum.GARBAGE.getVal());
+        articleMapper.updateByPrimaryKeySelective(article);
+        return true;
+    }
+
+    public boolean deepdel(Integer id) {
+        Article article = new Article();
+        article.setId(id);
         article.setStatus(ArticleEnum.DELETED.getVal());
         articleMapper.updateByPrimaryKeySelective(article);
         return true;
     }
 
-    /**
-     * 能否评论
-     * @param id
-     * @return
-     */
-    public boolean changeCommentStatus(Integer id) {
-        Article article = articleMapper.selectByPrimaryKey(id);
-        if (article == null) {
-            return false;
-        }
-        if (article.getIsComment() == false) {
-            article.setIsComment(true);
-        } else {
-            article.setIsComment(false);
-        }
-        articleMapper.updateByPrimaryKey(article);
-        return true;
+    public void comment(Integer id, boolean comment) {
+        Article article = new Article();
+        article.setId(id);
+        article.setIsComment(comment);
+        articleMapper.updateByPrimaryKeySelective(article);
     }
 }

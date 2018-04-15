@@ -1,6 +1,9 @@
 server:
   port: 8080
   context-path: /
+  tomcat:
+    uri-encoding: UTF-8
+    max-http-header-size: 3145728
 
 spring:
   thymeleaf:
@@ -9,11 +12,11 @@ spring:
     url: jdbc:mysql://127.0.0.1:3306/blog
     username: root
     password: limin123
+    driver-class-name: com.mysql.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
-    druid:
-      initial-size: 3
-      max-active: 10
-      min-idle: 3
+
+
+
 
 mybatis:
   configuration:
@@ -27,3 +30,8 @@ mybatis:
 pagehelper:
   reasonable: true
 
+logging:
+  level:
+#     root: debug
+     org.springframework.web: warn
+#     com.limin.blog.mapper: debug

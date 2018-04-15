@@ -9,57 +9,64 @@
 <body>
 
 <div layout:fragment="right">
-	<div id="nav-tabs">
-		<span><a href="#">我的文章评论</a></span>
-		<span><a href="#">我发表的评论</a></span>
-	</div>
-	<div id="tab-pane">
-		<div class="comment">
-			<div class="title">
-				<img src="https://images.nowcoder.net/head/349m.png@0e_100w_100h_0c_1i_1o_90Q_1x.png" class="img-circle">
-				<span>东方不败</span>
-				<span>23小时前</span>
-				回复了你的文章
-				<span><a href="#">Java基础</a></span>
-				<span class="action">
+	<div class="layui-tab layui-tab-brief" lay-filter="test1">
+		<ul class="layui-tab-title">
+			<li class="layui-this" lay-id="0">我的文章评论</li>
+			<li lay-id="1">我发表的评论</li>
+		</ul>
+
+		<div class="layui-tab-content">
+			<div class="layui-tab-item layui-show">
+				<div class="comment">
+					<div class="title">
+						<img src="https://images.nowcoder.net/head/349m.png@0e_100w_100h_0c_1i_1o_90Q_1x.png" class="img-circle">
+						<span>东方不败</span>
+						<span>23小时前</span>
+						回复了你的文章
+						<span><a href="#">Java基础</a></span>
+						<span class="action">
+								<a class="comment-btn">快速回复</a> |
+								<a class="comment-del">删除</a>
+							</span>
+					</div>
+					<div class="detail">
+						eeeeeeeeeeeeeeeeeeeeeee
+					</div>
+				</div>
+			</div>
+			<div class="layui-tab-item">
+				<div class="comment">
+					<div class="title">
+						<img src="https://images.nowcoder.net/head/349m.png@0e_100w_100h_0c_1i_1o_90Q_1x.png" class="img-circle">
+						<span>东方不败</span>
+						<span>23小时前</span>
+						回复了你的文章
+						<span><a href="#">Java基础</a></span>
+						<span class="action">
 							<a class="comment-btn">快速回复</a> |
 							<a class="comment-del">删除</a>
 						</span>
-			</div>
-			<div class="detail">
-				eeeeeeeeeeeeeeeeeeeeeee
-			</div>
-		</div>
-		<div class="comment">
-			<div class="title">
-				<img src="https://images.nowcoder.net/head/349m.png@0e_100w_100h_0c_1i_1o_90Q_1x.png" class="img-circle">
-				<span>东方不败</span>
-				<span>23小时前</span>
-				回复了你的文章
-				<span><a href="#">Java基础</a></span>
-				<span class="action">
+					</div>
+					<div class="detail">
+						eeeeeeeeeeeeeeeeeeeeeee
+					</div>
+				</div>
+				<div class="comment">
+					<div class="title">
+						<img src="https://images.nowcoder.net/head/349m.png@0e_100w_100h_0c_1i_1o_90Q_1x.png" class="img-circle">
+						<span>东方不败</span>
+						<span>23小时前</span>
+						回复了你的文章
+						<span><a href="#">Java基础</a></span>
+						<span class="action">
 							<a class="comment-btn">快速回复</a> |
 							<a class="comment-del">删除</a>
 						</span>
-			</div>
-			<div class="detail">
-				eeeeeeeeeeeeeeeeeeeeeee
-			</div>
-		</div>
-		<div class="comment">
-			<div class="title">
-				<img src="https://images.nowcoder.net/head/349m.png@0e_100w_100h_0c_1i_1o_90Q_1x.png" class="img-circle">
-				<span>东方不败</span>
-				<span>23小时前</span>
-				回复了你的文章
-				<span><a href="#">Java基础</a></span>
-				<span class="action">
-							<a class="comment-btn">快速回复</a> |
-							<a class="comment-del">删除</a>
-						</span>
-			</div>
-			<div class="detail">
-				eeeeeeeeeeeeeeeeeeeeeee
+					</div>
+					<div class="detail">
+						eeeeeeeeeeeeeeeeeeeeeee
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>

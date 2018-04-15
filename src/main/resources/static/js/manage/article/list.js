@@ -1,9 +1,8 @@
+$(function () {
 $(document).on("click","#search-btn",function() {
-	console.log($("#search-input").val());
+    console.log($("#search-input").val());
 })
-$(document).on("click",".article .info .right a:nth-child(4)",function() {
-	$(this).parent().parent().parent().remove();
-})
+
 layui.use(['laypage','element'], function(){
     var laypage = layui.laypage;
 	var element = layui.element;
@@ -30,32 +29,33 @@ layui.use(['laypage','element'], function(){
             success: function (resp) {
                 if(resp.code == 0) {
                     var data = resp.data;
-                    console.log(data);
                     var html = "";
                     $.each(data.list, function (i, article) {
-                        html += '<div class="article">' +
-                            '<div class="title"><a>'+article.title+'</a></div>' +
-                            '<div class="info">' +
+                        html += '<div class="article" id="'+article.id+'">';
+                        if(status == 0) {
+                            html += '<div class="title"><a href="/article/detail/'+article.id+'">'+article.title+'</a></div>';
+                        } else {
+                            html += '<div class="title">'+article.title+'</div>';
+                        }
+                            html+='<div class="info">' +
                             '<div class="left">' +
                             '<span>原创</span>' +
                             '<span>'+new Date(article.releaseDate).format()+'</span>' +
                             '<span class="layui-icon">&#xe705 '+article.readNum+'</span>' +
                             '<span class="layui-icon">&#xe6b2 '+article.commentNum+'</span>' +
                             '</div>' +
-                            '<div class="right">';
+                            '<div class="right">'+
+                            '<a href="/article/man/edit/'+article.id+'">编辑</a>';
                         if(status == 0) {
-                            html += '<a>查看</a>' +
-                                '<a>禁止评论</a>' +
+                            html += '<a class="nocomment">'+(article.isComment?'允许评论':'禁止评论')+'</a>' +
                                 '<a>置顶</a>' +
                                 '<a class="del">删除</a>';
                         }
                         if(status == 1) {
-                            html += '<a>查看</a>' +
-                                '<a class="del">删除</a>';
+                            html += '<a class="del">删除</a>';
                         }
                         if(status == 2) {
-                            html += '<a>查看</a>' +
-                                '<a class="del">彻底删除</a>';
+                            html += '<a class="deepdel">彻底删除</a>';
                         }
                         html += '</div>' +
                             '<div style="clear: both;"></div>' +
@@ -132,7 +132,58 @@ layui.use(['laypage','element'], function(){
             }
         })
     }
+
+
 })
 Date.prototype.format = function () {
     return this.getFullYear() + "年" + (this.getMonth() + 1) + "月" + this.getDate() + "日 " + this.getHours() + ":" + this.getMinutes() + ":"+this.getSeconds();
 }
+    $(document).on("click",".nocomment",function() {
+        var text = $(this).text();
+        var comment = false;
+        if(text == "禁止评论") {
+            $(this).text("允许评论");
+            comment = true;
+        } else {
+            $(this).text("禁止评论");
+            comment = false;
+        }
+        var id=$(this).parent().parent().parent().attr('id');
+        $.ajax({
+            url: "/article/man/comment",
+            type:"post",
+            data:"id="+id+"&comment="+comment,
+            success:function (resp) {
+                if(resp.code == 0) {
+                }
+            }
+        })
+    })
+    $(document).on("click",".del",function() {
+        var id=$(this).parent().parent().parent().attr('id');
+        $(this).parent().parent().parent().remove();
+        $.ajax({
+            url: "/article/man/del",
+            type:"post",
+            data:"id="+id,
+            success:function (resp) {
+                if(resp.code == 0) {
+                }
+            }
+        })
+    })
+
+    $(document).on("click",".deepdel",function() {
+        var id=$(this).parent().parent().parent().attr('id');
+        $(this).parent().parent().parent().remove();
+        $.ajax({
+            url: "/article/man/deepdel",
+            type:"post",
+            data:"id="+id,
+            success:function (resp) {
+                if(resp.code == 0) {
+                }
+            }
+        })
+    })
+})

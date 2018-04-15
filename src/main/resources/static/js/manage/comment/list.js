@@ -1,10 +1,10 @@
 $(function() {
-    $(".comment").mouseover(function(){
-        $(this).find(".action")[0].style.display="block";
-    })
-    $(".comment").mouseout(function(){
-        $(this).find(".action")[0].style.display="none";
-    })
+$(".comment").mouseover(function(){
+	$(this).find(".action")[0].style.display="block";
+})
+$(".comment").mouseout(function(){
+	$(this).find(".action")[0].style.display="none";
+})
 
 $(document).on("click",".comment-btn",function() {
 	console.log($(this).parent().parent().next(".detail").children(".reply-div").length);
@@ -26,4 +26,12 @@ $(document).on("click",".reply-btn",function() {
 $(document).on("click",".comment-del",function() {
 	$(this).parent().parent().parent().remove();
 });
+    layui.use(['element'], function() {
+        var element = layui.element;
+        //监听Tab切换，以改变地址hash值
+        element.on('tab(test1)', function (data) {
+            layid = this.getAttribute('lay-id');
+            location.hash = 'test1='+ layid;
+        })
+    });
 })

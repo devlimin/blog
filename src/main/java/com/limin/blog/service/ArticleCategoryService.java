@@ -1,5 +1,7 @@
 package com.limin.blog.service;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.limin.blog.mapper.ArticleCategoryMapper;
 import com.limin.blog.model.ArticleCategory;
 import com.limin.blog.model.ArticleCategoryExample;
@@ -24,5 +26,11 @@ public class ArticleCategoryService {
 
     public void deleteByExample(ArticleCategoryExample articleCategoryExample) {
         articleCategoryMapper.deleteByExample(articleCategoryExample);
+    }
+
+    public PageInfo selectPageByExample(ArticleCategoryExample example, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum,pageSize);
+        List<ArticleCategory> articleCategories = articleCategoryMapper.selectByExample(example);
+        return new PageInfo(articleCategories);
     }
 }

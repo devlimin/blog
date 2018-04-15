@@ -13,6 +13,8 @@
 }
 .comment .title span a{
 	text-decoration: none;
+	color: #349edf;
+	cursor: pointer;
 }
 .comment .detail{
 	padding-top: 10px;
