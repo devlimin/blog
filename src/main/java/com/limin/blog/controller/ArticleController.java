@@ -2,7 +2,6 @@ package com.limin.blog.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.limin.blog.enums.ArticleTypeEnum;
-import com.limin.blog.enums.CommentEnum;
 import com.limin.blog.model.*;
 import com.limin.blog.service.*;
 import com.limin.blog.util.ResponseUtil;
@@ -65,7 +64,7 @@ public class ArticleController {
         }
 
         //文章评论
-        List<Comment> comments = commentService.selectPageByEntityWithBlog(CommentEnum.PUBLISHED.getVal(),id,0,10);
+//        List<Comment> comments = commentService.selectPageByEntityWithBlog(CommentEnum.PUBLISHED.getVal(),id,0,10);
 
         //所有个人分类
         CategoryExample categoryExample = new CategoryExample();
@@ -74,7 +73,7 @@ public class ArticleController {
 
         mv.addObject("article",article);
         mv.addObject("articleCategories",articleCategories);
-        mv.addObject("comments",comments);
+//        mv.addObject("comments",comments);
         mv.addObject("categories",categories);
         return mv;
     }

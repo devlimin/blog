@@ -50,7 +50,7 @@
 }
 .comment-write{
 	padding-bottom: 10px;
-	height: 140px;
+	height: 100%;
 }
 .comment-write img{
 	width: 35px;
@@ -59,13 +59,22 @@
 	margin-right: 5px;
 }
 .comment-input{
-
 	float: right;
 }
 .comment-input textarea{
 	width: 730px;
-	height: 90px;
+	height: 50px;
 	/*transition: height 0.5s;*/
+	transition: height .5s;
+	-moz-transition: height .5s;
+	-webkit-transition: height .5s;
+	-o-transition: height .5s;
+	transition-delay: .1s;
+	-moz-transition-delay: .1s;
+	-webkit-transition-delay: .1s;
+}
+.comment-input textarea:focus{
+	height: 120px;
 }
 .comment-input a{
 	margin-top: 10px;
@@ -106,38 +115,52 @@
 	cursor: pointer;
 	text-decoration: none;
 }
-.parent-comment a{
-	text-decoration: none;
-	color: #4093c6;
-}
-.parent-comment a img{
-	width: 35px;
-	height: 35px;
+.parent-comment>a{
+	width: 38px;
+	height: 38px;
+	display: inline-block;
 	margin-right: 10px;
+}
+a.headimg>img{
+	width: 100%;
+	height:100%;
 	border-radius:50%;
 }
-.parent-comment a span{
-	margin-right: 10px;
+.parent-comment>div.info{
+	display: inline-block;
+	vertical-align: middle;
 }
-.parent-comment a:nth-child(4){
-	margin-top: 5px;
+div.info>a{
+	font-size: 15px;
+	color: #333;
+}
+div.info>span{
+	display:block;
+}
+.parent-comment>.comment-wrap>p{
+
+	margin-top: 10px;
+}
+.tool{
+	font-size: 12px;
+	margin-top:10px;
+	color: #969696;
+}
+
+.tool>a:nth-child(2){
+	margin-left: 10px;
+	color: #969696;
+}
+.tool>a.report{
+	display: none;
 	float: right;
 	color: #969696;
 }
-.parent-comment a:nth-child(4):hover{
-	color: black;
-}
-.parent-comment p{
-	margin-top: 10px;
-}
+
 .parent-comment span:nth-child(3){
 	margin-top: 5px;
 	float: right;
 	margin-left: 15px;
-	color: #969696;
-}
-.parent-comment  a+span{
-	color: #969696;
 }
 .sub-comment-list{
 	margin-top: 10px;
@@ -150,33 +173,11 @@
 	padding-bottom: 15px;
 	border-bottom: 1px dashed #f0f0f0;
 }
-.sub-comment+div{
-	margin: 0px;
+.comment a{
+	color: #3194d0;
 }
-.sub-comment div a:first-child{
-	text-decoration: none;
-	color: #4093c6;
-}
-.sub-comment div a:nth-child(2){
-	text-decoration: none;
-	color: #4093c6;
-}
-.sub-comment div span{
-	box-sizing: border-box;
-}
-.sub-comment>div+span{
-	font-size: 12px;
-	color: #969696;
-	margin-right: 10px;
-}
-.sub-comment span+a{
-	font-size: 12px;
-	text-decoration: none;
-	color: #969696
-}
-.sub-comment span+a:hover{
-	color: black;
-}
+
+
 
 #side{
 	float: right;width: 300px;

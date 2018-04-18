@@ -25,6 +25,7 @@
 				</div>
 				<div id="content" th:utext="${article.content}">
 				</div>
+				<input type="hidden" id="aid" th:value="${article.id}">
 			</div>
 			<div id="comment">
 				<div class="comment-write">
@@ -33,111 +34,11 @@
 						<textarea class="form-control" placeholder="写下你的评论..."></textarea>
 						<a>发送</a>
 						<a>取消</a>
-						
 					</form>
 					<div style="clear: both;"></div>
 				</div>
 				<div id="comment-list">
-					<div class="comment">
-						<div class="parent-comment">
-							<a href="#">
-								<img src="https://images.nowcoder.net/head/349m.png@0e_100w_100h_0c_1i_1o_90Q_1x.png">
-								<span>东方不败东方不败</span>
-							</a>
-							<span>2016-03-22 16:20</span>
-							<span>1楼</span>
-							<a>回复</a>
-							<p>楼主生产环境用过这套环境么楼主生产环境用过这套环境么</p>
-						</div>
-					</div>
-					<div class="comment">
-						<div class="parent-comment">
-							<a href="#">
-								<img src="https://images.nowcoder.net/head/349m.png@0e_100w_100h_0c_1i_1o_90Q_1x.png">
-								<span>东方不败东方</span>
-							</a>
-							<span>2016-03-22 16:20</span>
-							<span>1楼</span>
-							<a>回复</a>
-							<p>楼主生产环境用过这套环境么楼主生产环境用过这套环境么</p>
-						</div>
-					</div>
-					<div class="comment">
-						<div class="parent-comment">
-							<a href="#">
-								<img src="https://images.nowcoder.net/head/349m.png@0e_100w_100h_0c_1i_1o_90Q_1x.png">
-								<span>东方不败东方</span>
-							</a>
-							<span>2016-03-22 16:20</span>
-							<span>1楼</span>
-							<a>回复</a>
-							<p>楼主生产环境用过这套环境么楼主生产环境用过这套环境么</p>
-						</div>
-					</div>
-					<div class="comment">
-						<div class="parent-comment">
-							<a href="#">
-								<img src="https://images.nowcoder.net/head/349m.png@0e_100w_100h_0c_1i_1o_90Q_1x.png">
-								<span>东方不败东方不败</span>
-							</a>
-							<span>2016-03-22 16:20</span>
-							<span>1楼</span>
-							<a>回复</a>
-							<p>楼主生产环境用过这套环境么楼主生产环境用过这套环境么</p>
-						</div>
-						<div class="sub-comment-list">
-							<div class="sub-comment">
-								<div>
-									<a href="#">limin</a>：
-									<a href="#">@东方不败东方不败</a>
-									<span>主辛苦，楼主威武，弱弱的问一句，现在这套主辛苦，楼主威武，弱弱的问一句，现在这套主辛苦，楼主威武，弱弱的问一句，现在这套主辛苦，楼主威武，弱弱的问一句，现在这套主辛苦，楼主威武，弱弱的问一句，现在这套</span>
-								</div>
-								<span>2018.02.28 16:15 </span>
-								<a>回复</a>
-							</div>
-							<div class="sub-comment">
-								<div>
-									<a href="#">limin</a>：
-									<a href="#">@东方不败东方不败</a>
-									<span>主辛苦，楼主威武，弱弱的问一句，现在这套主辛苦，楼主威武，弱弱的问一句，现在这套主辛苦，楼主威武，弱弱的问一句，现在这套主辛苦，楼主威武，弱弱的问一句，现在这套主辛苦，楼主威武，弱弱的问一句，现在这套</span>
-								</div>
-								<span>2018.02.28 16:15 </span>
-								<a>回复</a>
-							</div>
-							<div class="sub-comment">
-								<div>
-									<a href="#">limin</a>：
-									<a href="#">@东方不败东方不败</a>
-									<span>主辛苦，楼主威武，弱弱的问一句，现在这套主辛苦，楼主威武，弱弱的问一句，现在这套主辛苦，楼主威武，弱弱的问一句，现在这套主辛苦，楼主威武，弱弱的问一句，现在这套主辛苦，楼主威武，弱弱的问一句，现在这套</span>
-								</div>
-								<span>2018.02.28 16:15 </span>
-								<a>回复</a>
-							</div>
-							<div class="sub-comment">
-								<div>
-									<a href="#">limin</a>：
-									<a href="#">@东方不败东方不败</a>
-									<span>主辛苦，楼主威武，弱弱的问一句，现在这套主辛苦，楼主威武，弱弱的问一句，现在这套主辛苦，楼主威武，弱弱的问一句，现在这套主辛苦，楼主威武，弱弱的问一句，现在这套主辛苦，楼主威武，弱弱的问一句，现在这套</span>
-								</div>
-								<span>2018.02.28 16:15 </span>
-								<a>回复</a>
-							</div>
-						</div>
-					</div>
-					<div class="comment">
-						<div class="parent-comment">
-							<a href="#">
-								<img src="https://images.nowcoder.net/head/349m.png@0e_100w_100h_0c_1i_1o_90Q_1x.png">
-								<span>东方不败东方</span>
-							</a>
-							<span>2016-03-22 16:20</span>
-							<span>1楼</span>
-							<a>回复</a>
-							<p>楼主生产环境用过这套环境么楼主生产环境用过这套环境么</p>
-						</div>
-					</div>
 				</div>
-				<div class="text-center" id="page"></div>
 			</div>
 		</div>
 		<div id="side">

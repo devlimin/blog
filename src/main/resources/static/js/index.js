@@ -56,19 +56,6 @@ layui.use('laypage', function(){
             }
 		})
     }
-
-    laypage.render({
-		elem: 'page',
-		count: 10000,
-		limit: 5,
-		layout: ['count', 'prev', 'page', 'next', 'skip'],
-		jump: function(obj){
-			console.log(obj);
-					//ajax
-					var cur = obj.curr;
-					var limit = obj.limit;
-			}
-		});
 });
 $(".list-group a").hover(
 	function(){
@@ -99,11 +86,6 @@ $(".list-group a").hover(
 	    $('body').animate({ scrollTop: 0 }, 100);
 	    return false;
 	});
-
-
-$(document).on("click","#search-btn",function() {
-	console.log($("#search-input").val());
-})
     Date.prototype.format = function () {
         return this.getFullYear() + "年" + (this.getMonth() + 1) + "月" + this.getDate() + "日 " + this.getHours() + ":" + this.getMinutes() + ":"+this.getSeconds();
     }

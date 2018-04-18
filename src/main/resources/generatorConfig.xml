@@ -8,7 +8,7 @@
     <context id="mysql" targetRuntime="MyBatis3">
         <commentGenerator>
             <!-- 是否去除自动生成的注释 true：是 ： false:否 -->
-            <property name="suppressAllComments" value="false"/>
+            <property name="suppressAllComments" value="true"/>
             <property name="addRemarkComments" value="true"/>
         </commentGenerator>
 
@@ -35,21 +35,21 @@
             <property name="enableSubPackages" value="false" />
         </javaClientGenerator>
 
-        <table tableName="user">
-            <generatedKey column="ID" sqlStatement="MySql" identity="true" />
-        </table>
-        <table tableName="article">
-            <generatedKey column="ID" sqlStatement="MySql" identity="true" />
-        </table>
-        <table tableName="category">
-            <generatedKey column="ID" sqlStatement="MySql" identity="true" />
-        </table>
-        <table tableName="article_category"></table>
+        <!--<table tableName="user">-->
+            <!--<generatedKey column="ID" sqlStatement="MySql" identity="true" />-->
+        <!--</table>-->
+        <!--<table tableName="article">-->
+            <!--<generatedKey column="ID" sqlStatement="MySql" identity="true" />-->
+        <!--</table>-->
+        <!--<table tableName="category">-->
+            <!--<generatedKey column="ID" sqlStatement="MySql" identity="true" />-->
+        <!--</table>-->
+        <!--<table tableName="article_category"></table>-->
         <table tableName="comment">
             <generatedKey column="ID" sqlStatement="MySql" identity="true" />
         </table>
-        <table tableName="sys_category">
-            <generatedKey column="ID" sqlStatement="MySql" identity="true" />
-        </table>
+        <!--<table tableName="sys_category">-->
+            <!--<generatedKey column="ID" sqlStatement="MySql" identity="true" />-->
+        <!--</table>-->
     </context>
 </generatorConfiguration>
