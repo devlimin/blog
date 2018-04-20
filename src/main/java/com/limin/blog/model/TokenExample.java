@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class CommentExample {
+public class TokenExample {
     protected String orderByClause;
 
     protected boolean distinct;
 
     protected List<Criteria> oredCriteria;
 
-    public CommentExample() {
+    public TokenExample() {
         oredCriteria = new ArrayList<Criteria>();
     }
 
@@ -165,66 +165,6 @@ public class CommentExample {
             return (Criteria) this;
         }
 
-        public Criteria andArticleIdIsNull() {
-            addCriterion("article_id is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andArticleIdIsNotNull() {
-            addCriterion("article_id is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andArticleIdEqualTo(Integer value) {
-            addCriterion("article_id =", value, "articleId");
-            return (Criteria) this;
-        }
-
-        public Criteria andArticleIdNotEqualTo(Integer value) {
-            addCriterion("article_id <>", value, "articleId");
-            return (Criteria) this;
-        }
-
-        public Criteria andArticleIdGreaterThan(Integer value) {
-            addCriterion("article_id >", value, "articleId");
-            return (Criteria) this;
-        }
-
-        public Criteria andArticleIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("article_id >=", value, "articleId");
-            return (Criteria) this;
-        }
-
-        public Criteria andArticleIdLessThan(Integer value) {
-            addCriterion("article_id <", value, "articleId");
-            return (Criteria) this;
-        }
-
-        public Criteria andArticleIdLessThanOrEqualTo(Integer value) {
-            addCriterion("article_id <=", value, "articleId");
-            return (Criteria) this;
-        }
-
-        public Criteria andArticleIdIn(List<Integer> values) {
-            addCriterion("article_id in", values, "articleId");
-            return (Criteria) this;
-        }
-
-        public Criteria andArticleIdNotIn(List<Integer> values) {
-            addCriterion("article_id not in", values, "articleId");
-            return (Criteria) this;
-        }
-
-        public Criteria andArticleIdBetween(Integer value1, Integer value2) {
-            addCriterion("article_id between", value1, value2, "articleId");
-            return (Criteria) this;
-        }
-
-        public Criteria andArticleIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("article_id not between", value1, value2, "articleId");
-            return (Criteria) this;
-        }
-
         public Criteria andUserIdIsNull() {
             addCriterion("user_id is null");
             return (Criteria) this;
@@ -285,183 +225,133 @@ public class CommentExample {
             return (Criteria) this;
         }
 
-        public Criteria andToUserIdIsNull() {
-            addCriterion("to_user_id is null");
+        public Criteria andExpiredIsNull() {
+            addCriterion("expired is null");
             return (Criteria) this;
         }
 
-        public Criteria andToUserIdIsNotNull() {
-            addCriterion("to_user_id is not null");
+        public Criteria andExpiredIsNotNull() {
+            addCriterion("expired is not null");
             return (Criteria) this;
         }
 
-        public Criteria andToUserIdEqualTo(Integer value) {
-            addCriterion("to_user_id =", value, "toUserId");
+        public Criteria andExpiredEqualTo(Date value) {
+            addCriterion("expired =", value, "expired");
             return (Criteria) this;
         }
 
-        public Criteria andToUserIdNotEqualTo(Integer value) {
-            addCriterion("to_user_id <>", value, "toUserId");
+        public Criteria andExpiredNotEqualTo(Date value) {
+            addCriterion("expired <>", value, "expired");
             return (Criteria) this;
         }
 
-        public Criteria andToUserIdGreaterThan(Integer value) {
-            addCriterion("to_user_id >", value, "toUserId");
+        public Criteria andExpiredGreaterThan(Date value) {
+            addCriterion("expired >", value, "expired");
             return (Criteria) this;
         }
 
-        public Criteria andToUserIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("to_user_id >=", value, "toUserId");
+        public Criteria andExpiredGreaterThanOrEqualTo(Date value) {
+            addCriterion("expired >=", value, "expired");
             return (Criteria) this;
         }
 
-        public Criteria andToUserIdLessThan(Integer value) {
-            addCriterion("to_user_id <", value, "toUserId");
+        public Criteria andExpiredLessThan(Date value) {
+            addCriterion("expired <", value, "expired");
             return (Criteria) this;
         }
 
-        public Criteria andToUserIdLessThanOrEqualTo(Integer value) {
-            addCriterion("to_user_id <=", value, "toUserId");
+        public Criteria andExpiredLessThanOrEqualTo(Date value) {
+            addCriterion("expired <=", value, "expired");
             return (Criteria) this;
         }
 
-        public Criteria andToUserIdIn(List<Integer> values) {
-            addCriterion("to_user_id in", values, "toUserId");
+        public Criteria andExpiredIn(List<Date> values) {
+            addCriterion("expired in", values, "expired");
             return (Criteria) this;
         }
 
-        public Criteria andToUserIdNotIn(List<Integer> values) {
-            addCriterion("to_user_id not in", values, "toUserId");
+        public Criteria andExpiredNotIn(List<Date> values) {
+            addCriterion("expired not in", values, "expired");
             return (Criteria) this;
         }
 
-        public Criteria andToUserIdBetween(Integer value1, Integer value2) {
-            addCriterion("to_user_id between", value1, value2, "toUserId");
+        public Criteria andExpiredBetween(Date value1, Date value2) {
+            addCriterion("expired between", value1, value2, "expired");
             return (Criteria) this;
         }
 
-        public Criteria andToUserIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("to_user_id not between", value1, value2, "toUserId");
+        public Criteria andExpiredNotBetween(Date value1, Date value2) {
+            addCriterion("expired not between", value1, value2, "expired");
             return (Criteria) this;
         }
 
-        public Criteria andPidIsNull() {
-            addCriterion("pid is null");
+        public Criteria andTokenIsNull() {
+            addCriterion("token is null");
             return (Criteria) this;
         }
 
-        public Criteria andPidIsNotNull() {
-            addCriterion("pid is not null");
+        public Criteria andTokenIsNotNull() {
+            addCriterion("token is not null");
             return (Criteria) this;
         }
 
-        public Criteria andPidEqualTo(Integer value) {
-            addCriterion("pid =", value, "pid");
+        public Criteria andTokenEqualTo(String value) {
+            addCriterion("token =", value, "token");
             return (Criteria) this;
         }
 
-        public Criteria andPidNotEqualTo(Integer value) {
-            addCriterion("pid <>", value, "pid");
+        public Criteria andTokenNotEqualTo(String value) {
+            addCriterion("token <>", value, "token");
             return (Criteria) this;
         }
 
-        public Criteria andPidGreaterThan(Integer value) {
-            addCriterion("pid >", value, "pid");
+        public Criteria andTokenGreaterThan(String value) {
+            addCriterion("token >", value, "token");
             return (Criteria) this;
         }
 
-        public Criteria andPidGreaterThanOrEqualTo(Integer value) {
-            addCriterion("pid >=", value, "pid");
+        public Criteria andTokenGreaterThanOrEqualTo(String value) {
+            addCriterion("token >=", value, "token");
             return (Criteria) this;
         }
 
-        public Criteria andPidLessThan(Integer value) {
-            addCriterion("pid <", value, "pid");
+        public Criteria andTokenLessThan(String value) {
+            addCriterion("token <", value, "token");
             return (Criteria) this;
         }
 
-        public Criteria andPidLessThanOrEqualTo(Integer value) {
-            addCriterion("pid <=", value, "pid");
+        public Criteria andTokenLessThanOrEqualTo(String value) {
+            addCriterion("token <=", value, "token");
             return (Criteria) this;
         }
 
-        public Criteria andPidIn(List<Integer> values) {
-            addCriterion("pid in", values, "pid");
+        public Criteria andTokenLike(String value) {
+            addCriterion("token like", value, "token");
             return (Criteria) this;
         }
 
-        public Criteria andPidNotIn(List<Integer> values) {
-            addCriterion("pid not in", values, "pid");
+        public Criteria andTokenNotLike(String value) {
+            addCriterion("token not like", value, "token");
             return (Criteria) this;
         }
 
-        public Criteria andPidBetween(Integer value1, Integer value2) {
-            addCriterion("pid between", value1, value2, "pid");
+        public Criteria andTokenIn(List<String> values) {
+            addCriterion("token in", values, "token");
             return (Criteria) this;
         }
 
-        public Criteria andPidNotBetween(Integer value1, Integer value2) {
-            addCriterion("pid not between", value1, value2, "pid");
+        public Criteria andTokenNotIn(List<String> values) {
+            addCriterion("token not in", values, "token");
             return (Criteria) this;
         }
 
-        public Criteria andReleaseDateIsNull() {
-            addCriterion("release_date is null");
+        public Criteria andTokenBetween(String value1, String value2) {
+            addCriterion("token between", value1, value2, "token");
             return (Criteria) this;
         }
 
-        public Criteria andReleaseDateIsNotNull() {
-            addCriterion("release_date is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andReleaseDateEqualTo(Date value) {
-            addCriterion("release_date =", value, "releaseDate");
-            return (Criteria) this;
-        }
-
-        public Criteria andReleaseDateNotEqualTo(Date value) {
-            addCriterion("release_date <>", value, "releaseDate");
-            return (Criteria) this;
-        }
-
-        public Criteria andReleaseDateGreaterThan(Date value) {
-            addCriterion("release_date >", value, "releaseDate");
-            return (Criteria) this;
-        }
-
-        public Criteria andReleaseDateGreaterThanOrEqualTo(Date value) {
-            addCriterion("release_date >=", value, "releaseDate");
-            return (Criteria) this;
-        }
-
-        public Criteria andReleaseDateLessThan(Date value) {
-            addCriterion("release_date <", value, "releaseDate");
-            return (Criteria) this;
-        }
-
-        public Criteria andReleaseDateLessThanOrEqualTo(Date value) {
-            addCriterion("release_date <=", value, "releaseDate");
-            return (Criteria) this;
-        }
-
-        public Criteria andReleaseDateIn(List<Date> values) {
-            addCriterion("release_date in", values, "releaseDate");
-            return (Criteria) this;
-        }
-
-        public Criteria andReleaseDateNotIn(List<Date> values) {
-            addCriterion("release_date not in", values, "releaseDate");
-            return (Criteria) this;
-        }
-
-        public Criteria andReleaseDateBetween(Date value1, Date value2) {
-            addCriterion("release_date between", value1, value2, "releaseDate");
-            return (Criteria) this;
-        }
-
-        public Criteria andReleaseDateNotBetween(Date value1, Date value2) {
-            addCriterion("release_date not between", value1, value2, "releaseDate");
+        public Criteria andTokenNotBetween(String value1, String value2) {
+            addCriterion("token not between", value1, value2, "token");
             return (Criteria) this;
         }
 

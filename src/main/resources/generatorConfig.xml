@@ -45,11 +45,14 @@
             <!--<generatedKey column="ID" sqlStatement="MySql" identity="true" />-->
         <!--</table>-->
         <!--<table tableName="article_category"></table>-->
-        <table tableName="comment">
-            <generatedKey column="ID" sqlStatement="MySql" identity="true" />
-        </table>
+        <!--<table tableName="comment">-->
+            <!--<generatedKey column="ID" sqlStatement="MySql" identity="true" />-->
+        <!--</table>-->
         <!--<table tableName="sys_category">-->
             <!--<generatedKey column="ID" sqlStatement="MySql" identity="true" />-->
         <!--</table>-->
+        <table tableName="token">
+            <generatedKey column="ID" sqlStatement="MySql" identity="true" />
+        </table>
     </context>
 </generatorConfiguration>

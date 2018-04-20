@@ -5,6 +5,7 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="article_id" jdbcType="INTEGER" property="articleId" />
     <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="to_user_id" jdbcType="INTEGER" property="toUserId" />
     <result column="pid" jdbcType="INTEGER" property="pid" />
     <result column="release_date" jdbcType="TIMESTAMP" property="releaseDate" />
     <result column="status" jdbcType="INTEGER" property="status" />
@@ -71,7 +72,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, article_id, user_id, pid, release_date, status
+    id, article_id, user_id, to_user_id, pid, release_date, status
   </sql>
   <sql id="Blob_Column_List">
     content
@@ -128,12 +129,12 @@
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into comment (article_id, user_id, pid, 
-      release_date, status, content
-      )
-    values (#{articleId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{pid,jdbcType=INTEGER}, 
-      #{releaseDate,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}, #{content,jdbcType=LONGVARCHAR}
-      )
+    insert into comment (article_id, user_id, to_user_id, 
+      pid, release_date, status, 
+      content)
+    values (#{articleId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{toUserId,jdbcType=INTEGER}, 
+      #{pid,jdbcType=INTEGER}, #{releaseDate,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}, 
+      #{content,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.limin.blog.model.Comment">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -146,6 +147,9 @@
       </if>
       <if test="userId != null">
         user_id,
+      </if>
+      <if test="toUserId != null">
+        to_user_id,
       </if>
       <if test="pid != null">
         pid,
@@ -166,6 +170,9 @@
       </if>
       <if test="userId != null">
         #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="toUserId != null">
+        #{toUserId,jdbcType=INTEGER},
       </if>
       <if test="pid != null">
         #{pid,jdbcType=INTEGER},
@@ -199,6 +206,9 @@
       <if test="record.userId != null">
         user_id = #{record.userId,jdbcType=INTEGER},
       </if>
+      <if test="record.toUserId != null">
+        to_user_id = #{record.toUserId,jdbcType=INTEGER},
+      </if>
       <if test="record.pid != null">
         pid = #{record.pid,jdbcType=INTEGER},
       </if>
@@ -221,6 +231,7 @@
     set id = #{record.id,jdbcType=INTEGER},
       article_id = #{record.articleId,jdbcType=INTEGER},
       user_id = #{record.userId,jdbcType=INTEGER},
+      to_user_id = #{record.toUserId,jdbcType=INTEGER},
       pid = #{record.pid,jdbcType=INTEGER},
       release_date = #{record.releaseDate,jdbcType=TIMESTAMP},
       status = #{record.status,jdbcType=INTEGER},
@@ -234,6 +245,7 @@
     set id = #{record.id,jdbcType=INTEGER},
       article_id = #{record.articleId,jdbcType=INTEGER},
       user_id = #{record.userId,jdbcType=INTEGER},
+      to_user_id = #{record.toUserId,jdbcType=INTEGER},
       pid = #{record.pid,jdbcType=INTEGER},
       release_date = #{record.releaseDate,jdbcType=TIMESTAMP},
       status = #{record.status,jdbcType=INTEGER}
@@ -249,6 +261,9 @@
       </if>
       <if test="userId != null">
         user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="toUserId != null">
+        to_user_id = #{toUserId,jdbcType=INTEGER},
       </if>
       <if test="pid != null">
         pid = #{pid,jdbcType=INTEGER},
@@ -269,6 +284,7 @@
     update comment
     set article_id = #{articleId,jdbcType=INTEGER},
       user_id = #{userId,jdbcType=INTEGER},
+      to_user_id = #{toUserId,jdbcType=INTEGER},
       pid = #{pid,jdbcType=INTEGER},
       release_date = #{releaseDate,jdbcType=TIMESTAMP},
       status = #{status,jdbcType=INTEGER},
@@ -279,6 +295,7 @@
     update comment
     set article_id = #{articleId,jdbcType=INTEGER},
       user_id = #{userId,jdbcType=INTEGER},
+      to_user_id = #{toUserId,jdbcType=INTEGER},
       pid = #{pid,jdbcType=INTEGER},
       release_date = #{releaseDate,jdbcType=TIMESTAMP},
       status = #{status,jdbcType=INTEGER}

@@ -9,6 +9,8 @@ public class Comment {
 
     private Integer userId;
 
+    private Integer toUserId;
+
     private Integer pid;
 
     private Date releaseDate;
@@ -39,6 +41,14 @@ public class Comment {
 
     public void setUserId(Integer userId) {
         this.userId = userId;
+    }
+
+    public Integer getToUserId() {
+        return toUserId;
+    }
+
+    public void setToUserId(Integer toUserId) {
+        this.toUserId = toUserId;
     }
 
     public Integer getPid() {

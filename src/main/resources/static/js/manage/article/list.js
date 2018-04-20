@@ -47,7 +47,7 @@ layui.use(['laypage','element'], function(){
                             '<div class="right">'+
                             '<a href="/article/man/edit/'+article.id+'">编辑</a>';
                         if(status == 0) {
-                            html += '<a class="nocomment">'+(article.isComment?'允许评论':'禁止评论')+'</a>' +
+                            html += '<a class="iscomment">'+(article.isComment?'允许评论':'禁止评论')+'</a>' +
                                 '<a>置顶</a>' +
                                 '<a class="del">删除</a>';
                         }
@@ -82,8 +82,7 @@ layui.use(['laypage','element'], function(){
                                 }
                             }
                         });
-                    }
-                    if(status == 1) {
+                    } else if(status == 1) {
                         if (data == null || data.list == null || data.list.length == 0) {
                             html = "<div style='text-align: center;margin-top: 40px;margin-bottom: 30px;'>该分类暂无数据</div>";
                             $(".layui-tab-item:nth-child(2)").html(html);
@@ -103,8 +102,7 @@ layui.use(['laypage','element'], function(){
                                 }
                             }
                         });
-                    }
-                    if(status == 2) {
+                    } else if(status == 2) {
                         if (data == null || data.list == null || data.list.length == 0) {
                             html = "<div style='text-align: center;margin-top: 40px;margin-bottom: 30px;'>该分类暂无数据</div>";
                             $(".layui-tab-item:nth-child(3)").html(html);
@@ -138,23 +136,30 @@ layui.use(['laypage','element'], function(){
 Date.prototype.format = function () {
     return this.getFullYear() + "年" + (this.getMonth() + 1) + "月" + this.getDate() + "日 " + this.getHours() + ":" + this.getMinutes() + ":"+this.getSeconds();
 }
-    $(document).on("click",".nocomment",function() {
-        var text = $(this).text();
-        var comment = false;
-        if(text == "禁止评论") {
-            $(this).text("允许评论");
-            comment = true;
-        } else {
-            $(this).text("禁止评论");
-            comment = false;
-        }
+    $(document).on("click",".iscomment",function() {
+        // var text = $(this).text();
+        // var comment = false;
+        // if(text == "禁止评论") {
+        //     $(this).text("允许评论");
+        //     comment = true;
+        // } else {
+        //     $(this).text("禁止评论");
+        //     comment = false;
+        // }
         var id=$(this).parent().parent().parent().attr('id');
+        $this=$(this);
         $.ajax({
-            url: "/article/man/comment",
+            url: "/article/man/iscomment",
             type:"post",
-            data:"id="+id+"&comment="+comment,
+            data:"id="+id,
             success:function (resp) {
                 if(resp.code == 0) {
+                    var isComment=resp.data;
+                    if(isComment){
+                        $this.text("允许评论");
+                    } else {
+                        $this.text("禁止评论");
+                    }
                 }
             }
         })

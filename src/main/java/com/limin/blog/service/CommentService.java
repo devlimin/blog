@@ -4,6 +4,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.limin.blog.enums.CommentEnum;
+import com.limin.blog.exception.BizException;
 import com.limin.blog.mapper.CommentMapper;
 import com.limin.blog.model.Comment;
 import com.limin.blog.model.CommentExample;
@@ -40,10 +41,13 @@ public class CommentService {
     public void delete(Integer id) {
         Comment comment = commentMapper.selectByPrimaryKey(id);
         if (comment == null) {
-
+            throw new BizException(2,"不存在该评论");
         }
         comment.setStatus(CommentEnum.DELETED.getVal());
         commentMapper.updateByPrimaryKeySelective(comment);
     }
 
+    public Comment selectById(Integer cid) {
+        return commentMapper.selectByPrimaryKey(cid);
+    }
 }

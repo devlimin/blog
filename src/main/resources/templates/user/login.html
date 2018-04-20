@@ -3,12 +3,7 @@
 	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	  layout:decorate="~{common/head}">
 <head>
-	<meta charset="utf-8">
-	<meta http-equiv="Pragma" content="no-cache">
-	<meta http-equiv="Cache-Control" content="no-cache">
-	<meta http-equiv="Expires" content="0">
 	<title>博客</title>
-
 	<link th:href="@{/css/user/login.css}" rel="stylesheet">
 	<script th:src="@{/js/user/login.js}"></script>
 </head>
@@ -32,13 +27,14 @@
 								<input type="text" name="email" placeholder="邮箱" autocomplete="off" class="layui-input form-control" lay-verify="required|email">
 							</div>
 							<div class="form-group">
-								<input type="password" name="password" placeholder="密码" autocomplete="off" class="layui-input form-control" lay-verify="required">
+								<input type="password" name="password" placeholder="密码" autocomplete="off" class="layui-input form-control" lay-verify="required|pass">
 							</div>
 							<div class="form-group">
 								<input type="text" style="width: 48%;display: inline;" id="login-verify-code" name="code" placeholder="验证码" autocomplete="off" class="layui-input form-control verify-code" lay-verify="required" maxlength="4">
-								<img th:src="@{/account/verifyImg/2}" class="verify-img" id="login-verify-img">
+								<img th:src="@{/account/verifyImg/login}" class="verify-img" id="login-verify-img">
 								<button class="btn btn-success verify-btn" id="login-verify-btn">换一张</button>
 							</div>
+							<input type="hidden" name="next" th:value="${param.next}!=null?${param.next}:''"/>
 							<div class="form-group">
 								<button class="layui-btn btn btn-block btn-info" lay-submit lay-filter="login">登陆</button>
 							</div>
@@ -57,17 +53,14 @@
 								<button class="btn btn-success" id="reg-email-btn">邮箱唯一校验</button>
 							</div>
 							<div class="form-group">
-								<input type="name" name="name" placeholder="用户名" autocomplete="off" class="layui-input form-control" lay-verify="required">
+								<input type="password" name="password" placeholder="密码" autocomplete="off" class="layui-input form-control" lay-verify="required|pass">
 							</div>
 							<div class="form-group">
-								<input type="password" name="password" placeholder="密码" autocomplete="off" class="layui-input form-control" lay-verify="required">
-							</div>
-							<div class="form-group">
-								<input type="password" name="repassword" placeholder="重复密码" autocomplete="off" class="layui-input form-control" lay-verify="required">
+								<input type="password" name="repassword" placeholder="重复密码" autocomplete="off" class="layui-input form-control" lay-verify="required|pass">
 							</div>
 							<div class="form-group">
 								<input type="text" style="width: 48%;display: inline;" id="reg-verify-code" name="code" placeholder="验证码" autocomplete="off" class="verify-code layui-input form-control" lay-verify="required" maxlength="4">
-								<img th:src="@{/account/verifyImg/1}" class="verify-img" id="reg-verify-img">
+								<img th:src="@{/account/verifyImg/regist}" class="verify-img" id="reg-verify-img">
 								<button class="btn btn-success verify-btn" id="reg-verify-btn">换一张</button>
 							</div>
 							<div class="form-group">

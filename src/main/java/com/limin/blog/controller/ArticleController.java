@@ -1,6 +1,7 @@
 package com.limin.blog.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.limin.blog.constant.BlogConst;
 import com.limin.blog.enums.ArticleTypeEnum;
 import com.limin.blog.model.*;
 import com.limin.blog.service.*;
@@ -63,9 +64,6 @@ public class ArticleController {
             articleCategories.add(category);
         }
 
-        //文章评论
-//        List<Comment> comments = commentService.selectPageByEntityWithBlog(CommentEnum.PUBLISHED.getVal(),id,0,10);
-
         //所有个人分类
         CategoryExample categoryExample = new CategoryExample();
         categoryExample.createCriteria().andUserIdEqualTo(1);
@@ -73,7 +71,6 @@ public class ArticleController {
 
         mv.addObject("article",article);
         mv.addObject("articleCategories",articleCategories);
-//        mv.addObject("comments",comments);
         mv.addObject("categories",categories);
         return mv;
     }
@@ -153,9 +150,11 @@ public class ArticleController {
     @ResponseBody
     public Response page(@RequestParam(value = "status") Integer status,
                          @RequestParam(value = "pageNum") Integer pageNum,
-                         @RequestParam(value = "pageSize") Integer pageSize) {
+                         @RequestParam(value = "pageSize") Integer pageSize,
+                         HttpSession session) {
         ArticleExample articleExample = new ArticleExample();
-        articleExample.createCriteria().andUserIdEqualTo(1).andStatusEqualTo(status);
+        User user = (User) session.getAttribute(BlogConst.LOGIN_SESSION_KEY);
+        articleExample.createCriteria().andUserIdEqualTo(user.getId()).andStatusEqualTo(status);
         articleExample.setOrderByClause("release_date desc");
         PageInfo page = articleService.selectPageByExample(articleExample, pageNum, pageSize);
         return ResponseUtil.success(page);
@@ -178,27 +177,18 @@ public class ArticleController {
             }
             mv.addObject("uCategories", cId);
         }
-        User user = (User) session.getAttribute("user");
+        User user = (User) session.getAttribute(BlogConst.LOGIN_SESSION_KEY);
         CategoryExample categoryExample = new CategoryExample();
-        categoryExample.createCriteria().andUserIdEqualTo(1);
-        List<Category> categories = categoryService.selectByExample(categoryExample);
+        categoryExample.createCriteria().andUserIdEqualTo(user.getId());
         //个人分类
+        List<Category> categories = categoryService.selectByExample(categoryExample);
         mv.addObject("categories",categories);
-        List<SysCategory> sysCategories = sysCategoryService.selectAll();
         //系统分类
+        List<SysCategory> sysCategories = sysCategoryService.selectAll();
         mv.addObject("sysCategories", sysCategories);
         //文章类型，是否原创
         mv.addObject("types", ArticleTypeEnum.values());
         return mv;
-    }
-
-    @PostMapping("man/comment")
-    @ResponseBody
-    public Response comment(
-            @RequestParam(value = "id")Integer id,
-            @RequestParam(value = "comment") boolean comment) {
-        articleService.comment(id, comment);
-        return ResponseUtil.success();
     }
 
     @PostMapping("man/del")
@@ -209,19 +199,26 @@ public class ArticleController {
         return ResponseUtil.success();
     }
 
-    @PostMapping("man/deepdel")
     @ResponseBody
+    @PostMapping("man/deepdel")
     public Response deepdel(
             @RequestParam(value = "id")Integer id) {
         articleService.deepdel(id);
         return ResponseUtil.success();
     }
 
+    @ResponseBody
+    @PostMapping("man/iscomment")
+    public Response iscomment(@RequestParam(value = "id")Integer id){
+        boolean isComment = articleService.changeIsComment(id);
+        return ResponseUtil.success(isComment);
+    }
+
     @PostMapping("man/publish")
     @ResponseBody
     public Response publish(Article article,@RequestParam(value = "cId",required = false) List<Integer> cIds, HttpSession session) {
-        User user = (User) session.getAttribute("user");
-        article.setUserId(1);
+        User user = (User) session.getAttribute(BlogConst.LOGIN_SESSION_KEY);
+        article.setUserId(user.getId());
         Integer id = articleService.publish(article, cIds);
         return ResponseUtil.success(id);
     }
@@ -229,8 +226,8 @@ public class ArticleController {
     @PostMapping("man/draft")
     @ResponseBody
     public Response draft(Article article,@RequestParam(value = "cId") List<Integer> cIds, HttpSession session) {
-        User user = (User) session.getAttribute("user");
-        article.setUserId(1);
+        User user = (User) session.getAttribute(BlogConst.LOGIN_SESSION_KEY);
+        article.setUserId(user.getId());
         Integer id = articleService.draft(article, cIds);
         return ResponseUtil.success(id);
     }

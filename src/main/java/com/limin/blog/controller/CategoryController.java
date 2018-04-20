@@ -1,5 +1,6 @@
 package com.limin.blog.controller;
 
+import com.limin.blog.constant.BlogConst;
 import com.limin.blog.model.Category;
 import com.limin.blog.model.CategoryExample;
 import com.limin.blog.model.User;
@@ -22,9 +23,10 @@ public class CategoryController {
     private CategoryService categoryService;
 
     @GetMapping("man/list")
-    public ModelAndView list(){
+    public ModelAndView list(HttpSession session){
+        User user = (User) session.getAttribute(BlogConst.LOGIN_SESSION_KEY);
         CategoryExample categoryExample = new CategoryExample();
-        categoryExample.createCriteria().andUserIdEqualTo(1);
+        categoryExample.createCriteria().andUserIdEqualTo(user.getId());
         List<Category> categories = categoryService.selectByExample(categoryExample);
         ModelAndView mv = new ModelAndView("category/list");
         mv.addObject("categories", categories);
@@ -49,8 +51,8 @@ public class CategoryController {
     @PostMapping("man/add")
     @ResponseBody
     public Response add(@RequestParam(value = "name") String name, HttpSession session) {
-        User user = (User) session.getAttribute("user");
-        Integer id  = categoryService.add(1, name);
+        User user = (User) session.getAttribute(BlogConst.LOGIN_SESSION_KEY);
+        Integer id  = categoryService.add(user.getId(), name);
         return ResponseUtil.success(id);
     }
 }

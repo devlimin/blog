@@ -13,7 +13,7 @@ $(function () {
 						html = "";
 						var data = resp.data;
                         if(data == null || data.list == null || data.list.length == 0) {
-                            html = "<div style='text-align: center;margin-top: 40px;margin-bottom: 30px;'>该分类暂无数据</div>";
+                            html = "<div class='comment'></div>";
                         } else {
                         	var endRow = data.total-(pageNum-1)*pageSize;
                             $.each(data.list,function (i, commentVo) {
@@ -97,10 +97,12 @@ $(document).on("click",".comment-input a:nth-child(2)",function() {
 		$this=$(this);
 		var pid=$this.parent().parent().parent().parent().attr("id")
 		comment = content+comment;
+		var data="aid="+$("#aid").val()+"&content="+comment+"&pid="+pid+"&cid="+cid;
 		content="";
+		cid=-1;
 		$.ajax({
-			url:"/comment/comment",
-			data:"aid="+$("#aid").val()+"&content="+comment+"&pid="+pid+"&cid="+cid,
+			url:"/comment/man/comment",
+			data:data,
 			type:"post",
 			success:function (resp) {
 				if(resp.code==0) {
@@ -132,9 +134,11 @@ $(document).on("click",".comment-input a:nth-child(2)",function() {
 		}
 		reply = 0;
 		$("#comment-input textarea").val("");
+		var data ="aid="+$("#aid").val()+"&content="+comment;
+		cid=-1
 		$.ajax({
-			url:"/comment/comment",
-            data:"aid="+$("#aid").val()+"&content="+comment+"&cid="+cid,
+			url:"/comment/man/comment",
+            data:data,
 			type:"post",
 			success:function (resp) {
                 if(resp.code==0) {
@@ -179,7 +183,7 @@ $(document).on("click",".comment-input a:nth-child(3)",function() {
 
 //回复
 var reply = 0;
-var cid=0;
+var cid=-1;
 var content = '';
 $(document).on("click",".reply-input",function() {
 	if(reply == 1) {
@@ -223,6 +227,6 @@ $(document).on("click",".reply-input",function() {
         content = '<a href="'+$(this).parent().prev().children("a").attr("href")+'">@'+$(this).parent().prev().children("a").html()+"</a> ";
         console.log(content);
 	}
-    $('.comment-input>textarea').focus()
+    $('.comment-input').focus()
 })
 })

@@ -1,5 +1,6 @@
 package com.limin.blog.vo;
 
+import com.limin.blog.model.Article;
 import com.limin.blog.model.Comment;
 import com.limin.blog.model.User;
 
@@ -9,6 +10,16 @@ import java.util.List;
 public class CommentVo {
     private Comment comment;
     private User user;
+    private Article article;
+
+    public Article getArticle() {
+        return article;
+    }
+
+    public void setArticle(Article article) {
+        this.article = article;
+    }
+
     private List<CommentVo> children = new ArrayList<>();
 
     public Comment getComment() {

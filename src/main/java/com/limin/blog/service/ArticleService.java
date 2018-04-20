@@ -4,6 +4,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.limin.blog.enums.ArticleEnum;
+import com.limin.blog.exception.BizException;
 import com.limin.blog.mapper.ArticleMapper;
 import com.limin.blog.model.Article;
 import com.limin.blog.model.ArticleCategory;
@@ -54,9 +55,9 @@ public class ArticleService {
      * @param article
      */
     public Integer publish(Article article,  List<Integer> cIds) {
-
         //若已存在则修改
         if (article.getId() != null && articleMapper.selectByPrimaryKey(article.getId()) != null) {
+            article.setUpdateDate(new Date());
             articleMapper.updateByPrimaryKeySelective(article);
         } else {
             //发表状态
@@ -69,7 +70,6 @@ public class ArticleService {
             //新增文章
             articleMapper.insert(article);
         }
-
         //修改文章个人分类
         ArticleCategoryExample example = new ArticleCategoryExample();
         example.createCriteria().andArticleIdEqualTo(article.getId());
@@ -134,10 +134,14 @@ public class ArticleService {
         return true;
     }
 
-    public void comment(Integer id, boolean comment) {
-        Article article = new Article();
-        article.setId(id);
-        article.setIsComment(comment);
+    public boolean changeIsComment(Integer id) {
+        Article article = articleMapper.selectByPrimaryKey(id);
+        if (article==null) {
+            throw new BizException(2,"不存在该文章！");
+        }
+        Boolean isComment = article.getIsComment();
+        article.setIsComment(!isComment);
         articleMapper.updateByPrimaryKeySelective(article);
+        return article.getIsComment();
     }
 }

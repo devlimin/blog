@@ -1,10 +1,9 @@
 package com.limin.blog.controller;
 
+import com.limin.blog.constant.BlogConst;
 import com.limin.blog.model.User;
-import com.limin.blog.model.UserExample;
+import com.limin.blog.service.TokenService;
 import com.limin.blog.service.UserService;
-import com.limin.blog.util.EmailHelper;
-import com.limin.blog.util.EncryptUtil;
 import com.limin.blog.util.ResponseUtil;
 import com.limin.blog.util.VerifyHelper;
 import com.limin.blog.vo.Response;
@@ -12,10 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.List;
 
 @Controller
 @RequestMapping("account")
@@ -25,33 +25,143 @@ public class LoginController {
     private UserService userService;
 
     @Autowired
-    private EmailHelper emailHelper;
-
-    @Autowired
-    private VerifyHelper verifyHelper;
+    private TokenService tokenService;
 
     @GetMapping(value = {"","/"})
     public String account(){
         return "user/login";
     }
 
-    @GetMapping(value = "/verifyImg/{type}")
-    public void verifyImg(HttpSession session, HttpServletResponse response,@PathVariable(value = "type") String type){
+    /**
+     * 邮箱唯一检验
+     * @param email 邮箱
+     * @return
+     */
+    @GetMapping("emailCheck")
+    @ResponseBody
+    public Response emailCheck(@RequestParam("email") String email) {
+        userService.emailCheck(email);
+        return ResponseUtil.success();
+    }
+
+    /**
+     * 登陆
+     * @param email 邮箱
+     * @param password 密码
+     * @param code 校验码
+     * @param session
+     * @return
+     */
+    @PostMapping(value = "regist")
+    @ResponseBody
+    public Response regist(@RequestParam(value = "email") String email,
+                           @RequestParam(value = "password") String password,
+                           @RequestParam("code") String code,
+                           HttpSession session) {
+        if(!code.equalsIgnoreCase((String) session.getAttribute("regCode"))){
+            return ResponseUtil.error(2,"验证码错误");
+        }
+        User user = userService.regist(email, password);
+        return ResponseUtil.success();
+    }
+
+    /**
+     * 登陆
+     * @param email 邮箱
+     * @param password 密码
+     * @param code 校验码
+     * @param rememberme 记住我
+     * @param session
+     * @param response
+     * @return
+     */
+    @PostMapping(value = "login")
+    @ResponseBody
+    public Response<User> login(@RequestParam(value = "email") String email,
+                                @RequestParam(value = "password") String password,
+                                @RequestParam(value = "code") String code,
+                                @RequestParam(value = "rememberme", defaultValue = "false") boolean rememberme,
+                                @RequestParam(value = "next",required = false) String next,
+                                HttpSession session,
+                                HttpServletResponse response) {
+        if(!code.equalsIgnoreCase((String) session.getAttribute("loginCode"))){
+            return ResponseUtil.error(2,"验证码错误");
+        }
+        User user = userService.login(email, password);
+        session.setAttribute(BlogConst.LOGIN_SESSION_KEY,user);
+        if (rememberme) {
+            String token = tokenService.addToken(user.getId());
+            Cookie cookie = new Cookie(BlogConst.USER_COOKIE_KEY,token);
+            cookie.setPath("/");
+            cookie.setHttpOnly(true);
+            cookie.setMaxAge(3600*24);
+            response.addCookie(cookie);
+        }
+        return ResponseUtil.success(next);
+    }
+
+    /**
+     * 退出
+     * @param token
+     * @param session
+     * @return
+     */
+    @GetMapping(value = "/logout")
+    public String logout(@CookieValue(value = BlogConst.USER_COOKIE_KEY)String token, HttpSession session, HttpServletRequest request,HttpServletResponse response) {
+        session.removeAttribute(BlogConst.LOGIN_SESSION_KEY);
+        tokenService.inValid(token);
+        Cookie[] cookies = request.getCookies();
+        if(cookies !=null&&cookies.length>0) {
+            for(Cookie cookie: cookies){
+                if (cookie.getName().equals(BlogConst.USER_COOKIE_KEY)){
+                    cookie.setMaxAge(0);
+                    cookie.setPath("/");
+                    response.addCookie(cookie);
+                    break;
+                }
+            }
+        }
+        return "redirect:/";
+    }
+
+    /**
+     * 注册验证码
+     * @param session
+     * @param response
+     */
+    @GetMapping(value = "/verifyImg/regist")
+    public void verifyImgRegist(HttpSession session, HttpServletResponse response){
+        //生成随机字串
+        String verifyCode = VerifyHelper.generateVerifyCode(4);
+        session.removeAttribute("regCode");
+        session.setAttribute("regCode", verifyCode.toLowerCase());
+        verifyImg(response,verifyCode);
+    }
+
+    /**
+     * 登陆验证码
+     * @param session
+     * @param response
+     */
+    @GetMapping(value = "/verifyImg/login")
+    public void verifyImgLogin(HttpSession session, HttpServletResponse response){
+        //生成随机字串
+        String verifyCode = VerifyHelper.generateVerifyCode(4);
+        session.removeAttribute("loginCode");
+        session.setAttribute("loginCode", verifyCode.toLowerCase());
+        verifyImg(response,verifyCode);
+    }
+
+    /**
+     * 生成验证图片
+     * @param response
+     * @param verifyCode
+     */
+    public void verifyImg(HttpServletResponse response,String verifyCode){
         response.setHeader("Pragma", "No-cache");
         response.setHeader("Cache-Control", "no-cache");
         response.setDateHeader("Expires", 0);
         response.setContentType("image/jpeg");
-        //生成随机字串
-        String verifyCode = VerifyHelper.generateVerifyCode(4);
-        if(type.equals("1")) {
-            //删除以前的
-            session.removeAttribute("regCode");
-            session.setAttribute("regCode", verifyCode.toLowerCase());
-        } else if (type.equals("2")) {
-            //删除以前的
-            session.removeAttribute("loginCode");
-            session.setAttribute("loginCode", verifyCode.toLowerCase());
-        }
         //生成图片
         int w = 100, h = 30;
         try {
@@ -59,63 +169,5 @@ public class LoginController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    @GetMapping("emailCheck")
-    @ResponseBody
-    public Response emailCheck(@RequestParam("email") String email) {
-        UserExample example =new UserExample();
-        example.createCriteria().andEmailEqualTo(email);
-        List<User> users = userService.selectByExample(example);
-        if (users == null || users.size() >= 1) {
-            return ResponseUtil.error(2,"此邮箱已被注册");
-        }
-        return ResponseUtil.success();
-    }
-
-    @PostMapping(value = "regist")
-    @ResponseBody
-    public Response regist(@RequestParam(value = "email") String email,
-                           @RequestParam(value = "name") String name,
-                           @RequestParam(value = "password") String password,
-                           @RequestParam("code") String code,
-                           HttpSession session) {
-        if(!code.equalsIgnoreCase((String) session.getAttribute("regCode"))){
-            return ResponseUtil.error(2,"验证码错误");
-        }
-        UserExample example =new UserExample();
-        example.createCriteria().andEmailEqualTo(email);
-        List<User> users = userService.selectByExample(example);
-        if (users == null || users.size() >= 1) {
-            return ResponseUtil.error(2,"此邮箱已被注册");
-        }
-        User user = userService.regist(email, name, password);
-        session.setAttribute("user",user);
-        return ResponseUtil.success();
-    }
-
-    @PostMapping(value = "login")
-    @ResponseBody
-    public Response<User> login(@RequestParam(value = "email") String email,
-                                @RequestParam(value = "password") String password,
-                                @RequestParam(value = "code") String code,
-                                @RequestParam(value = "rememberme", defaultValue = "false") boolean rememberme,
-                                HttpSession session,
-                                HttpServletResponse response) {
-        if(!code.equalsIgnoreCase((String) session.getAttribute("loginCode"))){
-            return ResponseUtil.error(2,"验证码错误");
-        }
-        UserExample userExample = new UserExample();
-        userExample.createCriteria().andEmailEqualTo(email);
-        List<User> uses = userService.selectByExample(userExample);
-        if (uses == null || uses.size() == 0) { //成功
-            return ResponseUtil.error(2,"邮箱不正确");
-        }
-        User user = uses.get(0);
-        if (!EncryptUtil.MD5(EncryptUtil.MD5(password + user.getSalt())).equals(user.getPassword())) {
-            return ResponseUtil.error(2,"密码不正确");
-        }
-        session.setAttribute("user",user);
-        return ResponseUtil.success();
     }
 }

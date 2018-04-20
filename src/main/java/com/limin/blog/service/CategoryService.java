@@ -28,7 +28,8 @@ public class CategoryService {
     }
 
     public void delete(Integer id) {
-        if(categoryMapper.selectByPrimaryKey(id) == null) {
+        Category category = categoryMapper.selectByPrimaryKey(id);
+        if(category == null) {
 
         }
         categoryMapper.deleteByPrimaryKey(id);

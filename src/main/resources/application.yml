@@ -15,9 +15,6 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
 
-
-
-
 mybatis:
   configuration:
     map-underscore-to-camel-case: true
@@ -33,5 +30,5 @@ pagehelper:
 logging:
   level:
 #     root: debug
-     org.springframework.web: warn
+     org.springframework.web: debug
 #     com.limin.blog.mapper: debug
