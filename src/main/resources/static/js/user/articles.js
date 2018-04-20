@@ -18,22 +18,23 @@ layui.use(['laypage','element'], function() {
                     var data = resp.data;
                     var html = ""
                     if(data == null || data.list == null || data.list.length == 0) {
-                        html = "<div style='text-align: center;margin-top: 40px;margin-bottom: 30px;'>该分类暂无数据</div>";
-                    } else {
-                        $.each(data.list, function (i, article) {
-                            html += '<div class="article">' +
-                                '<a href="/article/detail/' + article.id + '" class="title">' + article.title + '</a>' +
-                                '<p class="detail">' + article.content + '...' +
-                                '</p>' +
-                                '<div class="other">' +
-                                '<span>' + new Date(article.releaseDate).format() + '</span>' +
-                                '<span class="layui-icon right">&#xe705 ' + article.readNum + '</span>' +
-                                '<span class="layui-icon right">&#xe6b2 ' + article.commentNum + '</span>' +
-                                '</div>' +
-                                '</div>'
-                        })
-                        html +='<div class="text-center" id="page"></div>';
-					}
+                        html = "<div style='text-align: center;margin-top: 40px;margin-bottom: 30px;'>暂无数据</div>";
+                        $("#article").html(html);
+                        return false;
+                    }
+                    $.each(data.list, function (i, article) {
+                        html += '<div class="article">' +
+                            '<a href="/article/detail/' + article.id + '" class="title">' + article.title + '</a>' +
+                            '<p class="detail">' + article.content + '...' +
+                            '</p>' +
+                            '<div class="other">' +
+                            '<span>' + new Date(article.releaseDate).format() + '</span>' +
+                            '<span class="layui-icon right">&#xe705 ' + article.readNum + '</span>' +
+                            '<span class="layui-icon right">&#xe6b2 ' + article.commentNum + '</span>' +
+                            '</div>' +
+                            '</div>'
+                    })
+                    html +='<div class="text-center" id="page"></div>';
                     $("#article").html(html);
                     laypage.render({
                         elem: 'page',
@@ -49,13 +50,11 @@ layui.use(['laypage','element'], function() {
                     });
                     $('html').animate({ scrollTop: 0 }, 100)
                 } else {
-                    html="<div style='text-align: center;margin-top: 40px;margin-bottom: 30px;'>"+resp.msg+"</div>";
-                    $("#article").html(html);
+                    layer.msg("系统出现问题，请联系管理员", {icon: 5,anim: 6});
 				}
             },
             error: function (resp) {
-            	html="<div style='text-align: center;margin-top: 40px;margin-bottom: 30px;'>"+resp.msg+"</div>";
-                $("#article").html(html);
+                layer.msg("系统出现问题，请联系管理员", {icon: 5,anim: 6});
             }
         })
     }

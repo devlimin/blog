@@ -1,36 +1,43 @@
 $(function () {
 layui.use('laypage', function(){
 	var laypage = layui.laypage;
-	page(1,10);
     function page(pageNum,pageSize) {
+        var data = "pageNum="+pageNum+"&pageSize="+pageSize;
+        var sysCateId = $("#sysCateId").val();
+        if (sysCateId!="") {
+            data += "&sysCateId="+sysCateId;
+        }
 		$.ajax({
 			url:"/index/page",
-			data:"pageNum="+pageNum+"&pageSize="+pageSize,
+			data:data,
 			type:"get",
 			success:function (resp) {
 				if(resp.code==0) {
 					var data = resp.data;
 					var html = "";
-					$.each(data.list, function (i,article) {
+                    if(data == null || data.list == null || data.list.length == 0) {
+                        html = "<div style='text-align: center;padding-top: 40px;padding-bottom: 30px;background-color: white;'>该分类暂无数据</div>";
+                        $("#articles").html(html);
+                        return false;
+                    }
+					$.each(data.list, function (i,articleVo) {
 						html += '<div class="article">' +
-                            '<div class="detail">' +
-                            '<div>' +
-                            '<a href="/article/detail/'+article.id+'">'+article.title+'</a>' +
-                            '<a href="">推荐</a>' +
-                            '</div>' +
-                            '<p>' + article.content +
-                            '</p>' +
-                            '</div>' +
-                            '<div class="other">' +
-                            '<a href="#">' +
-                            '<img src="https://images.nowcoder.net/head/349m.png@0e_100w_100h_0c_1i_1o_90Q_1x.png" class="img-circle">' +
-                            '<span>东方不败东方不败东方不败东方不败东方不败</span>' +
-                            '</a>' +
-                            '<span>'+new Date(article.releaseDate).format()+'</span>' +
-                            '<span class="layui-icon">&#xe6b2 '+article.commentNum+'</span>' +
-                            '<span class="layui-icon">&#xe705 '+article.readNum+'</span>' +
-                            '</div>' +
-                            '</div>';
+									'<div class="detail">' +
+										'<div>' +
+											'<a href="/article/detail/'+articleVo.article.id+'">'+articleVo.article.title+'</a>' +
+											'<a href="/index?sysCateId='+articleVo.sysCategory.id+'">'+articleVo.sysCategory.name+'</a>' +
+										'</div>' +
+										'<p>'+ articleVo.article.content +'</p>' +
+									'</div>' +
+									'<div class="other">' +
+										'<a href="/article/list/'+articleVo.user.id+'">' +
+										'<img src="'+articleVo.user.headUrl+'" class="img-circle"> ' +
+										'<span>'+articleVo.user.name+'</span>' +'</a>' +
+										'<span>'+new Date(articleVo.article.releaseDate).format()+'</span>' +
+										'<span class="layui-icon">&#xe6b2 '+articleVo.article.commentNum+'</span>' +
+										'<span class="layui-icon">&#xe705 '+articleVo.article.readNum+'</span>' +
+									'</div>' +
+                            	'</div>';
                     })
                     html +='<div class="text-center" id="page"></div>';
                     $("#articles").html(html);
@@ -48,14 +55,15 @@ layui.use('laypage', function(){
                     });
                     $('html').animate({ scrollTop: 0 }, 100)
 				} else{
-
+                    layer.msg("系统出现问题，请联系管理员", {icon: 5,anim: 6});
 				}
             },
 			error:function (resp) {
-
+                layer.msg("系统出现问题，请联系管理员", {icon: 5,anim: 6});
             }
 		})
     }
+    page(1,10);
 });
 $(".list-group a").hover(
 	function(){

@@ -14,10 +14,13 @@
 		<div id="main">
 			<div style="float: left">
 				<div id="type-list">
-					<a th:each="sysCategory : ${sysCategories}" th:href="@{/article/sys/{id}/(id=${sysCategory.id})}" th:text="${sysCategory.name}"></a>
+					<a th:class="${sysCateId}==-1?'actived':''" th:href="@{/index}">全部</a>
+					<a th:each="sysCategory : ${sysCategories}" th:class="${sysCateId}==${sysCategory.id}?'actived':''"
+					   th:href="@{/index(sysCateId=${sysCategory.id})}" th:text="${sysCategory.name}"></a>
 				</div>
 				<div id="articles">
 				</div>
+				<input id="sysCateId" type="hidden" name="sysCateId" th:value="${sysCateId}==null?'':${sysCateId}"/>
 			</div>
 			<div id="side">
 				<div id="blogstar">

@@ -212,7 +212,6 @@ $(document).on("click",".reply-input",function() {
 		if (sub.length == 0) {
 			html = '<div class="sub-comment-list reply">' + html +'</div>';
             $(this).parent().parent().parent().parent().append(html);
-			
 		} else {
 			sub.append(html)
 		}

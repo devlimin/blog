@@ -2,6 +2,7 @@ package com.limin.blog.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.limin.blog.constant.BlogConst;
+import com.limin.blog.enums.ArticleEnum;
 import com.limin.blog.enums.ArticleTypeEnum;
 import com.limin.blog.model.*;
 import com.limin.blog.service.*;
@@ -110,7 +111,7 @@ public class ArticleController {
         PageInfo<Article> pageInfo = null;
         if (cid==null) {
             ArticleExample articleExample = new ArticleExample();
-            articleExample.createCriteria().andUserIdEqualTo(uid);
+            articleExample.createCriteria().andUserIdEqualTo(uid).andStatusEqualTo(ArticleEnum.PUBLISHED.getVal());
             articleExample.setOrderByClause("release_date desc");
             pageInfo = articleService.selectPageByExampleWithBLOBS(articleExample,pageNum,pageSize);
         } else {

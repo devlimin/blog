@@ -6,7 +6,7 @@ layui.use(['layer','laypage'], function(){
 		var category = $.trim($("#category-input").val());
 		$("#category-input").val("");
 		if(category == "") {
-			layer.msg('个人分类不能为空',{icon:5}, function() {
+			layer.msg('个人分类不能为空',{icon: 5,anim: 6}, function() {
                 $("#category-btn").focus();
 			});
 			return false;
@@ -54,7 +54,7 @@ layui.use(['layer','laypage'], function(){
 	$(document).on("click",".save",function() {
 		category = $.trim($(this).prev().val());
 		if(category == "") {
-			layer.msg('个人分类不能为空',{icon:5}, function() {
+			layer.msg('个人分类不能为空',{icon: 5,anim: 6}, function() {
 				$(this).prev(".cate").focus();
 			});
 			return false;
@@ -72,7 +72,7 @@ layui.use(['layer','laypage'], function(){
                     cateMap.delete(id);
                     $td.text(category);
 				} else {
-                    layer.msg(resp.msg);
+                    layer.msg(resp.msg,{icon: 5,anim: 6});
 				}
             }
 		})
@@ -97,7 +97,7 @@ layui.use(['layer','laypage'], function(){
 				if (resp.code == 0) {
                     $tr.remove();
 				} else {
-                    layer.msg(resp.msg);
+                    layer.msg(resp.msg,{icon: 5,anim: 6});
 				}
             }
 		})
