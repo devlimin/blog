@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/backend}">
+<head>
+    <title>账号设置</title>
+    <link th:href="@{/css/manage/article/list.css}" rel="stylesheet">
+    <script th:src="@{/js/user/info.js}"></script>
+<body>
+<div layout:fragment="right">
+    <div class="layui-tab layui-tab-brief" lay-filter="info">
+        <ul class="layui-tab-title">
+            <li class="layui-this" lay-id="basic">基本信息</li>
+            <li lay-id="email">邮箱更改</li>
+            <li lay-id="pass">密码更改</li>
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+                <fieldset class="layui-elem-field">
+                    <legend>用户名</legend>
+                    <div class="layui-field-box">
+                        <input type="text" th:value="${session.login_user.name}"
+                               class="layui-input" maxlength="30" style="display: inline-block;width: 300px;"/>
+                        <input type="button" value="保存" class="layui-btn name-save">
+                    </div>
+                </fieldset>
+                <fieldset class="layui-elem-field">
+                    <legend>头像</legend>
+                    <div class="layui-field-box">
+                        <img th:src="${session.login_user.headUrl}" id="img" style="width: 80px;height: 80px;">
+                        <button type="button" class="layui-btn" id="headImg">
+                            <i class="layui-icon">&#xe67c;</i>更改头像
+                        </button>
+                    </div>
+                </fieldset>
+                <fieldset class="layui-elem-field">
+                    <legend>座右铭</legend>
+                    <div class="layui-field-box">
+                        <textarea class="layui-textarea" maxlength="100">[[${session.login_user.motto}]]</textarea>
+                        <input type="button" value="保存" class="layui-btn pull-right motto-save" style="margin: 5px 0px">
+                    </div>
+                </fieldset>
+            </div>
+            <div class="layui-tab-item">
+                <fieldset class="layui-elem-field">
+                    <legend>邮箱</legend>
+                    <div class="layui-field-box">
+                        <input type="text" th:value="${session.login_user.email}"
+                               class="layui-input" maxlength="30" style="display: inline-block;width: 300px;"/>
+                        <input type="button" value="保存" class="layui-btn email-save">
+                    </div>
+                </fieldset>
+            </div>
+            <div class="layui-tab-item">
+                <fieldset class="layui-elem-field">
+                    <legend>密码</legend>
+                    <div class="layui-field-box">
+                        <input type="text" name="name" value="" placeholder="原密码"
+                               class="layui-input" maxlength="30" style="width: 300px;margin-bottom: 5px"/>
+                        <input type="text" name="name" value="" placeholder="新密码"
+                               class="layui-input" maxlength="30" style="width: 300px;margin-bottom: 5px"/>
+                        <input type="text" name="name" value="" placeholder="重复新密码"
+                               class="layui-input" maxlength="30" style="width: 300px;margin-bottom: 5px"/>
+                        <input type="button" value="保存" class="layui-btn pass-save" style="margin-left: 240px">
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

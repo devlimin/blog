@@ -10,7 +10,7 @@ layui.use(['laypage','element'], function(){
     //监听Tab切换，以改变地址hash值
     element.on('tab(test1)', function(data){
         layid = this.getAttribute('lay-id');
-        location.hash = 'test1='+ layid;
+        // location.hash = 'test1='+ layid;
         if (layid == 0){
             page(0,1,2);
 		}

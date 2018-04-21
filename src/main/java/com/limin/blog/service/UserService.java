@@ -90,4 +90,25 @@ public class UserService {
     public List<User> selectByExample(UserExample userExample) {
         return userMapper.selectByExample(userExample);
     }
+
+    public void updateName(Integer id, String name) {
+        User user= new User();
+        user.setId(id);
+        user.setName(name);
+        userMapper.updateByPrimaryKeySelective(user);
+    }
+
+    public void updateMotto(Integer id, String motto) {
+        User user= new User();
+        user.setId(id);
+        user.setMotto(motto);
+        userMapper.updateByPrimaryKeySelective(user);
+    }
+
+    public void updateHeadUrl(Integer id, String headUrl) {
+        User user= new User();
+        user.setId(id);
+        user.setHeadUrl(headUrl);
+        userMapper.updateByPrimaryKeySelective(user);
+    }
 }
