@@ -10,6 +10,7 @@ import com.limin.blog.vo.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -28,8 +29,10 @@ public class LoginController {
     private TokenService tokenService;
 
     @GetMapping(value = {"","/"})
-    public String account(){
-        return "user/login";
+    public ModelAndView account(@RequestParam(value = "action")String action){
+        ModelAndView mv = new ModelAndView("user/login");
+        mv.addObject("action",action);
+        return mv;
     }
 
     /**

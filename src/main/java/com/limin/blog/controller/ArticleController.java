@@ -51,9 +51,9 @@ public class ArticleController {
     @GetMapping(value = "detail/{id}")
     public ModelAndView article(@PathVariable("id") Integer id){
         ModelAndView mv = new ModelAndView("article/detail");
-
         //文章
         Article article = articleService.selectById(id);
+        mv.addObject("article",article);
         User user = userService.selectById(article.getUserId());
         mv.addObject("user",user);
         //文章相关的个人分类
@@ -64,14 +64,11 @@ public class ArticleController {
             Category category = categoryService.selectById(articleCategory.getCategoryId());
             articleCategories.add(category);
         }
-
+        mv.addObject("articleCategories",articleCategories);
         //所有个人分类
         CategoryExample categoryExample = new CategoryExample();
-        categoryExample.createCriteria().andUserIdEqualTo(1);
+        categoryExample.createCriteria().andUserIdEqualTo(user.getId());
         List<Category> categories = categoryService.selectByExample(categoryExample);
-
-        mv.addObject("article",article);
-        mv.addObject("articleCategories",articleCategories);
         mv.addObject("categories",categories);
         return mv;
     }
@@ -226,7 +223,7 @@ public class ArticleController {
 
     @PostMapping("man/draft")
     @ResponseBody
-    public Response draft(Article article,@RequestParam(value = "cId") List<Integer> cIds, HttpSession session) {
+    public Response draft(Article article,@RequestParam(value = "cId",required = false) List<Integer> cIds, HttpSession session) {
         User user = (User) session.getAttribute(BlogConst.LOGIN_SESSION_KEY);
         article.setUserId(user.getId());
         Integer id = articleService.draft(article, cIds);

@@ -15,6 +15,7 @@ $(function () {
                         if(data == null || data.list == null || data.list.length == 0) {
                             html = "<div class='comment'></div>";
                         } else {
+                        	var isComment = $("#isComment").val();
                         	var endRow = data.total-(pageNum-1)*pageSize;
                             $.each(data.list,function (i, commentVo) {
                                 html +='<div class="comment" id="'+commentVo.comment.id+'">' +
@@ -29,9 +30,11 @@ $(function () {
 												'<div class="comment-wrap">' +
 													'<p>'+commentVo.comment.content+'</p>' +
 													'<div class="tool">' +
-														'<a class="layui-icon" style="font-size: 12px;color: #969696;">&#xe6c6; 12人赞 </a>'+
-														'<a class="reply-input">回复</a>' +
-														'<a class="report">举报</a>'+
+														'<a class="layui-icon" style="font-size: 12px;color: #969696;">&#xe6c6; 12人赞 </a>';
+                                					if(isComment=="true"){
+                                                        html+='<a class="reply-input">回复</a>'
+													}
+														html+='<a class="report">举报</a>'+
 													'</div>'+
                                     			'</div>'+
 											'</div>';
@@ -44,9 +47,11 @@ $(function () {
 														'<span>'+commentVo.comment.content+'</span>' +
 													'</div>' +
 													'<div class="tool">' +
-														'<span>'+new Date(commentVo.comment.releaseDate).format()+'</span>' +
-														'<a class="reply-input">回复</a>' +
-														'<a class="report">举报</a>' +
+														'<span>'+new Date(commentVo.comment.releaseDate).format()+'</span>';
+													if(isComment=="true"){
+														html+='<a class="reply-input">回复</a>'
+													}
+														html+='<a class="report">举报</a>' +
 													'</div>'+
 												'</div>'
                                     })
@@ -121,7 +126,11 @@ $(document).on("click",".comment-input a:nth-child(2)",function() {
                         '</div>';
                     $this.parent().parent().parent().append(html);
                     $this.parent().parent().remove();
+				} else {
+                    layer.msg(resp.msg, {icon: 5,anim: 6});
 				}
+            },error:function (resp) {
+                layer.msg(resp.msg, {icon: 5,anim: 6});
             }
 		})
 
@@ -164,10 +173,12 @@ $(document).on("click",".comment-input a:nth-child(2)",function() {
 								'</div>'+
 							'</div>';
                     $("#comment-list .comment:first").before(html);
+				} else{
+                    layer.msg(resp.msg, {icon: 5,anim: 6});
 				}
             },
 			error:function (resp) {
-
+                layer.msg(resp.msg, {icon: 5,anim: 6});
             }
 		})
 	}
@@ -210,7 +221,7 @@ $(document).on("click",".reply-input",function() {
 	if($(this).parent().parent().parent().hasClass("parent-comment")) {
 		var sub = $(this).parent().parent().parent().next(".sub-comment-list");
 		if (sub.length == 0) {
-			html = '<div class="sub-comment-list reply">' + html +'</div>';
+			html = '<div class="sub-comment-list">' + html +'</div>';
             $(this).parent().parent().parent().parent().append(html);
 		} else {
 			sub.append(html)

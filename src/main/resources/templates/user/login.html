@@ -14,13 +14,14 @@
 			<h1>xx博客</h1>
 			<p>这里是开发者分享交流的乐园</p>
 		</div>
-		<div class="layui-tab layui-tab-brief">
+		<div class="layui-tab layui-tab-brief" lay-filter="account">
+			<input type="hidden" id="action" name="action" th:value="${action}"/>
 			<ul class="layui-tab-title text-center">
-				<li class="layui-this">登陆</li>
-				<li>注册</li>
+				<li lay-id="login">登陆</li>
+				<li lay-id="regist">注册</li>
 			</ul>
 			<div class="layui-tab-content">
-				<div id="login-tab" class="layui-tab-item layui-show">
+				<div id="login-tab" class="layui-tab-item">
 					<div class="panel-body">
 						<form class="layui-form" id="login" method="post">
 							<div class="form-group">

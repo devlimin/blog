@@ -3,6 +3,7 @@ package com.limin.blog.controller;
 import com.github.pagehelper.PageInfo;
 import com.limin.blog.constant.BlogConst;
 import com.limin.blog.enums.CommentEnum;
+import com.limin.blog.model.Article;
 import com.limin.blog.model.Comment;
 import com.limin.blog.model.CommentExample;
 import com.limin.blog.model.User;
@@ -78,6 +79,10 @@ public class CommentController {
                             @RequestParam(value = "cid",defaultValue = "-1")Integer cid,//评论id
                             @RequestParam(value = "pid",defaultValue = "-1")Integer pid,
                             HttpSession session) {
+        Article article = articleService.selectById(aid);
+        if (!article.getIsComment()){
+            return ResponseUtil.error(2,"该文章已禁止评论");
+        }
         User user = (User) session.getAttribute(BlogConst.LOGIN_SESSION_KEY);
         Comment comment = new Comment();
         comment.setArticleId(aid);
@@ -88,7 +93,7 @@ public class CommentController {
         comment = commentService.comment(comment);
         CommentVo commentVo = new CommentVo();
         commentVo.setComment(comment);
-        commentVo.setUser(userService.selectById(1));
+        commentVo.setUser(userService.selectById(user.getId()));
         return ResponseUtil.success(commentVo);
     }
     

@@ -28,8 +28,8 @@
 				<input type="hidden" id="aid" th:value="${article.id}">
 			</div>
 			<div id="comment">
-				<div class="comment-write">
-					<img src="https://images.nowcoder.net/head/349m.png@0e_100w_100h_0c_1i_1o_90Q_1x.png">
+				<div th:if="${article.isComment}" class="comment-write">
+					<img th:src="${user.headUrl}" style="border-radius: 50%;">
 					<form class="comment-input">
 						<textarea class="form-control" placeholder="写下你的评论..."></textarea>
 						<a>发送</a>
@@ -37,6 +37,10 @@
 					</form>
 					<div style="clear: both;"></div>
 				</div>
+				<div th:if="!${article.isComment}" class="comment-write" style="text-align: center">
+					此文章已禁止评论
+				</div>
+				<input type="hidden" id="isComment" th:value="${article.isComment}"/>
 				<div id="comment-list">
 				</div>
 			</div>
@@ -44,7 +48,7 @@
 		<div id="side">
 			<div id="user-info">
 				<div id="header">
-					<img th:src="@{${user.headUrl}}">
+					<img th:src="@{${user.headUrl}}" style="border-radius: 50%;">
 					<div>
 						<span th:text="${user.name}"></span>
 						<button class="btn btn-default">关注</button>

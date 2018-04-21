@@ -15,6 +15,7 @@ $(function(){
 
 layui.use(['form','element', 'layer'], function(){
 	var element = layui.element;
+	element.tabChange("account",$("#action").val());
 	var layer = layui.layer;
     var form = layui.form;
     form.verify({
