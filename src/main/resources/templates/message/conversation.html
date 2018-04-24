@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/head}">
+<head>
+    <title>博客</title>
+    <link th:href="@{/css/message/conversation.css}" rel="stylesheet">
+    <script th:src="@{/js/user/conversation.js}"></script>
+</head>
+<body>
+<div layout:fragment="content">
+    <div id="main">
+        <div class="layui-tab layui-tab-brief">
+            <ul class="layui-tab-title">
+                <li th:class="${type}!='2'?'layui-this':''">
+                    <a style="text-decoration: none;cursor: pointer" th:href="@{/message/man/conversation(type=1,pageNum=1)}">朋友私信</a>
+                </li>
+                <li th:class="${type}=='2'?'layui-this':''">
+                    <a style="text-decoration: none;cursor: pointer" th:href="@{/message/man/conversation(type=2,pageNum=1)}">系统通知</a>
+                </li>
+            </ul>
+            <div class="layui-tab-content">
+                <div class="layui-tab-item layui-show">
+                    <div class="conversation" th:each="messageVo : ${messageVos.list}">
+                        <a th:if="!${#strings.equals(param.type,'2')}" th:href="@{/message/man/detail(conversationId=${messageVo.message.conversationId},pageNum=1)}">
+                            <object><a style="margin-right: 10px;float: left;" th:href="@{/article/list/{id}(id=${messageVo.user.id})}">
+                                <img style="width: 50px;height: 50px;border-radius: 50%;display: inline-block;" th:src="@{${messageVo.user.headUrl}}"></a></object>
+                            <div style="float: left">
+                                <object><a style="text-decoration: none;cursor: pointer" th:href="@{/article/list/{id}(id=${messageVo.user.id})}">
+                                    <span th:text="${messageVo.user.name}"></span></a></object>
+                                <p style="word-wrap:break-word;word-break:break-all;width: 400px;" th:text="${messageVo.message.content}"></p>
+                            </div>
+                            <div style="float: right;">
+                                <div th:text="${#dates.format(messageVo.message.releaseDate,'yyyy.MM.dd hh:mm:ss')}"></div>
+                                <div style="float: right" th:text="'共'+${messageVo.message.id}+'条对话'"></div>
+                            </div>
+
+                            <div style="clear: both"></div>
+                            <hr style="margin-top: 20px;"/>
+                        </a>
+                        <a th:if="${#strings.equals(param.type,'2')}"  th:href="@{/message/man/detail(conversationId=${messageVo.message.conversationId},pageNum=1)}">
+                            <span style="margin-right: 10px;float: left">
+                                <img style="width: 50px;height: 50px;border-radius: 50%;display: inline-block;" th:src="@{${messageVo.user.headUrl}}"></span>
+                            <div style="float: left">
+                                <span th:text="${messageVo.user.name}"></span>
+                                <p style="word-wrap:break-word;word-break:break-all;width: 400px;" th:text="${messageVo.message.content}"></p>
+                            </div>
+                            <div style="float: right;">
+                                <div th:text="${#dates.format(messageVo.message.releaseDate,'yyyy.MM.dd hh:mm:ss')}"></div>
+                                <div style="float: right" th:text="'共'+${messageVo.message.id}+'条对话'"></div>
+                            </div>
+                            <div style="clear: both"></div>
+                            <hr style="margin-top: 20px;"/>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/head}">
+<head>
+    <title>博客</title>
+    <link th:href="@{/css/message/detail.css}" rel="stylesheet">
+    <script th:src="@{/js/message/detail.js}"></script>
+</head>
+<body>
+<div layout:fragment="content">
+    <div id="main">
+        <div>
+            <button id="letter-btn" class="layui-btn">私信</button>
+        </div>
+        <div style="clear: both"></div>
+        <input id="toUserId" type="hidden" th:value="${toUserId}">
+        <div id="messages">
+            <div th:each="messageVo,iterStat : ${messageVos}">
+                <div class="my-msg" th:if="${messageVo.message.userId}==${session.login_user.id}">
+                    <div class="msg" >
+                        <p class="content" th:text="${messageVo.message.content}"></p>
+                        <span style="float: right;" th:text="${#dates.format(messageVo.message.releaseDate,'yyyy.MM.dd hh:mm:ss')}"></span>
+                    </div>
+                    <a style="width: 80px;" th:href="@{/article/list/{id}(id=${session.login_user.id})}">
+                        <img class="headImg" th:src="@{${session.login_user.headUrl}}"/>
+                    </a>
+                </div>
+                <div class="other-msg" th:if="${messageVo.message.userId}!=${session.login_user.id}">
+                    <a th:href="@{/article/list/{id}(id=${messageVo.user.id})}">
+                        <img class="headImg" th:src="@{${messageVo.user.headUrl}}">
+                    </a>
+                    <div class="msg">
+                        <p class="content" th:text="${messageVo.message.content}"></p>
+                        <span style="float: right;" th:text="${#dates.format(messageVo.message.releaseDate,'yyyy.MM.dd hh:mm:ss')}"></span>
+                    </div>
+                </div>
+                <div style="clear: both"></div>
+            </div>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>

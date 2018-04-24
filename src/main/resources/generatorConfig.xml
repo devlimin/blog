@@ -51,7 +51,10 @@
         <!--<table tableName="sys_category">-->
             <!--<generatedKey column="ID" sqlStatement="MySql" identity="true" />-->
         <!--</table>-->
-        <table tableName="token">
+        <!--<table tableName="token">-->
+            <!--<generatedKey column="ID" sqlStatement="MySql" identity="true" />-->
+        <!--</table>-->
+        <table tableName="message">
             <generatedKey column="ID" sqlStatement="MySql" identity="true" />
         </table>
     </context>

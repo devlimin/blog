@@ -1,0 +1,24 @@
+#main{
+    margin: auto;
+    margin-bottom: 30px;
+    width: 700px;
+    background-color: white
+}
+#letter-btn{
+    float: right; margin-right: 5px;margin-top:5px;
+}
+.my-msg{
+    float: right;margin-right: 5px;margin-top: 5px;margin-bottom: 5px;
+}
+.other-msg{
+    float: left;margin-left: 5px;margin-top: 5px;margin-bottom: 5px;
+}
+.msg{
+    color: #666;padding: 20px 25px;background-color: #ECF1F1;width: 500px;display: inline-block
+}
+.msg>.content{
+    word-wrap:break-word;word-break:break-all;
+}
+.headImg{
+    width: 50px;height: 50px;border-radius: 50%;
+}

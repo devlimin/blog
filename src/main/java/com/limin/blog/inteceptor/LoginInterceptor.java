@@ -15,7 +15,8 @@ public class LoginInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
         User user = (User) httpServletRequest.getSession().getAttribute(BlogConst.LOGIN_SESSION_KEY);
         if (user==null){
-            httpServletResponse.sendRedirect("/account?next="+httpServletRequest.getRequestURI());
+            httpServletResponse.sendRedirect("/account?next="+httpServletRequest.getRequestURI()+"&action=login");
+            return false;
         }
         return true;
     }
