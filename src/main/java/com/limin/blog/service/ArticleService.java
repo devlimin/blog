@@ -11,12 +11,14 @@ import com.limin.blog.model.ArticleCategory;
 import com.limin.blog.model.ArticleCategoryExample;
 import com.limin.blog.model.ArticleExample;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.*;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
 
 @Service
+@CacheConfig(cacheNames = "article")
 public class ArticleService {
 
     @Autowired
@@ -25,23 +27,21 @@ public class ArticleService {
     @Autowired
     private ArticleCategoryService articleCategoryService;
 
-
-    public Article selectById(Integer id) {
-        return articleMapper.selectByPrimaryKey(id);
+    public PageInfo<Article> selectPageByUserIdAndStatus(Integer userId, Integer status, Integer pageNum,Integer pageSize){
+        ArticleExample example = new ArticleExample();
+        example.createCriteria().andUserIdEqualTo(userId).andStatusEqualTo(status);
+        PageHelper.startPage(pageNum,pageSize);
+        List<Article> articles = articleMapper.selectByExample(example);
+        return new PageInfo<Article>(articles);
     }
 
-    public List<Article> selectByExample(ArticleExample articleExample) {
-        return articleMapper.selectByExample(articleExample);
-    }
-
-    public List<Article> selectByExampleWithBLOBS(ArticleExample articleExample) {
-        return articleMapper.selectByExampleWithBLOBs(articleExample);
-    }
-
-    public PageInfo selectPageByExample(ArticleExample articleExample, Integer pageNum, Integer pageSize) {
-        PageHelper.startPage(pageNum, pageSize);
-        List<Article> articles = articleMapper.selectByExample(articleExample);
-        return new PageInfo(articles);
+    public PageInfo<Article> selectPageByUserIdAndStatusWithBLOBS(Integer userId, Integer status, Integer pageNum,Integer pageSize){
+        ArticleExample example = new ArticleExample();
+        example.createCriteria().andUserIdEqualTo(userId).andStatusEqualTo(status);
+        example.setOrderByClause("release_date desc");
+        PageHelper.startPage(pageNum,pageSize);
+        List<Article> articles = articleMapper.selectByExampleWithBLOBs(example);
+        return new PageInfo<Article>(articles);
     }
 
     public PageInfo selectPageByExampleWithBLOBS(ArticleExample articleExample, Integer pageNum, Integer pageSize) {
@@ -50,11 +50,17 @@ public class ArticleService {
         return new PageInfo(articles);
     }
 
+    @Cacheable(key = "'article:'+#id.toString()")
+    public Article selectById(Integer id) {
+        return articleMapper.selectByPrimaryKey(id);
+    }
+
     /**
      * 发表文章
      * @param article
      */
-    public Integer publish(Article article,  List<Integer> cIds) {
+    @CachePut(key = "'article:'+#article.id.toString()",condition = "#article.id!=null")
+    public Article publish(Article article,  List<Integer> cIds) {
         //若已存在则修改
         if (article.getId() != null && articleMapper.selectByPrimaryKey(article.getId()) != null) {
             article.setUpdateDate(new Date());
@@ -82,14 +88,14 @@ public class ArticleService {
                 articleCategoryService.add(articleCategory);
             }
         }
-        return article.getId();
+        return article;
     }
 
     /**
      * 保存草稿
      * @param article
      */
-    public Integer draft(Article article, List<Integer> cIds) {
+    public Article draft(Article article, List<Integer> cIds) {
         article.setStatus(ArticleEnum.DRAFT.getVal());
         article.setIsPrivate(false);
         article.setIsComment(true);
@@ -109,7 +115,7 @@ public class ArticleService {
                 articleCategoryService.add(articleCategory);
             }
         }
-        return article.getId();
+        return article;
     }
 
 
@@ -118,23 +124,25 @@ public class ArticleService {
      * @param id 文章ID
      * @return
      */
-    public boolean del(Integer id) {
+    @CachePut(key = "'article:'+#id.toString()")
+    public Article del(Integer id) {
         Article article = new Article();
         article.setId(id);
         article.setStatus(ArticleEnum.GARBAGE.getVal());
         articleMapper.updateByPrimaryKeySelective(article);
-        return true;
+        return article;
     }
-
-    public boolean deepdel(Integer id) {
+    @CachePut(key = "'article:'+#id.toString()")
+    public Article deepdel(Integer id) {
         Article article = new Article();
         article.setId(id);
         article.setStatus(ArticleEnum.DELETED.getVal());
         articleMapper.updateByPrimaryKeySelective(article);
-        return true;
+        return article;
     }
 
-    public boolean changeIsComment(Integer id) {
+    @CachePut(key = "'article:'+#id.toString()")
+    public Article changeIsComment(Integer id) {
         Article article = articleMapper.selectByPrimaryKey(id);
         if (article==null) {
             throw new BizException(2,"不存在该文章！");
@@ -142,6 +150,6 @@ public class ArticleService {
         Boolean isComment = article.getIsComment();
         article.setIsComment(!isComment);
         articleMapper.updateByPrimaryKeySelective(article);
-        return article.getIsComment();
+        return article;
     }
 }

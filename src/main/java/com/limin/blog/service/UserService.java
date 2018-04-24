@@ -7,8 +7,11 @@ import com.limin.blog.model.User;
 import com.limin.blog.model.UserExample;
 import com.limin.blog.util.EmailHelper;
 import com.limin.blog.util.EncryptUtil;
-import com.limin.blog.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -17,6 +20,7 @@ import java.util.Random;
 import java.util.UUID;
 
 @Service
+@CacheConfig(cacheNames = "user")
 public class UserService {
 
     @Autowired
@@ -83,28 +87,30 @@ public class UserService {
         return true;
     }
 
-    public User selectById(Integer id) {
-        return userMapper.selectByPrimaryKey(id);
-    }
-
     public List<User> selectByExample(UserExample userExample) {
         return userMapper.selectByExample(userExample);
     }
 
+    @Cacheable(key = "'user:'+#id")
+    public User selectById(Integer id) {
+        return userMapper.selectByPrimaryKey(id);
+    }
+
+    @CacheEvict(key = "'user:'+#id")
     public void updateName(Integer id, String name) {
         User user= new User();
         user.setId(id);
         user.setName(name);
         userMapper.updateByPrimaryKeySelective(user);
     }
-
+    @CacheEvict(key = "'user:'+#id")
     public void updateMotto(Integer id, String motto) {
         User user= new User();
         user.setId(id);
         user.setMotto(motto);
         userMapper.updateByPrimaryKeySelective(user);
     }
-
+    @CacheEvict(key = "'user:'+#id")
     public void updateHeadUrl(Integer id, String headUrl) {
         User user= new User();
         user.setId(id);

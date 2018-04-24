@@ -39,6 +39,6 @@ pagehelper:
 
 logging:
   level:
-#     root: debug
-     org.springframework.web: debug
-#     com.limin.blog.mapper: debug
+     root: debug
+     org.springframework.web: info
+     com.limin.blog.service: debug

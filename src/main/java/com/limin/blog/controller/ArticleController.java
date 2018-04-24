@@ -110,7 +110,7 @@ public class ArticleController {
             ArticleExample articleExample = new ArticleExample();
             articleExample.createCriteria().andUserIdEqualTo(uid).andStatusEqualTo(ArticleEnum.PUBLISHED.getVal());
             articleExample.setOrderByClause("release_date desc");
-            pageInfo = articleService.selectPageByExampleWithBLOBS(articleExample,pageNum,pageSize);
+            pageInfo = articleService.selectPageByUserIdAndStatusWithBLOBS(uid,ArticleEnum.PUBLISHED.getVal(),pageNum,pageSize);
         } else {
             Category category = categoryService.selectById(cid);
             if (category==null || !category.getUserId().equals(uid)) {
@@ -150,11 +150,8 @@ public class ArticleController {
                          @RequestParam(value = "pageNum") Integer pageNum,
                          @RequestParam(value = "pageSize") Integer pageSize,
                          HttpSession session) {
-        ArticleExample articleExample = new ArticleExample();
         User user = (User) session.getAttribute(BlogConst.LOGIN_SESSION_KEY);
-        articleExample.createCriteria().andUserIdEqualTo(user.getId()).andStatusEqualTo(status);
-        articleExample.setOrderByClause("release_date desc");
-        PageInfo page = articleService.selectPageByExample(articleExample, pageNum, pageSize);
+        PageInfo page = articleService.selectPageByUserIdAndStatus(user.getId(),status, pageNum, pageSize);
         return ResponseUtil.success(page);
     }
 
@@ -208,8 +205,8 @@ public class ArticleController {
     @ResponseBody
     @PostMapping("man/iscomment")
     public Response iscomment(@RequestParam(value = "id")Integer id){
-        boolean isComment = articleService.changeIsComment(id);
-        return ResponseUtil.success(isComment);
+        Article article = articleService.changeIsComment(id);
+        return ResponseUtil.success(article.getIsComment());
     }
 
     @PostMapping("man/publish")
@@ -217,8 +214,8 @@ public class ArticleController {
     public Response publish(Article article,@RequestParam(value = "cId",required = false) List<Integer> cIds, HttpSession session) {
         User user = (User) session.getAttribute(BlogConst.LOGIN_SESSION_KEY);
         article.setUserId(user.getId());
-        Integer id = articleService.publish(article, cIds);
-        return ResponseUtil.success(id);
+        article = articleService.publish(article, cIds);
+        return ResponseUtil.success(article.getId());
     }
 
     @PostMapping("man/draft")
@@ -226,7 +223,7 @@ public class ArticleController {
     public Response draft(Article article,@RequestParam(value = "cId",required = false) List<Integer> cIds, HttpSession session) {
         User user = (User) session.getAttribute(BlogConst.LOGIN_SESSION_KEY);
         article.setUserId(user.getId());
-        Integer id = articleService.draft(article, cIds);
-        return ResponseUtil.success(id);
+        article = articleService.draft(article, cIds);
+        return ResponseUtil.success(article.getId());
     }
 }

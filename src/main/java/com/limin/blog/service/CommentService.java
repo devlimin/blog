@@ -1,6 +1,5 @@
 package com.limin.blog.service;
 
-import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.limin.blog.enums.CommentEnum;
@@ -9,12 +8,17 @@ import com.limin.blog.mapper.CommentMapper;
 import com.limin.blog.model.Comment;
 import com.limin.blog.model.CommentExample;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
 
 @Service
+@CacheConfig(cacheNames = "comment")
 public class CommentService {
 
     @Autowired
@@ -38,6 +42,7 @@ public class CommentService {
         return page;
     }
 
+    @CacheEvict(key = "'comment:'+#id.toString()")
     public void delete(Integer id) {
         Comment comment = commentMapper.selectByPrimaryKey(id);
         if (comment == null) {
@@ -47,6 +52,7 @@ public class CommentService {
         commentMapper.updateByPrimaryKeySelective(comment);
     }
 
+    @Cacheable(key = "'comment:'+#cid.toString()")
     public Comment selectById(Integer cid) {
         return commentMapper.selectByPrimaryKey(cid);
     }
