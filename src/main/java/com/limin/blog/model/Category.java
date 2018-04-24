@@ -9,6 +9,8 @@ public class Category {
 
     private Integer articleNum;
 
+    private Integer status;
+
     public Integer getId() {
         return id;
     }
@@ -39,5 +41,13 @@ public class Category {
 
     public void setArticleNum(Integer articleNum) {
         this.articleNum = articleNum;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 }

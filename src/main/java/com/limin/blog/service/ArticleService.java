@@ -124,21 +124,19 @@ public class ArticleService {
      * @param id 文章ID
      * @return
      */
-    @CachePut(key = "'article:'+#id.toString()")
-    public Article del(Integer id) {
+    @CacheEvict(key = "'article:'+#id.toString()")
+    public void del(Integer id) {
         Article article = new Article();
         article.setId(id);
         article.setStatus(ArticleEnum.GARBAGE.getVal());
         articleMapper.updateByPrimaryKeySelective(article);
-        return article;
     }
-    @CachePut(key = "'article:'+#id.toString()")
-    public Article deepdel(Integer id) {
+    @CacheEvict(key = "'article:'+#id.toString()")
+    public void deepdel(Integer id) {
         Article article = new Article();
         article.setId(id);
         article.setStatus(ArticleEnum.DELETED.getVal());
         articleMapper.updateByPrimaryKeySelective(article);
-        return article;
     }
 
     @CachePut(key = "'article:'+#id.toString()")

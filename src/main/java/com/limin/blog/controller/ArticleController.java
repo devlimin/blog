@@ -4,6 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.limin.blog.constant.BlogConst;
 import com.limin.blog.enums.ArticleEnum;
 import com.limin.blog.enums.ArticleTypeEnum;
+import com.limin.blog.enums.CategoryEnum;
 import com.limin.blog.model.*;
 import com.limin.blog.service.*;
 import com.limin.blog.util.ResponseUtil;
@@ -67,7 +68,7 @@ public class ArticleController {
         mv.addObject("articleCategories",articleCategories);
         //所有个人分类
         CategoryExample categoryExample = new CategoryExample();
-        categoryExample.createCriteria().andUserIdEqualTo(user.getId());
+        categoryExample.createCriteria().andUserIdEqualTo(user.getId()).andStatusEqualTo(CategoryEnum.DELETED.getVal());
         List<Category> categories = categoryService.selectByExample(categoryExample);
         mv.addObject("categories",categories);
         return mv;
@@ -94,7 +95,7 @@ public class ArticleController {
         }
         //所有个人分类
         CategoryExample categoryExample = new CategoryExample();
-        categoryExample.createCriteria().andUserIdEqualTo(uid);
+        categoryExample.createCriteria().andUserIdEqualTo(uid).andStatusEqualTo(CategoryEnum.DELETED.getVal());
         List<Category> categories = categoryService.selectByExample(categoryExample);
         mv.addObject("categories",categories);
         return mv;
@@ -174,7 +175,7 @@ public class ArticleController {
         }
         User user = (User) session.getAttribute(BlogConst.LOGIN_SESSION_KEY);
         CategoryExample categoryExample = new CategoryExample();
-        categoryExample.createCriteria().andUserIdEqualTo(user.getId());
+        categoryExample.createCriteria().andUserIdEqualTo(user.getId()).andStatusEqualTo(CategoryEnum.DELETED.getVal());
         //个人分类
         List<Category> categories = categoryService.selectByExample(categoryExample);
         mv.addObject("categories",categories);

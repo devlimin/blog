@@ -1,6 +1,7 @@
 package com.limin.blog.controller;
 
 import com.limin.blog.constant.BlogConst;
+import com.limin.blog.enums.CategoryEnum;
 import com.limin.blog.model.Category;
 import com.limin.blog.model.CategoryExample;
 import com.limin.blog.model.User;
@@ -26,7 +27,7 @@ public class CategoryController {
     public ModelAndView list(HttpSession session){
         User user = (User) session.getAttribute(BlogConst.LOGIN_SESSION_KEY);
         CategoryExample categoryExample = new CategoryExample();
-        categoryExample.createCriteria().andUserIdEqualTo(user.getId());
+        categoryExample.createCriteria().andUserIdEqualTo(user.getId()).andStatusEqualTo(CategoryEnum.DELETED.getVal());
         List<Category> categories = categoryService.selectByExample(categoryExample);
         ModelAndView mv = new ModelAndView("category/list");
         mv.addObject("categories", categories);

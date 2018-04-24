@@ -41,9 +41,9 @@
         <!--<table tableName="article">-->
             <!--<generatedKey column="ID" sqlStatement="MySql" identity="true" />-->
         <!--</table>-->
-        <!--<table tableName="category">-->
-            <!--<generatedKey column="ID" sqlStatement="MySql" identity="true" />-->
-        <!--</table>-->
+        <table tableName="category">
+            <generatedKey column="ID" sqlStatement="MySql" identity="true" />
+        </table>
         <!--<table tableName="article_category"></table>-->
         <!--<table tableName="comment">-->
             <!--<generatedKey column="ID" sqlStatement="MySql" identity="true" />-->
@@ -54,8 +54,8 @@
         <!--<table tableName="token">-->
             <!--<generatedKey column="ID" sqlStatement="MySql" identity="true" />-->
         <!--</table>-->
-        <table tableName="message">
-            <generatedKey column="ID" sqlStatement="MySql" identity="true" />
-        </table>
+        <!--<table tableName="message">-->
+            <!--<generatedKey column="ID" sqlStatement="MySql" identity="true" />-->
+        <!--</table>-->
     </context>
 </generatorConfiguration>
