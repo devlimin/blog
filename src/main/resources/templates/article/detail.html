@@ -25,6 +25,10 @@
 				</div>
 				<div id="content" th:utext="${article.content}">
 				</div>
+				<div>
+					<i class="layui-icon" style="font-size: 30px; color: red;">&#xe6c6;</i>
+					<span style="float: right" th:text="${article.updateDate}!=null?${'最后更改时间：'+#dates.format(article.updateDate,'yyyy年MM月dd日 hh:mm:ss')}:''"></span>
+				</div>
 				<input type="hidden" id="aid" th:value="${article.id}">
 			</div>
 			<div id="comment">

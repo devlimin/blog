@@ -14,6 +14,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -44,6 +45,9 @@ public class ArticleController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private RedisTemplate redisTemplate;
+
     /**
      * 查看文章
      * @param id 文章ID
@@ -68,7 +72,7 @@ public class ArticleController {
         mv.addObject("articleCategories",articleCategories);
         //所有个人分类
         CategoryExample categoryExample = new CategoryExample();
-        categoryExample.createCriteria().andUserIdEqualTo(user.getId()).andStatusEqualTo(CategoryEnum.DELETED.getVal());
+        categoryExample.createCriteria().andUserIdEqualTo(user.getId()).andStatusEqualTo(CategoryEnum.PUBLISHED.getVal());
         List<Category> categories = categoryService.selectByExample(categoryExample);
         mv.addObject("categories",categories);
         return mv;
@@ -95,7 +99,7 @@ public class ArticleController {
         }
         //所有个人分类
         CategoryExample categoryExample = new CategoryExample();
-        categoryExample.createCriteria().andUserIdEqualTo(uid).andStatusEqualTo(CategoryEnum.DELETED.getVal());
+        categoryExample.createCriteria().andUserIdEqualTo(uid).andStatusEqualTo(CategoryEnum.PUBLISHED.getVal());
         List<Category> categories = categoryService.selectByExample(categoryExample);
         mv.addObject("categories",categories);
         return mv;
@@ -175,7 +179,7 @@ public class ArticleController {
         }
         User user = (User) session.getAttribute(BlogConst.LOGIN_SESSION_KEY);
         CategoryExample categoryExample = new CategoryExample();
-        categoryExample.createCriteria().andUserIdEqualTo(user.getId()).andStatusEqualTo(CategoryEnum.DELETED.getVal());
+        categoryExample.createCriteria().andUserIdEqualTo(user.getId()).andStatusEqualTo(CategoryEnum.PUBLISHED.getVal());
         //个人分类
         List<Category> categories = categoryService.selectByExample(categoryExample);
         mv.addObject("categories",categories);

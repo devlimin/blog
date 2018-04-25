@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.limin.blog.enums.CommentEnum;
 import com.limin.blog.exception.BizException;
 import com.limin.blog.mapper.CommentMapper;
+import com.limin.blog.model.Article;
 import com.limin.blog.model.Comment;
 import com.limin.blog.model.CommentExample;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,11 +25,17 @@ public class CommentService {
     @Autowired
     private CommentMapper commentMapper;
 
+    @Autowired
+    private ArticleService articleService;
+
     public Comment comment(Comment comment) {
         comment.setReleaseDate(new Date());
         comment.setStatus(1);
         comment.setStatus(CommentEnum.PUBLISHED.getVal());
         commentMapper.insertSelective(comment);
+        Integer articleId = comment.getArticleId();
+        Article article = articleService.selectById(articleId);
+        articleService.updateCommentNum(articleId,article.getCommentNum()+1);
         return comment;
     }
 
@@ -50,6 +57,8 @@ public class CommentService {
         }
         comment.setStatus(CommentEnum.DELETED.getVal());
         commentMapper.updateByPrimaryKeySelective(comment);
+        Article article = articleService.selectById(comment.getArticleId());
+        articleService.updateCommentNum(article.getId(),article.getCommentNum()-1);
     }
 
     @Cacheable(key = "'comment:'+#cid.toString()")

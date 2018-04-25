@@ -6,10 +6,7 @@ import com.github.pagehelper.PageInfo;
 import com.limin.blog.enums.ArticleEnum;
 import com.limin.blog.exception.BizException;
 import com.limin.blog.mapper.ArticleMapper;
-import com.limin.blog.model.Article;
-import com.limin.blog.model.ArticleCategory;
-import com.limin.blog.model.ArticleCategoryExample;
-import com.limin.blog.model.ArticleExample;
+import com.limin.blog.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.*;
 import org.springframework.stereotype.Service;
@@ -25,7 +22,13 @@ public class ArticleService {
     private ArticleMapper articleMapper;
 
     @Autowired
+    private SensitiveService sensitiveService;
+
+    @Autowired
     private ArticleCategoryService articleCategoryService;
+
+    @Autowired
+    private CategoryService categoryService;
 
     public PageInfo<Article> selectPageByUserIdAndStatus(Integer userId, Integer status, Integer pageNum,Integer pageSize){
         ArticleExample example = new ArticleExample();
@@ -61,6 +64,8 @@ public class ArticleService {
      */
     @CachePut(key = "'article:'+#article.id.toString()",condition = "#article.id!=null")
     public Article publish(Article article,  List<Integer> cIds) {
+        article.setContent(sensitiveService.filter(article.getContent()));
+        article.setTitle(sensitiveService.filter(article.getTitle()));
         //若已存在则修改
         if (article.getId() != null && articleMapper.selectByPrimaryKey(article.getId()) != null) {
             article.setUpdateDate(new Date());
@@ -80,12 +85,25 @@ public class ArticleService {
         ArticleCategoryExample example = new ArticleCategoryExample();
         example.createCriteria().andArticleIdEqualTo(article.getId());
         articleCategoryService.deleteByExample(example);
+        ArticleCategoryExample example1 = new ArticleCategoryExample();
+        example1.createCriteria().andArticleIdEqualTo(article.getId());
+        List<ArticleCategory> articleCategories = articleCategoryService.select(example1);
+        if(articleCategories!=null && articleCategories.size()>0){
+            for (ArticleCategory articleCategory: articleCategories){
+                Category category = categoryService.selectById(articleCategory.getCategoryId());
+                category.setArticleNum(category.getArticleNum()-1);
+                categoryService.update(category);
+            }
+        }
         if (cIds != null && cIds.size() > 0) {
             for (Integer id : cIds) {
                 ArticleCategory articleCategory = new ArticleCategory();
                 articleCategory.setArticleId(article.getId());
                 articleCategory.setCategoryId(id);
                 articleCategoryService.add(articleCategory);
+                Category category = categoryService.selectById(id);
+                category.setArticleNum(category.getArticleNum()+1);
+                categoryService.update(category);
             }
         }
         return article;
@@ -96,6 +114,8 @@ public class ArticleService {
      * @param article
      */
     public Article draft(Article article, List<Integer> cIds) {
+        article.setContent(sensitiveService.filter(article.getContent()));
+        article.setTitle(sensitiveService.filter(article.getTitle()));
         article.setStatus(ArticleEnum.DRAFT.getVal());
         article.setIsPrivate(false);
         article.setIsComment(true);
@@ -150,4 +170,12 @@ public class ArticleService {
         articleMapper.updateByPrimaryKeySelective(article);
         return article;
     }
+    @CachePut(key = "'article:'+#id.toString()")
+    public void updateCommentNum(Integer id, Integer commentNum){
+        Article article = new Article();
+        article.setId(id);
+        article.setCommentNum(commentNum);
+        articleMapper.updateByPrimaryKeySelective(article);
+    }
+
 }

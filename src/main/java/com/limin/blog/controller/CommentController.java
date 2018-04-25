@@ -9,6 +9,7 @@ import com.limin.blog.model.CommentExample;
 import com.limin.blog.model.User;
 import com.limin.blog.service.ArticleService;
 import com.limin.blog.service.CommentService;
+import com.limin.blog.service.SensitiveService;
 import com.limin.blog.service.UserService;
 import com.limin.blog.util.ResponseUtil;
 import com.limin.blog.vo.CommentVo;
@@ -33,6 +34,9 @@ public class CommentController {
 
     @Autowired
     private ArticleService articleService;
+
+    @Autowired
+    private SensitiveService sensitiveService;
 
     @ResponseBody
     @GetMapping(value = "list")
@@ -86,7 +90,7 @@ public class CommentController {
         User user = (User) session.getAttribute(BlogConst.LOGIN_SESSION_KEY);
         Comment comment = new Comment();
         comment.setArticleId(aid);
-        comment.setContent(content);
+        comment.setContent(sensitiveService.filter(content));
         comment.setUserId(user.getId());
         comment.setToUserId(articleService.selectById(aid).getUserId());
         comment.setPid(pid);
@@ -106,7 +110,7 @@ public class CommentController {
         Comment comment = commentService.selectById(cid);
         Comment quickcomment = new Comment();
         quickcomment.setUserId(user.getId());
-        quickcomment.setContent(content);
+        quickcomment.setContent(sensitiveService.filter(content));
         quickcomment.setToUserId(comment.getToUserId());
         quickcomment.setArticleId(comment.getArticleId());
         if (comment.getPid() == -1) {

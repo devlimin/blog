@@ -19,9 +19,10 @@ public class MessageService {
     private MessageMapper messageMapper;
 
     @Autowired
-    private UserMapper userMapper;
+    private SensitiveService sensitiveService;
 
     public Message add(Message message){
+        message.setContent(sensitiveService.filter(message.getContent()));
         messageMapper.insertSelective(message);
         return message;
     }
@@ -49,9 +50,5 @@ public class MessageService {
                 .andToUserIdEqualTo(userId).andIsReadEqualTo(MessageEnum.UNREAD.getVal());
         long count = messageMapper.countByExample(example);
         return count;
-    }
-
-    public void update(Message message) {
-        messageMapper.updateByPrimaryKeySelective(message);
     }
 }
