@@ -1,5 +1,5 @@
 $(function () {
-    layui.use(['form','element', 'layer'], function(){
+    layui.use(['layer'], function(){
         var layer = layui.layer;
         var index;
         $("#letter-btn").click(function () {

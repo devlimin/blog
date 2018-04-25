@@ -17,11 +17,11 @@ public enum ResponseEnum {
         this.val = val;
     }
 
-    public String getValue() {
+    public String getMsg() {
         return msg;
     }
 
-    public void setValue(String value) {
-        this.msg = value;
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 }

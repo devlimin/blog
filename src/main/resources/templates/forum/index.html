@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/head}">
+<head>
+    <title>博客</title>
+    <link th:href="@{/css/forum/index.css}" rel="stylesheet">
+    <script th:src="@{/js/forum/index.js}"></script>
+</head>
+<body>
+<div layout:fragment="content">
+    <div id="main">
+        <div id="top">
+            <div id="theme">
+                <a th:class="${themeId}==null?'theme active':'theme'" th:href="@{/forum/}">全部</a>
+                <a th:each="theme : ${themes}" th:class="${themeId}==${theme.id}?'theme active':'theme'" th:href="@{/forum/{id}(id=${theme.id})}" th:text="${theme.name}"></a>
+            </div>
+            <a style="float:right;text-decoration: none" th:href="@{/forum/man/post}" class="layui-btn">我要发布</a>
+            <div style="clear: both"></div>
+        </div>
+        <div id="topics">
+            <div class="topic" th:each="topic : ${topics.list}">
+                <a th:href="@{/article/list/{id}(id=${topic.userId})}">
+                    <img class="headImg" th:src="@{${topic.userHeadUrl}}"></a>
+                <div>
+                    <a class="title" style="text-decoration: none" th:href="@{/forum/topic/{id}(id=${topic.id})}" th:text="${topic.title}"></a>
+                    <a style="text-decoration: none;cursor: pointer;" th:href="@{/article/list/{id}(id=${topic.userId})}" th:text="${topic.userName}"></a>
+                    <span th:text="${#dates.format(topic.releaseDate,'yyyy.MM.dd hh:mm:ss')}"></span>
+                    <a style="text-decoration: none;cursor: pointer;" th:href="@{/forum/{id}(id=${topic.themeId})}" th:text="${topic.themeName}"></a>
+                    <span style="float: right;margin-left: 10px;" th:text="${'评论数'+topic.commentNum}"></span>
+                    <span style="float: right" th:text="${'阅读数'+topic.readNum}"></span>
+                </div>
+                <div style="clear: both;"></div>
+                <hr>
+            </div>
+            <div th:if="${topics.total}==0" style="text-align: center;">该板块暂无帖子</div>
+        </div>
+        <input type="hidden" id="pageNum" th:value="${topics.pageNum}"></input>
+        <input type="hidden" id="pageSize" th:value="${topics.pageSize}"></input>
+        <input type="hidden" id="themeId" th:value="${themeId}==null?'':${themeId}">
+        <input type="hidden" id="total" th:value="${topics.total}"></input>
+        <div class="text-center" id="page"></div>
+    </div>
+</div>
+</body>
+</html>

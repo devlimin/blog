@@ -27,7 +27,7 @@ public class CategoryController {
     public ModelAndView list(HttpSession session){
         User user = (User) session.getAttribute(BlogConst.LOGIN_SESSION_KEY);
         CategoryExample categoryExample = new CategoryExample();
-        categoryExample.createCriteria().andUserIdEqualTo(user.getId()).andStatusEqualTo(CategoryEnum.DELETED.getVal());
+        categoryExample.createCriteria().andUserIdEqualTo(user.getId()).andStatusEqualTo(CategoryEnum.PUBLISHED.getVal());
         List<Category> categories = categoryService.selectByExample(categoryExample);
         ModelAndView mv = new ModelAndView("category/list");
         mv.addObject("categories", categories);

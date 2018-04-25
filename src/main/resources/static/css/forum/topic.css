@@ -1,0 +1,37 @@
+#main{
+    width: 800px;
+    margin: auto;
+}
+#topic{
+    background-color: white;
+    margin-bottom: 20px;
+}
+#top{
+    padding:15px;
+}
+#reply {
+    background-color: white;
+    padding: 15px;
+}
+#replies{
+    margin-top: 20px;
+}
+.reply{
+    clear: both;
+}
+.reply>div:nth-child(2){
+    float: right;width: 710px;
+    margin-bottom: 20px;
+}
+.reply-user-img{
+    float: left;width: 50px;height: 50px;border-radius: 50%;margin-top: 10px;
+}
+.reply-user-name{
+    display: block;
+    text-decoration: none;
+    cursor: pointer;
+    color: #25cce8;
+}
+.reply-content{
+    word-wrap:break-word;word-break:break-all;
+}

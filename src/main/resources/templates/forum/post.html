@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/head}">
+<head>
+    <title>博客</title>
+    <link th:href="@{/css/forum/post.css}" rel="stylesheet">
+    <script th:src="@{/wangeditor/release/wangEditor.min.js}"></script>
+    <script th:src="@{/js/forum/post.js}"></script>
+</head>
+<body>
+<div layout:fragment="content">
+    <form id="main" class="layui-form">
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="width: 100px;">论坛板块：</label>
+            <div class="layui-input-block" style="padding-right: 10px; width: 300px;">
+                <select name="themeId" lay-verify="forum_theme">
+                    <option value=""></option>
+                    <option th:each="theme : ${themes}"
+                            th:value="${theme.id}" th:text="${theme.name}"
+                            th:selected="(${topic}!=null) and (${topic.themeId} == ${theme.id}) ? 'selected'">
+                    </option>
+                </select>
+            </div>
+        </div>
+        <div style="margin-bottom: 20px;">
+            <input type="text" name="title" th:value="${topic}?${topic.title}"
+                   lay-verify="forum_title" placeholder="请输入标题" autocomplete="off" class="layui-input">
+        </div>
+        <div>
+            <div id="editor">
+                [(${topic}?${topic.content})]
+            </div>
+            <textarea name="content" style="display: none" id="content" lay-verify="forum_content">
+			</textarea>
+        </div>
+
+        <div class="layui-form-item" style="margin-top: 20px;">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="publish">发布</button>
+                <a th:href="@{/forum/}" style="text-decoration: none" class="layui-btn layui-btn-primary">取消</a>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>

@@ -1,11 +1,11 @@
 package com.limin.blog.enums;
 
-public enum CategoryEnum {
-    DELETED(-1,"删除"),PUBLISHED(0,"可用");
+public enum ForumTopicEnum {
+    DELETED(-1,"删除"),PUBLISHED(0,"发表");
 
     private Integer val;
     private String msg;
-    private CategoryEnum(Integer val, String value){
+    private ForumTopicEnum(Integer val, String value){
         this.val = val;
         this.msg = value;
     }

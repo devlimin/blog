@@ -1,0 +1,46 @@
+#main{
+    background-color: white;
+    width: 800px;
+    margin: auto;
+}
+#top{
+    margin-top: 10px;
+    margin-bottom: 20px;
+    background: #f5f5f5;
+    padding: 15px;
+}
+#theme{
+    width: 660px;
+    float: left;
+}
+div#theme>a {
+    text-decoration: none;
+    cursor: pointer;
+    padding: 5px;
+    font-size: 16px;
+    margin: 5px;
+    line-height: 1.7;
+}
+div#theme>a.active{
+    background-color: #009688;
+    color: white;
+}
+#topics{
+    padding:15px;
+}
+.topic{
+    margin-bottom: 20px;
+}
+.headImg{
+    width: 45px;height: 45px;border-radius: 50%;
+    float: left;
+}
+.topic>div:nth-child(2){
+    float: right;
+    width: 710px;
+}
+.title{
+    display: block;
+    text-decoration: none;
+    cursor: pointer;
+}

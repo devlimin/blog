@@ -51,8 +51,9 @@ $(function () {
     E.fullscreen.init('#editor');
     $("#editor .w-e-text-container").css("height","500");
 
-layui.use('form', function(){
+layui.use(['form','layer'], function(){
 	var form = layui.form;
+	var layer = layui.layer;
 	form.verify({
         aritcle_type: function(value, item) {
             console.log(value);
@@ -93,8 +94,11 @@ layui.use('form', function(){
                 if(resp.code == 0) {
                     window.location.href="/article/detail/"+resp.data;
                 } else {
-                    layer.msg(resp.msg);
+                    layer.msg(resp.msg, {icon: 5,anim: 6});
                 }
+            },
+            error:function () {
+                layer.msg("系统出现问题，请联系管理员", {icon: 5,anim: 6});
             }
         })
         return false;
