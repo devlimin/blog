@@ -26,7 +26,11 @@ $(function () {
         })
         $(document).on("click","#send",function () {
             var toUserId = $("#toUserId").val();
-            var content = $("#content").val();
+            var content = $.trim($("#content").val());
+            if(content=="") {
+                layer.msg("不能为空", {icon: 5,anim: 6});
+                return false;
+            }
             var data = "toUserId="+toUserId+"&content="+content;
             $.ajax({
                 url:"/message/man/add",
@@ -50,7 +54,7 @@ $(function () {
                     }
                 },
                 error:function (resp) {
-                    layer.msg(resp.msg, {icon: 5,anim: 6});
+                    layer.msg("系统出现问题，请联系管理员", {icon: 5,anim: 6});
                 }
             })
             layer.close(index);

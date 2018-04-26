@@ -46,7 +46,6 @@ public class MessageController {
                 } else {
                     user = userService.selectById(message.getUserId());
                 }
-
                 long count = messageService.conversationUnreadCount(login_user.getId(), message.getConversationId());
                 message.setContent(StringUtils.substring(message.getContent(), 0, 50));
                 MessageVo messageVo = new MessageVo();

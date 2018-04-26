@@ -11,7 +11,6 @@
     <div class="layui-tab layui-tab-brief" lay-filter="info">
         <ul class="layui-tab-title">
             <li class="layui-this" lay-id="basic">基本信息</li>
-            <li lay-id="email">邮箱更改</li>
             <li lay-id="pass">密码更改</li>
         </ul>
         <div class="layui-tab-content">
@@ -43,25 +42,15 @@
             </div>
             <div class="layui-tab-item">
                 <fieldset class="layui-elem-field">
-                    <legend>邮箱</legend>
-                    <div class="layui-field-box">
-                        <input type="text" th:value="${session.login_user.email}"
-                               class="layui-input" maxlength="30" style="display: inline-block;width: 300px;"/>
-                        <input type="button" value="保存" class="layui-btn email-save">
-                    </div>
-                </fieldset>
-            </div>
-            <div class="layui-tab-item">
-                <fieldset class="layui-elem-field">
                     <legend>密码</legend>
                     <div class="layui-field-box">
-                        <input type="text" name="name" value="" placeholder="原密码"
+                        <input type="text" id="sourcepass" placeholder="原密码"
                                class="layui-input" maxlength="30" style="width: 300px;margin-bottom: 5px"/>
-                        <input type="text" name="name" value="" placeholder="新密码"
+                        <input type="text" id="newpass" placeholder="新密码"
                                class="layui-input" maxlength="30" style="width: 300px;margin-bottom: 5px"/>
-                        <input type="text" name="name" value="" placeholder="重复新密码"
+                        <input type="text" id="repeatpass" placeholder="重复新密码"
                                class="layui-input" maxlength="30" style="width: 300px;margin-bottom: 5px"/>
-                        <input type="button" value="保存" class="layui-btn pass-save" style="margin-left: 240px">
+                        <input type="button" value="保存" id="passupdate" class="layui-btn pass-save" style="margin-left: 240px">
                     </div>
                 </fieldset>
             </div>

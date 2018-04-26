@@ -1,5 +1,6 @@
 target/
 src/test
+src/main/resources/static/headImg
 
 ### STS ###
 .apt_generated

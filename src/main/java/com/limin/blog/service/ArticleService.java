@@ -62,7 +62,6 @@ public class ArticleService {
      * 发表文章
      * @param article
      */
-    @CachePut(key = "'article:'+#article.id.toString()",condition = "#article.id!=null")
     public Article publish(Article article,  List<Integer> cIds) {
         article.setContent(sensitiveService.filter(article.getContent()));
         article.setTitle(sensitiveService.filter(article.getTitle()));
@@ -84,10 +83,7 @@ public class ArticleService {
         //修改文章个人分类
         ArticleCategoryExample example = new ArticleCategoryExample();
         example.createCriteria().andArticleIdEqualTo(article.getId());
-        articleCategoryService.deleteByExample(example);
-        ArticleCategoryExample example1 = new ArticleCategoryExample();
-        example1.createCriteria().andArticleIdEqualTo(article.getId());
-        List<ArticleCategory> articleCategories = articleCategoryService.select(example1);
+        List<ArticleCategory> articleCategories = articleCategoryService.select(example);
         if(articleCategories!=null && articleCategories.size()>0){
             for (ArticleCategory articleCategory: articleCategories){
                 Category category = categoryService.selectById(articleCategory.getCategoryId());
@@ -95,6 +91,7 @@ public class ArticleService {
                 categoryService.update(category);
             }
         }
+        articleCategoryService.deleteByExample(example);
         if (cIds != null && cIds.size() > 0) {
             for (Integer id : cIds) {
                 ArticleCategory articleCategory = new ArticleCategory();

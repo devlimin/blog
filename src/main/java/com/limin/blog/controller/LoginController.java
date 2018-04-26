@@ -29,7 +29,7 @@ public class LoginController {
     private TokenService tokenService;
 
     @GetMapping(value = {"","/"})
-    public ModelAndView account(@RequestParam(value = "action")String action){
+    public ModelAndView account(@RequestParam(value = "action",defaultValue = "login")String action){
         ModelAndView mv = new ModelAndView("user/login");
         mv.addObject("action",action);
         return mv;
@@ -66,6 +66,14 @@ public class LoginController {
         }
         User user = userService.regist(email, password);
         return ResponseUtil.success();
+    }
+
+    @GetMapping(value = "reginfo")
+    public ModelAndView info(){
+        ModelAndView mv = new ModelAndView("info");
+        mv.addObject("msg","我们给您发送了一封激活邮件，请查收。<br>" +
+                                                            "若没收到，请重新注册。");
+        return mv;
     }
 
     /**

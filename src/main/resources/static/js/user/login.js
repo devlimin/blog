@@ -96,7 +96,7 @@ layui.use(['form','element', 'layer'], function(){
 			type: "post",
 			success: function (resp) {
 				if(resp.code == 0) {
-                    window.location.href="/account"
+                    window.location.href="/account/reginfo"
 				} else {
 					layer.msg(resp.msg,{icon: 5,anim: 6});
 				}

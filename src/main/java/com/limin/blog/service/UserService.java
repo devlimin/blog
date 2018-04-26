@@ -10,10 +10,11 @@ import com.limin.blog.util.EncryptUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -50,7 +51,22 @@ public class UserService {
         user.setState(UserEnum.INITED.getVal());
         userMapper.insert(user);
         //发送激活邮件
-        emailHelper.sendEmail();
+        try {
+            final String content = "恭喜您注册成功，请点击下面的超链接激活账号<br />"
+                + "<a href='http://" + InetAddress.getLocalHost().getHostAddress()
+                    + ":8080/user/active?id="+user.getId()+"&code=" + EncryptUtil.MD5(user.getName()) + "'>"
+                    + "http://" + InetAddress.getLocalHost().getHostAddress()
+                    + ":8080/user/active?id="+user.getId()+"&code=" + EncryptUtil.MD5(user.getName())
+                    + "</a>";
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    emailHelper.sendEmail(user.getEmail(),"账号激活邮件",content);
+                }
+            }).start();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
         return user;
     }
 
@@ -67,11 +83,21 @@ public class UserService {
             throw new BizException(2,"邮箱不正确");
         }
         User user = uses.get(0);
+        if (user.getState().equals(UserEnum.INITED.getVal())){
+            throw new BizException(2,"该邮箱还未激活");
+        }
         if (!EncryptUtil.MD5(EncryptUtil.MD5(password + user.getSalt())).equals(user.getPassword())) {
             throw new BizException(2,"密码不正确");
         }
         return user;
     }
+
+    public boolean active(User user){
+        user.setState(UserEnum.ACTIVED.getVal());
+        userMapper.updateByPrimaryKeySelective(user);
+        return true;
+    }
+
     /**
      * 邮箱唯一检查
      * @param email 邮箱
@@ -79,10 +105,10 @@ public class UserService {
      */
     public boolean emailCheck(String email) {
         UserExample example =new UserExample();
-        example.createCriteria().andEmailEqualTo(email);
+        example.createCriteria().andEmailEqualTo(email).andStateEqualTo(UserEnum.ACTIVED.getVal());
         List<User> users = userMapper.selectByExample(example);
         if (users == null || users.size() >= 1) {
-            throw new BizException(2,"此邮箱已被注册");
+            throw new BizException(2,"此邮箱已被激活");
         }
         return true;
     }
@@ -115,6 +141,11 @@ public class UserService {
         User user= new User();
         user.setId(id);
         user.setHeadUrl(headUrl);
+        userMapper.updateByPrimaryKeySelective(user);
+    }
+    @CacheEvict(key = "'user:'+#id")
+    public void updatePass(User user, String newpass) {
+        user.setPassword(EncryptUtil.MD5(EncryptUtil.MD5(newpass+user.getSalt())));
         userMapper.updateByPrimaryKeySelective(user);
     }
 }

@@ -24,6 +24,11 @@ spring:
       max-idle: 8
       max-wait: 1000
       min-idle: 5
+  mail:
+    host: smtp.163.com
+    port: 25
+    username: stormlimin
+    password: limin123
 
 mybatis:
   configuration:
