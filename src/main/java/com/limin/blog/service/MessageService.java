@@ -46,8 +46,7 @@ public class MessageService {
 
     public long conversationUnreadCount(Integer userId,String conversationId){
         MessageExample example = new MessageExample();
-        example.createCriteria().andConversationIdEqualTo(conversationId)
-                .andToUserIdEqualTo(userId).andIsReadEqualTo(MessageEnum.UNREAD.getVal());
+        example.createCriteria().andConversationIdEqualTo(conversationId);
         long count = messageMapper.countByExample(example);
         return count;
     }

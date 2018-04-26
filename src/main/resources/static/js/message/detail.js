@@ -1,6 +1,24 @@
 $(function () {
-    layui.use(['layer'], function(){
+    layui.use(['layer','laypage'], function(){
         var layer = layui.layer;
+        var laypage = layui.laypage;
+        var pageNum = $("#pageNum").val();
+        if(parseInt($("#total").val())>parseInt($("#pageSize").val())){
+            laypage.render({
+                elem: 'page',
+                count: $("#total").val(),
+                limit: $("#pageSize").val(),
+                curr: pageNum,
+                layout: ['count', 'prev', 'page', 'next', 'skip'],
+                jump: function (obj, first) {
+                    if(!first) {
+                        var cid = $("#conversationId").val();
+                        window.location.href = "/message/man/detail?conversationId="+cid+"&pageNum="+obj.curr;
+                    }
+                }
+            });
+        }
+
         var index;
         $("#letter-btn").click(function () {
             index = layer.open({

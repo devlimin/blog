@@ -32,7 +32,7 @@
                             </div>
                             <div style="float: right;">
                                 <div th:text="${#dates.format(messageVo.message.releaseDate,'yyyy.MM.dd hh:mm:ss')}"></div>
-                                <div style="float: right" th:text="'共'+${messageVo.message.id}+'条对话'"></div>
+                                <div style="float: right" th:text="'共'+${messageVo.count}+'条对话'"></div>
                             </div>
 
                             <div style="clear: both"></div>
@@ -54,6 +54,11 @@
                         </a>
                     </div>
                 </div>
+                <input type="hidden" id="pageNum" th:value="${messageVos.pageNum}"/>
+                <input type="hidden" id="pageSize" th:value="${messageVos.pageSize}"/>
+                <input type="hidden" id="total" th:value="${messageVos.total}"/>
+                <input type="hidden" id="type" th:value="${type}"/>
+                <div class="text-center" id="page"></div>
             </div>
         </div>
     </div>

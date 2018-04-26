@@ -57,6 +57,8 @@ public class MessageController {
         }
         PageInfo messageVoPageInfo = new PageInfo();
         messageVoPageInfo.setList(messageVos);
+        messageVoPageInfo.setPageNum(conversations.getPageNum());
+        messageVoPageInfo.setPageSize(conversations.getPageSize());
         messageVoPageInfo.setTotal(conversations.getTotal());
         ModelAndView mv = new ModelAndView("message/conversation");
         mv.addObject("messageVos",messageVoPageInfo);
@@ -72,6 +74,10 @@ public class MessageController {
         ModelAndView mv = new ModelAndView("message/detail");
         User login_user = (User) session.getAttribute(BlogConst.LOGIN_SESSION_KEY);
         PageInfo<Message> messagePageInfo = messageService.conversationDetails(conversationId, pageNum, pageSize);
+        PageInfo<MessageVo> messageVoPageInfo = new PageInfo<>();
+        messageVoPageInfo.setPageNum(messagePageInfo.getPageNum());
+        messageVoPageInfo.setPageSize(messagePageInfo.getPageSize());
+        messageVoPageInfo.setTotal(messagePageInfo.getTotal());
         List<MessageVo> messageVos = new ArrayList<>();
         if (messagePageInfo.getList()!=null&& messagePageInfo.getList().size()>0) {
             for (Message message : messagePageInfo.getList()) {
@@ -83,11 +89,11 @@ public class MessageController {
                 messageVo.setMessage(message);
                 messageVo.setUser(user);
                 messageVos.add(messageVo);
-
             }
         }
-
-        mv.addObject("messageVos",messageVos);
+        messageVoPageInfo.setList(messageVos);
+        mv.addObject("messageVos",messageVoPageInfo);
+        mv.addObject("conversationId",conversationId);
         return mv;
     }
 
