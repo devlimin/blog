@@ -1,4 +1,3 @@
-
 layui.use(['layer','laypage'], function(){
 	var layer = layui.layer;
 	//新增分类

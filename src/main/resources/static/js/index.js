@@ -41,21 +41,23 @@ layui.use('laypage', function(){
                     })
                     html +='<div class="text-center" id="page"></div>';
                     $("#articles").html(html);
-                    laypage.render({
-                        elem: 'page',
-                        count: data.total,
-                        limit: pageSize,
-                        curr: pageNum,
-                        layout: ['count', 'prev', 'page', 'next', 'skip'],
-                        jump: function (obj, first) {
-                            if (!first) {
-                                page(obj.curr, pageSize)
+                    if (data.total>pageSize) {
+                        laypage.render({
+                            elem: 'page',
+                            count: data.total,
+                            limit: pageSize,
+                            curr: pageNum,
+                            layout: ['count', 'prev', 'page', 'next', 'skip'],
+                            jump: function (obj, first) {
+                                if (!first) {
+                                    page(obj.curr, pageSize)
+                                    $('html').animate({scrollTop: 0}, 100)
+                                }
                             }
-                        }
-                    });
-                    $('html').animate({ scrollTop: 0 }, 100)
-				} else{
-                    layer.msg("系统出现问题，请联系管理员", {icon: 5,anim: 6});
+                        });
+                    }
+                } else{
+                    layer.msg(resp.msg, {icon: 5,anim: 6});
 				}
             },
 			error:function (resp) {

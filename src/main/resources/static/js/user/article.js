@@ -63,18 +63,22 @@ $(function () {
 						}
                         $("#comment-list").html(html);
                         total = data.total;
-                        laypage.render({
-                            elem: 'page',
-                            count: data.total,
-                            limit: pageSize,
-                            curr: pageNum,
-                            layout: ['count', 'prev', 'page', 'next', 'skip'],
-                            jump: function (obj, first) {
-                                if (!first) {
-                                    page(obj.curr, pageSize)
+                        if(data.total>pageSize){
+                            laypage.render({
+                                elem: 'page',
+                                count: data.total,
+                                limit: pageSize,
+                                curr: pageNum,
+                                layout: ['count', 'prev', 'page', 'next', 'skip'],
+                                jump: function (obj, first) {
+                                    if (!first) {
+                                        page(obj.curr, pageSize)
+                                        $('html').animate({scrollTop: $("#comment").offset().top}, 100)
+                                    }
                                 }
-                            }
-                        });
+                            });
+
+						}
 					}
                 }
 			})

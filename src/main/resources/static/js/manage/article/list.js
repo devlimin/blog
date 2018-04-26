@@ -46,12 +46,12 @@ layui.use(['laypage','element'], function(){
                             '</div>' +
                             '<div class="right">'+
                             '<a href="/article/man/edit/'+article.id+'">编辑</a>';
-                        if(status == 0) {
-                            html += '<a class="iscomment">'+(article.isComment?'允许评论':'禁止评论')+'</a>' +
-                                '<a>置顶</a>' +
-                                '<a class="del">删除</a>';
-                        }
-                        if(status == 1) {
+                            if(status == 0) {
+                                html += '<a class="iscomment">'+(article.isComment?'允许评论':'禁止评论')+'</a>' +
+                                    '<a>置顶</a>' +
+                                    '<a class="del">删除</a>';
+                            }
+                            if(status == 1) {
                             html += '<a class="del">删除</a>';
                         }
                         if(status == 2) {
@@ -70,18 +70,21 @@ layui.use(['laypage','element'], function(){
                         }
                         html += '<div id="published" class="text-center"></div>';
                         $(".layui-tab-item:first-child").html(html);
-                        laypage.render({
-                            elem: 'published',
-                            count: data.total,
-                            limit: pageSize,
-                            curr: pageNum,
-                            layout: ['count', 'prev', 'page', 'next', 'skip'],
-                            jump: function(obj, first){
-                                if(!first){
-                                    page(0,obj.curr,pageSize)
+                        if (data.total>pageSize) {
+                            laypage.render({
+                                elem: 'published',
+                                count: data.total,
+                                limit: pageSize,
+                                curr: pageNum,
+                                layout: ['count', 'prev', 'page', 'next', 'skip'],
+                                jump: function (obj, first) {
+                                    if (!first) {
+                                        page(0, obj.curr, pageSize)
+                                        $('html').animate({scrollTop: 0}, 100)
+                                    }
                                 }
-                            }
-                        });
+                            });
+                        }
                     } else if(status == 1) {
                         if (data == null || data.list == null || data.list.length == 0) {
                             html = "<div style='text-align: center;margin-top: 40px;margin-bottom: 30px;'>该分类暂无数据</div>";
@@ -90,18 +93,21 @@ layui.use(['laypage','element'], function(){
                         }
                         html += '<div id="draft" class="text-center"></div>';
                         $(".layui-tab-item:nth-child(2)").html(html);
-                        laypage.render({
-                            elem: 'draft',
-                            count: data.total,
-                            limit: pageSize,
-                            curr: pageNum,
-                            layout: ['count', 'prev', 'page', 'next', 'skip'],
-                            jump: function(obj, first){
-                                if(!first){
-                                    page(1,obj.curr,pageSize)
+                        if (data.total>pageSize) {
+                            laypage.render({
+                                elem: 'draft',
+                                count: data.total,
+                                limit: pageSize,
+                                curr: pageNum,
+                                layout: ['count', 'prev', 'page', 'next', 'skip'],
+                                jump: function (obj, first) {
+                                    if (!first) {
+                                        page(1, obj.curr, pageSize)
+                                        $('html').animate({scrollTop: 0}, 100)
+                                    }
                                 }
-                            }
-                        });
+                            });
+                        }
                     } else if(status == 2) {
                         if (data == null || data.list == null || data.list.length == 0) {
                             html = "<div style='text-align: center;margin-top: 40px;margin-bottom: 30px;'>该分类暂无数据</div>";
@@ -110,23 +116,29 @@ layui.use(['laypage','element'], function(){
                         }
                         html += '<div id="garbage" class="text-center"></div>';
                         $(".layui-tab-item:nth-child(3)").html(html);
-                        laypage.render({
-                            elem: 'garbage',
-                            count: data.total,
-                            limit: pageSize,
-                            curr: pageNum,
-                            layout: ['count', 'prev', 'page', 'next', 'skip'],
-                            jump: function(obj, first){
-                                if(!first){
-                                    page(2,obj.curr,pageSize)
+                        if (data.total>pageSize) {
+                            laypage.render({
+                                elem: 'garbage',
+                                count: data.total,
+                                limit: pageSize,
+                                curr: pageNum,
+                                layout: ['count', 'prev', 'page', 'next', 'skip'],
+                                jump: function (obj, first) {
+                                    if (!first) {
+                                        page(2, obj.curr, pageSize)
+                                        $('html').animate({scrollTop: 0}, 100)
+                                    }
                                 }
-                            }
-                        });
+                            });
+                        }
                     }
+                }
+                else{
+                    layer.msg(resp.msg, {icon: 5,anim: 6});
                 }
             },
             error: function (resp) {
-
+                layer.msg("系统出现问题，请联系管理员", {icon: 5,anim: 6});
             }
         })
     }

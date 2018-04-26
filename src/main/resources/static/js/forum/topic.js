@@ -43,7 +43,8 @@ $(function () {
                                 layout: ['count', 'prev', 'page', 'next', 'skip'],
                                 jump: function (obj, first) {
                                     if (!first) {
-                                        page(obj.curr, pageSize)
+                                        page(obj.curr, pageSize);
+                                        $('html').animate({scrollTop: $("#reply").offset().top}, 100)
                                     }
                                 }
                             });
@@ -80,7 +81,7 @@ $(function () {
                                             '<a class="reply-user-name">'+reply.userName+'</a>' +
                                             '<p class="reply-content">'+reply.content+'</p>' +
                                             '<span>发表于'+new Date(reply.releaseDate).format()+'</span>' +
-                                            '<span class="pull-right">'+(total+1)+'楼</span>' +
+                                            '<span class="pull-right">'+(++total)+'楼</span>' +
                                         '</div>' +
                                         '<hr>' +
                                     '</div>'
