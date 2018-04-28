@@ -3,7 +3,6 @@ package com.limin.blog.controller;
 import com.github.pagehelper.PageInfo;
 import com.limin.blog.constant.BlogConst;
 import com.limin.blog.enums.EntityEnum;
-import com.limin.blog.enums.FollowEnum;
 import com.limin.blog.enums.ForumTopicEnum;
 import com.limin.blog.model.*;
 import com.limin.blog.service.FollowService;
@@ -49,10 +48,18 @@ public class ForumController {
     }
 
     @GetMapping(value = "topic/{topicId}")
-    public ModelAndView topic(@PathVariable(value = "topicId")Integer topicId){
+    public ModelAndView topic(@PathVariable(value = "topicId")Integer topicId,
+                              HttpSession session){
         ModelAndView mv = new ModelAndView("forum/topic");
         ForumTopic forumTopic = forumService.selectTopicById(topicId);
         mv.addObject("topic",forumTopic);
+        User user = (User) session.getAttribute(BlogConst.LOGIN_SESSION_KEY);
+        if (user!=null){
+            Follow follow = followService.select(user.getId(), EntityEnum.USER.getVal(), forumTopic.getUserId());
+            mv.addObject("follow",follow);
+            Follow mark = followService.select(user.getId(),EntityEnum.TOPIC.getVal(),topicId);
+            mv.addObject("mark",mark);
+        }
         return mv;
     }
 
@@ -71,9 +78,11 @@ public class ForumController {
                             HttpSession session){
         User user = (User) session.getAttribute(BlogConst.LOGIN_SESSION_KEY);
         ForumTopic forumTopic = forumService.selectTopicById(topicId);
-        Follow follow = followService.select(forumTopic.getUserId(), EntityEnum.USER.getVal(), user.getId());
-        if (follow!=null&&follow.getStatus().equals(FollowEnum.FORBIDDEN.getVal())) {
+        if(followService.blackcheck(forumTopic.getUserId(),user.getId())){
             return ResponseUtil.error(2,"你已被对方拉入黑名单");
+        }
+        if (followService.blackcheck(user.getId(),forumTopic.getUserId())) {
+            return ResponseUtil.error(2,"对方已被你拉入黑名单");
         }
         forumTopic.setCommentNum(forumTopic.getCommentNum()+1);
         forumService.updateTopicByIdSelective(forumTopic);

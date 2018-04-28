@@ -39,8 +39,8 @@
 								th:if="(${session.login_user}==null)or((${session.login_user.id}!=${user.id})and((${follow}!=null)and(${follow.status}!='2')))"
 								class="layui-btn layui-btn-sm">私信</button>
 						<button id="black" th:if="(${session.login_user}==null)or(${session.login_user.id}!=${user.id})"
-								th:class="(${follow}==null)or(${follow.status}=='2')?'layui-btn layui-btn-sm black':'layui-btn layui-btn-primary layui-btn-sm white'"
-								th:text="(${follow}==null)or(${follow.status}=='2')?'已拉黑':'黑名单'"></button>
+								th:class="(${follow}!=null)and(${follow.status}=='2')?'layui-btn layui-btn-sm black':'layui-btn layui-btn-primary layui-btn-sm white'"
+								th:text="(${follow}!=null)and(${follow.status}=='2')?'已拉黑':'黑名单'"></button>
 						<input type="hidden" id="toUserId" th:value="${user.id}">
 						<input type="hidden" id="loginUserId" th:value="${session.login_user}!=null?${session.login_user.id}:''">
 					</div>

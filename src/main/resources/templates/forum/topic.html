@@ -12,26 +12,41 @@
     <div id="main">
         <div id="topic">
             <div id="top">
-                <span style="display: block;margin-bottom: 10px;font-size: 20px;" th:text="${topic.title}"></span>
-                <div style="float: left;">
-                    <a th:href="@{/article/list/{id}(id=${topic.userId})}">
-                        <img style="width: 50px;height: 50px;border-radius: 50%;" th:src="@{${topic.userHeadUrl}}"></a>
+                <span style="font-size:36px;margin-top: 20px;margin-bottom: 10px;word-wrap:break-word;word-break:break-all;float: left;width: 690px;" th:text="${topic.title}"></span>
+                <button id="mark" th:if="(${session.login_user}==null)or((${session.login_user.id}!=${topic.userId})and((${follow}!=null)and(${follow.status}!='2')))" style="margin-top: 25px;"
+                        th:class="(${mark}==null)or(${mark.status}=='0')?'unMark layui-btn layui-btn-primary pull-right':'Mark layui-btn pull-right'"
+                        th:text="(${mark}==null)or(${mark.status}=='0')?'收藏':'已收藏'"></button>
+                <div style="clear: both;">
+                    <div style="float: left;">
+                        <a th:href="@{/article/list/{id}(id=${topic.userId})}">
+                            <img style="width: 50px;height: 50px;border-radius: 50%;" th:src="@{${topic.userHeadUrl}}"></a>
+                    </div>
+                    <div style="float: right;width: 720px;">
+                        <div>
+                            <span style="" th:text="${topic.userName}"></span>
+                            <input type="hidden" id="toUserId" th:value="${topic.userId}">
+                            <input type="hidden" id="loginUserId" th:value="${session.login_user}!=null?${session.login_user.id}:''">
+                            <button th:if="(${session.login_user}==null)or((${session.login_user.id}!=${topic.userId})and((${follow}!=null)and(${follow.status}!='2')))" id="follow"
+                                    th:class="(${follow}==null)or(${follow.status}=='0')?'unfollow layui-btn layui-btn-primary layui-btn-xs':'follow layui-btn layui-btn-xs'"
+                                    th:text="(${follow}==null)or(${follow.status}=='0')?'关注':'已关注'"></button>
+                            <button th:if="(${session.login_user}==null)or((${session.login_user.id}!=${topic.userId})and((${follow}!=null)and(${follow.status}!='2')))"
+                                    class="layui-btn layui-btn-xs" id="mail">私信</button>
+                            <button id="black" th:if="(${session.login_user}==null)or(${session.login_user.id}!=${topic.userId})"
+                                    th:class="(${follow}!=null)and(${follow.status}=='2')?'layui-btn layui-btn-xs black':'layui-btn layui-btn-primary layui-btn-xs white'"
+                                    th:text="(${follow}!=null)and(${follow.status}=='2')?'已拉黑':'黑名单'"></button>
+                        </div>
+                        发表于<span th:text="${#dates.format(topic.releaseDate,'yyyy.MM.dd hh:mm:ss')}"></span>
+                        <span style="float: right;">阅读数：[[${topic.readNum}]]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;回复数：[[${topic.commentNum}]]</span>
+                    </div>
+                    <div style="clear: both;"></div>
                 </div>
-                <div style="float: right;width: 710px;">
-                    <span style="display: block;margin-bottom: 10px;" th:text="${topic.userName}"></span>
-                    发表于<span th:text="${#dates.format(topic.releaseDate,'yyyy.MM.dd hh:mm:ss')}"></span>
-                    <span style="float: right;">阅读数：[[${topic.readNum}]]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;回复数：[[${topic.commentNum}]]</span>
-                </div>
-                <div style="clear: both;"></div>
             </div>
             <hr style="margin: 0px;">
-            <div id="content" style="padding: 15px;" th:utext="${topic.content}"></div>
+            <div id="content" style="padding: 20px 30px;" th:utext="${topic.content}"></div>
         </div>
         <div id="reply">
-            <div th:if="${session.login_user}!=null">
-                <textarea class="layui-textarea"></textarea>
-                <button id="reply-btn" class="layui-btn pull-right" style="margin-top: 15px;">回帖</button>
-            </div>
+            <textarea class="layui-textarea"></textarea>
+            <button id="reply-btn" class="layui-btn pull-right" style="margin-top: 15px;">回帖</button>
             <div style="clear:both;"></div>
             <input type="hidden" id="topicId" th:value="${topic.id}">
             <div id="replies">

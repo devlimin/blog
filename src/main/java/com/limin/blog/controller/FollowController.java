@@ -6,9 +6,11 @@ import com.limin.blog.enums.EntityEnum;
 import com.limin.blog.enums.FollowEnum;
 import com.limin.blog.model.Article;
 import com.limin.blog.model.Follow;
+import com.limin.blog.model.ForumTopic;
 import com.limin.blog.model.User;
 import com.limin.blog.service.ArticleService;
 import com.limin.blog.service.FollowService;
+import com.limin.blog.service.ForumService;
 import com.limin.blog.service.UserService;
 import com.limin.blog.util.ResponseUtil;
 import com.limin.blog.vo.FollowVo;
@@ -35,6 +37,9 @@ public class FollowController {
     private UserService userService;
     @Autowired
     private ArticleService articleService;
+    @Autowired
+    private ForumService forumService;
+
 
     @ResponseBody
     @PostMapping(value = "man/followuser")
@@ -159,10 +164,18 @@ public class FollowController {
     public Response followArticle(HttpSession session,
                                @RequestParam(value = "entityId")Integer entityId){
         User user = (User) session.getAttribute(BlogConst.LOGIN_SESSION_KEY);
-        Follow follow = followService.select(articleService.selectById(entityId).getUserId(), EntityEnum.USER.getVal(), user.getId());
-        if (follow!=null&&follow.getStatus().equals(FollowEnum.FORBIDDEN.getVal())) {
-            return ResponseUtil.error(2,"你已被对方拉入黑名单");
+        Article article = articleService.selectById(entityId);
+        if (article!=null){
+            if(followService.blackcheck(article.getUserId(),user.getId())){
+                return ResponseUtil.error(2,"你已被对方拉入黑名单");
+            }
+            if (followService.blackcheck(user.getId(),article.getUserId())) {
+                return ResponseUtil.error(2,"对方已被你拉入黑名单");
+            }
+        } else {
+            return ResponseUtil.error(2,"没有这篇帖子");
         }
+
         followService.follow(user.getId(), EntityEnum.ARITCLE.getVal(),entityId);
         return ResponseUtil.success();
     }
@@ -173,6 +186,36 @@ public class FollowController {
                                   @RequestParam(value = "entityId")Integer entityId){
         User user = (User) session.getAttribute(BlogConst.LOGIN_SESSION_KEY);
         followService.unfollow(user.getId(), EntityEnum.ARITCLE.getVal(),entityId);
+        return ResponseUtil.success();
+    }
+
+    @ResponseBody
+    @PostMapping(value = "man/markTopic")
+    public Response markTopic(HttpSession session,
+                                  @RequestParam(value = "entityId")Integer entityId){
+        User user = (User) session.getAttribute(BlogConst.LOGIN_SESSION_KEY);
+        ForumTopic forumTopic = forumService.selectTopicById(entityId);
+        if (forumTopic!=null) {
+            if(followService.blackcheck(forumTopic.getUserId(),user.getId())){
+                return ResponseUtil.error(2,"你已被对方拉入黑名单");
+            }
+            if(followService.blackcheck(user.getId(),forumTopic.getUserId())){
+                return ResponseUtil.error(2,"你已被对方拉入黑名单");
+            }
+        } else{
+            return ResponseUtil.error(2,"没有这篇帖子");
+        }
+
+        followService.follow(user.getId(), EntityEnum.TOPIC.getVal(),entityId);
+        return ResponseUtil.success();
+    }
+
+    @ResponseBody
+    @PostMapping(value = "man/unmarkTopic")
+    public Response unmarkTopic(HttpSession session,
+                                    @RequestParam(value = "entityId")Integer entityId){
+        User user = (User) session.getAttribute(BlogConst.LOGIN_SESSION_KEY);
+        followService.unfollow(user.getId(), EntityEnum.TOPIC.getVal(),entityId);
         return ResponseUtil.success();
     }
 

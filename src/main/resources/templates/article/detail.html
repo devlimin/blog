@@ -31,8 +31,8 @@
 							<button th:if="(${session.login_user}==null)or((${session.login_user.id}!=${user.id})and((${follow}!=null)and(${follow.status}!='2')))"
 									class="layui-btn layui-btn-xs" id="mail">私信</button>
 							<button id="black" th:if="(${session.login_user}==null)or(${session.login_user.id}!=${user.id})"
-									th:class="(${follow}==null)or(${follow.status}=='2')?'layui-btn layui-btn-xs black':'layui-btn layui-btn-primary layui-btn-xs white'"
-									th:text="(${follow}==null)or(${follow.status}=='2')?'已拉黑':'黑名单'"></button>
+									th:class="(${follow}!=null)and(${follow.status}=='2')?'layui-btn layui-btn-xs black':'layui-btn layui-btn-primary layui-btn-xs white'"
+									th:text="(${follow}!=null)and(${follow.status}=='2')?'已拉黑':'黑名单'"></button>
 						</div>
 						<span th:text="${#dates.format(article.releaseDate,'yyyy.MM.dd hh:mm:ss')}"></span>
 						<span>分类：

@@ -2,10 +2,7 @@ package com.limin.blog.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.limin.blog.constant.BlogConst;
-import com.limin.blog.enums.EntityEnum;
-import com.limin.blog.enums.FollowEnum;
 import com.limin.blog.enums.MessageEnum;
-import com.limin.blog.model.Follow;
 import com.limin.blog.model.Message;
 import com.limin.blog.model.User;
 import com.limin.blog.service.FollowService;
@@ -112,9 +109,11 @@ public class MessageController {
                         @RequestParam(value = "content")String content,
                         HttpSession session){
         User login_user = (User) session.getAttribute(BlogConst.LOGIN_SESSION_KEY);
-        Follow follow = followService.select(toUserId, EntityEnum.USER.getVal(), login_user.getId());
-        if (follow!=null&&follow.getStatus().equals(FollowEnum.FORBIDDEN.getVal())) {
+        if(followService.blackcheck(toUserId,login_user.getId())){
             return ResponseUtil.error(2,"你已被对方拉入黑名单");
+        }
+        if (followService.blackcheck(login_user.getId(),toUserId)) {
+            return ResponseUtil.error(2,"对方已被你拉入黑名单");
         }
         Message message = new Message();
         message.setUserId(login_user.getId());

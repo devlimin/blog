@@ -3,9 +3,10 @@ package com.limin.blog.controller;
 import com.github.pagehelper.PageInfo;
 import com.limin.blog.constant.BlogConst;
 import com.limin.blog.enums.CommentEnum;
-import com.limin.blog.enums.EntityEnum;
-import com.limin.blog.enums.FollowEnum;
-import com.limin.blog.model.*;
+import com.limin.blog.model.Article;
+import com.limin.blog.model.Comment;
+import com.limin.blog.model.CommentExample;
+import com.limin.blog.model.User;
 import com.limin.blog.service.*;
 import com.limin.blog.util.ResponseUtil;
 import com.limin.blog.vo.CommentVo;
@@ -87,11 +88,20 @@ public class CommentController {
             return ResponseUtil.error(2,"该文章已禁止评论");
         }
         User user = (User) session.getAttribute(BlogConst.LOGIN_SESSION_KEY);
-        Follow follow = followService.select(article.getUserId(), EntityEnum.USER.getVal(), user.getId());
-        if (follow!=null&&follow.getStatus().equals(FollowEnum.FORBIDDEN.getVal())) {
+        if(followService.blackcheck(article.getUserId(),user.getId())){
             return ResponseUtil.error(2,"你已被对方拉入黑名单");
         }
-        Comment comment = new Comment();
+        if (followService.blackcheck(user.getId(),article.getUserId())) {
+            return ResponseUtil.error(2,"对方已被你拉入黑名单");
+        }
+        Comment comment = commentService.selectById(cid);
+        if(followService.blackcheck(comment.getUserId(),user.getId())){
+            return ResponseUtil.error(2,"你已被对方拉入黑名单");
+        }
+        if (followService.blackcheck(user.getId(),comment.getUserId())) {
+            return ResponseUtil.error(2,"对方已被你拉入黑名单");
+        }
+        comment = new Comment();
         comment.setArticleId(aid);
         comment.setContent(sensitiveService.filter(content));
         comment.setUserId(user.getId());
@@ -111,9 +121,11 @@ public class CommentController {
                                  HttpSession session){
         User user = (User) session.getAttribute(BlogConst.LOGIN_SESSION_KEY);
         Comment comment = commentService.selectById(cid);
-        Follow follow = followService.select(comment.getUserId(), EntityEnum.USER.getVal(), user.getId());
-        if (follow!=null&&follow.getStatus().equals(FollowEnum.FORBIDDEN.getVal())) {
+        if(followService.blackcheck(comment.getUserId(),user.getId())){
             return ResponseUtil.error(2,"你已被对方拉入黑名单");
+        }
+        if (followService.blackcheck(user.getId(),comment.getUserId())) {
+            return ResponseUtil.error(2,"对方已被你拉入黑名单");
         }
         Comment quickcomment = new Comment();
         quickcomment.setUserId(user.getId());

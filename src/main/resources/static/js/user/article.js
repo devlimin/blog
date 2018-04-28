@@ -297,10 +297,15 @@ $(function () {
     })
 
 $(document).on("click",".comment-input a:nth-child(2)",function() {
+    var loginUserId= $("#loginUserId").val();
+    if (loginUserId=="") {
+        window.location.href="/account?action=login&next="+window.location.pathname;
+        return false;
+    }
 	if($(this).parent().parent().hasClass("reply")) {
 		var comment = $(".reply .comment-input textarea").val();
 		if($.trim(comment) == '') {
-			alert("回复不能为空")
+            layer.msg("回复不能为空", {icon: 5,anim: 6});
 			return false;
 		}
 		reply = 0;
@@ -340,11 +345,12 @@ $(document).on("click",".comment-input a:nth-child(2)",function() {
             }
 		})
 
-	} else {
+	}
+	else {
 		var comment = $(".comment-input textarea").val();
 		$(".comment-input textarea").val("");
 		if($.trim(comment) == '') {
-			alert("评论不能为空")
+            layer.msg("回复不能为空", {icon: 5,anim: 6});
 			return false;
 		}
 		reply = 0;
