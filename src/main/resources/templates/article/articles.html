@@ -31,12 +31,18 @@
 					<img th:src="@{${user.headUrl}}" style="border-radius: 50%;">
 					<div>
 						<span th:text="${user.name}"></span>
-						<div th:if="${user.id}!=${session.login_user.id}">
-							<button  class="btn btn-default">关注</button>
-							<input th:if="${user.id}!=${session.login_user.id}" type="hidden" id="toUserId" th:value="${user.id}">
-							<button th:if="${user.id}!=${session.login_user.id}" class="btn btn-default" id="mail">私信</button>
-						</div>
-						<div th:if="${user.id}==${session.login_user.id}" style="margin-bottom: 20px;"></div>
+						<button id="follow"
+								th:if="(${session.login_user}==null)or((${session.login_user.id}!=${user.id})and((${follow}!=null)and(${follow.status}!='2')))"
+								th:class="(${follow}==null)or(${follow.status}=='0')?'unfollow layui-btn layui-btn-sm layui-btn-primary':'follow layui-btn layui-btn-sm'"
+								th:text="(${follow}==null)or(${follow.status}=='0')?'关注':'已关注'"></button>
+						<button id="mail"
+								th:if="(${session.login_user}==null)or((${session.login_user.id}!=${user.id})and((${follow}!=null)and(${follow.status}!='2')))"
+								class="layui-btn layui-btn-sm">私信</button>
+						<button id="black" th:if="(${session.login_user}==null)or(${session.login_user.id}!=${user.id})"
+								th:class="(${follow}==null)or(${follow.status}=='2')?'layui-btn layui-btn-sm black':'layui-btn layui-btn-primary layui-btn-sm white'"
+								th:text="(${follow}==null)or(${follow.status}=='2')?'已拉黑':'黑名单'"></button>
+						<input type="hidden" id="toUserId" th:value="${user.id}">
+						<input type="hidden" id="loginUserId" th:value="${session.login_user}!=null?${session.login_user.id}:''">
 					</div>
 				</div>
 				<div id="num">

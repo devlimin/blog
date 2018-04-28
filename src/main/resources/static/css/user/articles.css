@@ -63,16 +63,14 @@
 	padding: 20px;
 }
 #header > img{
-	width: 48px; height: 48px;float: left;margin-right: 20px;margin-left: 10px;
+	width: 48px; height: 48px;float: left;margin-right: 20px;
 }
 #header div span{
 	display: block;margin-bottom: 5px;
 }
+
 #header div span{
 	font-weight: 700;
-}
-#header div button{
-	border-color: #006ec6;color: #006ec6; width: 64px;
 }
 #num{
 	border-top: 1px solid #e6e6e6;

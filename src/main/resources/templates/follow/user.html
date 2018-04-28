@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/head}">
+<head>
+    <title>关注</title>
+    <link th:href="@{/css/message/conversation.css}" rel="stylesheet">
+    <script th:src="@{/js/follow/user.js}"></script>
+</head>
+<body>
+<div layout:fragment="content">
+    <div id="main">
+        <div class="layui-tab layui-tab-brief">
+            <ul class="layui-tab-title">
+                <li th:class="${type}=='ifollow'?'layui-this':''">
+                    <a style="text-decoration: none;cursor: pointer" th:href="@{/follow/man/ifollow}">我关注的人</a>
+                </li>
+                <li th:class="${type}=='followi'?'layui-this':''">
+                    <a style="text-decoration: none;cursor: pointer" th:href="@{/follow/man/followi}">关注我的人</a>
+                </li>
+                <li th:class="${type}=='iblack'?'layui-this':''">
+                    <a style="text-decoration: none;cursor: pointer" th:href="@{/follow/man/iblack}">我拉黑的人</a>
+                </li>
+            </ul>
+            <div class="layui-tab-content">
+                <div class="layui-tab-item layui-show">
+                    <div class="" th:each="followVo : ${pageInfo.list}">
+                        <a style="margin-top:10px;margin-right: 10px;float: left;" th:href="@{/article/list/{id}(id=${followVo.user.id})}">
+                            <img style="width: 50px;height: 50px;border-radius: 50%;display: inline-block;" th:src="@{${followVo.user.headUrl}}"></a>
+                        <div style="float: right;width: 620px;">
+                            <div>
+                                <a style="text-decoration: none;cursor: pointer" class="pull-left" th:href="@{/article/list/{id}(id=${followVo.user.id})}">
+                                    <span th:text="${followVo.user.name}"></span></a>
+                                <span class="pull-right" th:text="${'关注于'+#dates.format(followVo.follow.followDate,'yyyy.MM.dd hh:mm:ss')}"></span>
+                            </div>
+                            <div style="clear: both"></div>
+                            <div class="pull-right">
+                                <input type="hidden" class="toUserId" th:value="${followVo.user.id}">
+                                <button class="layui-btn mail">私信</button>
+                                <button class="layui-btn follow">已关注</button>
+                            </div>
+                        </div>
+                        <div style="clear: both"></div>
+                        <hr style="margin-top: 20px;"/>
+                    </div>
+                </div>
+                <input type="hidden" id="pageNum" th:value="${pageInfo.pageNum}"/>
+                <input type="hidden" id="pageSize" th:value="${pageInfo.pageSize}"/>
+                <input type="hidden" id="total" th:value="${pageInfo.total}"/>
+                <input type="hidden" id="type" th:value="${type}"/>
+                <div class="text-center" id="page"></div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

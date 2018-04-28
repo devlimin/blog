@@ -85,7 +85,12 @@ $(function () {
 			})
         }
         var index;
-        $("#mail").click(function () {
+        $(document).on("click","#mail",function () {
+            var loginUserId= $("#loginUserId").val();
+            if (loginUserId=="") {
+                window.location.href="/account?action=login&next="+window.location.pathname;
+                return false;
+            }
             index = layer.open({
                 type: 1,
                 skin: 'layui-layer-rim', //加上边框
@@ -145,6 +150,141 @@ $(function () {
         $(document).on("click", "#cancle", function () {
             layer.close(index);
         })
+
+        $(document).on("click","#follow",function () {
+            var entityId = $("#toUserId").val();
+            var loginUserId= $("#loginUserId").val();
+            if (loginUserId=="") {
+                window.location.href="/account?action=login&next="+window.location.pathname;
+                return false;
+            }
+            $this=$(this);
+            var url=null;
+            if($this.hasClass("unfollow")){
+                url="/follow/man/followuser"
+            } else if ($this.hasClass("follow")){
+                url="/follow/man/unfollowuser"
+            } else {
+                return false;
+            }
+            $.ajax({
+                url:url,
+                data:"entityId="+entityId,
+                type:"post",
+                success: function (resp) {
+                    if(resp.code == 0) {
+                        if($this.hasClass("unfollow")){
+                            $this.removeClass("unfollow");
+                            $this.removeClass("layui-btn-primary");
+                            $this.addClass("follow");
+                            $this.text("已关注");
+                        } else if ($this.hasClass("follow")){
+                            $this.removeClass("follow");
+                            $this.addClass("unfollow");
+                            $this.addClass("layui-btn-primary");
+                            $this.text("关注");
+                        }
+                    } else {
+                        layer.msg(resp.msg, {icon: 5,anim: 6});
+                    }
+                },
+                error:function (resp) {
+                    layer.msg("系统出现问题，请联系管理员", {icon: 5,anim: 6});
+                }
+            })
+        })
+        $("#black").click(function () {
+            var entityId = $("#toUserId").val();
+            var loginUserId= $("#loginUserId").val();
+            if (loginUserId=="") {
+                window.location.href="/account?action=login&next="+window.location.pathname;
+                return false;
+            }
+            $this=$(this);
+            var url = null;
+            if($this.hasClass("white")){
+                url="/follow/man/black"
+            } else if($this.hasClass("black")){
+                url="/follow/man/white"
+            } else {
+                return false;
+            }
+            $.ajax({
+                url:url,
+                data:"entityId="+entityId,
+                type:"post",
+                success:function (resp) {
+                    if (resp.code==0){
+                        if($this.hasClass("black")) {
+                            $this.removeClass("black");
+                            $this.addClass("white")
+                            $this.addClass("layui-btn-primary")
+                            $this.text("黑名单")
+                            $this.before('<button id="follow" class="unfollow layui-btn layui-btn-primary layui-btn-xs">关注</button>' +
+                                         '<button class="layui-btn layui-btn-xs" id="mail">私信</button>')
+                            $("#title>span").after('<button style="margin-top: 25px;" id="mark"\n' +
+                                'class="unMark layui-btn layui-btn-primary pull-right">收藏</button>')
+                        } else if($this.hasClass("white")) {
+                            $this.removeClass("white");
+                            $this.addClass("black")
+                            $this.removeClass("layui-btn-primary")
+                            $this.text("已拉黑")
+                            $("#follow").remove();
+                            $("#mail").remove();
+                            $("#mark").remove();
+                        }
+                    } else {
+                        layer.msg(resp.msg, {icon: 5,anim: 6});
+                    }
+                },
+                error:function (resp) {
+                    layer.msg("系统出现问题，请联系管理员", {icon: 5,anim: 6});
+                }
+            })
+        })
+        $(document).on("click","#mark",function () {
+            var entityId = $("#aid").val();
+            var loginUserId= $("#loginUserId").val();
+            if (loginUserId=="") {
+                window.location.href="/account?action=login&next="+window.location.pathname;
+                return false;
+            }
+            $this=$(this);
+            if($this.hasClass("unMark")){
+                var url="/follow/man/markArticle"
+            } else if ($this.hasClass("Mark")){
+                var url="/follow/man/unmarkArticle"
+            } else {
+                return false;
+            }
+            $.ajax({
+                url:url,
+                data:"entityId="+entityId,
+                type:"post",
+                success: function (resp) {
+                    if(resp.code == 0) {
+                        if($this.hasClass("unMark")){
+                            $this.removeClass("unMark");
+                            $this.removeClass("layui-btn-primary");
+                            $this.addClass("Mark");
+                            $this.text("已收藏");
+                        } else if ($this.hasClass("Mark")){
+                            $this.removeClass("Mark");
+                            $this.addClass("unMark");
+                            $this.addClass("layui-btn-primary");
+                            $this.text("收藏");
+                        }
+                    } else {
+                        layer.msg(resp.msg, {icon: 5,anim: 6});
+                    }
+                },
+                error:function (resp) {
+                    layer.msg("系统出现问题，请联系管理员", {icon: 5,anim: 6});
+                }
+            })
+        })
+        
+
     })
     Date.prototype.format = function () {
         return this.getFullYear() + "年" + (this.getMonth() + 1) + "月" + this.getDate() + "日 " + this.getHours() + ":" + this.getMinutes() + ":"+this.getSeconds();

@@ -1,12 +1,13 @@
 package com.limin.blog.enums;
 
-public enum EntityEnum {
-    SYSTEM(0,"系统"),USER(1,"用户"),ARITCLE(2,"文章"),COMMENT(3,"评论"), TOPIC(4, "帖子");
+public enum FollowEnum {
+    FORBIDDEN(2,"禁止"),UNFOLLOW(0,"未关注"),FOLLOW(1,"关注");
+
     private Integer val;
     private String msg;
-    private EntityEnum(Integer val, String msg) {
+    private FollowEnum(Integer val, String value){
         this.val = val;
-        this.msg = msg;
+        this.msg = value;
     }
 
     public Integer getVal() {

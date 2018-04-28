@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/head}">
+<head>
+    <title>收藏</title>
+    <link th:href="@{/css/message/conversation.css}" rel="stylesheet">
+    <script th:src="@{/js/follow/mark.js}"></script>
+</head>
+<body>
+<div layout:fragment="content">
+    <div id="main">
+        <div class="layui-tab layui-tab-brief">
+            <ul class="layui-tab-title">
+                <li th:class="${type}=='article'?'layui-this':''">
+                    <a style="text-decoration: none;cursor: pointer" th:href="@{/follow/man/article}">收藏的文章</a>
+                </li>
+                <li th:class="${type}=='markTopic'?'layui-this':''">
+                    <a style="text-decoration: none;cursor: pointer" th:href="@{/follow/man/topic}">收藏的帖子</a>
+                </li>
+            </ul>
+            <div class="layui-tab-content">
+                <div class="layui-tab-item layui-show">
+                    <div class="" th:each="followVo : ${pageInfo.list}">
+                        <div>
+                            <a th:href="@{/article/detail/{id}(id=${followVo.article.id})}" th:text="${followVo.article.title}"
+                            style="text-decoration: none;font-size: 15px;width: 600px;float: left"></a>
+                        </div>
+                        <div style="clear: both;"></div>
+                        <p th:text="${followVo.article.content}" style="color: #888;font-size: 12px;line-height: 1.6;margin-top: 5px;"></p>
+                        <div>
+                            <a style="text-decoration: none" th:href="@{/article/list/{id}(id=${followVo.user.id})}" th:text="${followVo.user.name}"></a>
+                            <span th:text="${'发布于'+#dates.format(followVo.article.releaseDate,'yyyy.MM.dd hh:mm:ss')}"></span>
+                            <input type="hidden" class="entityId" th:value="${followVo.article.id}">
+                            <button class="layui-btn layui-btn-sm pull-right follow">已收藏</button>
+                        </div>
+                        <div style="clear: both"></div>
+                        <hr style="margin-top: 20px;"/>
+                    </div>
+                </div>
+                <input type="hidden" id="pageNum" th:value="${pageInfo.pageNum}"/>
+                <input type="hidden" id="pageSize" th:value="${pageInfo.pageSize}"/>
+                <input type="hidden" id="total" th:value="${pageInfo.total}"/>
+                <input type="hidden" id="type" th:value="${type}"/>
+                <div class="text-center" id="page"></div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

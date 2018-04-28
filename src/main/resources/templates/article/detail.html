@@ -10,101 +10,66 @@
 <body>
 <div layout:fragment="content">
 	<div id="main">
-		<div id="left-side">
-			<div id="article">
-				<div id="title">
-					<h3 th:text="${article.title}"></h3>
-					<div>
-						<span th:text="${#dates.format(article.releaseDate,'yyyy年MM月dd日 hh:mm:ss')}"></span>
+		<div id="article">
+			<div id="title">
+				<span style="font-size:36px;margin-top: 20px;margin-bottom: 10px;word-wrap:break-word;word-break:break-all;float: left;width: 690px;" th:text="${article.title}"></span>
+				<button id="mark" th:if="(${session.login_user}==null)or((${session.login_user.id}!=${user.id})and((${follow}!=null)and(${follow.status}!='2')))" style="margin-top: 25px;"
+						th:class="(${mark}==null)or(${mark.status}=='0')?'unMark layui-btn layui-btn-primary pull-right':'Mark layui-btn pull-right'"
+						th:text="(${mark}==null)or(${mark.status}=='0')?'收藏':'已收藏'"></button>
+				<div style="clear: both;">
+					<a th:href="@{/article/list/{id}(id=${user.id})}">
+						<img style="width: 48px;height: 48px;border-radius: 50%;display: inline-block;float: left" th:src="@{${user.headUrl}}" />
+					</a>
+					<div style="float: right;width: 720px;line-height: 1.8">
+						<div>
+							<span><a style="text-decoration: none;" th:href="@{/article/list/{id}(id=${user.id})}" th:text="${user.name}"></a></span>
+							<input type="hidden" id="toUserId" th:value="${user.id}">
+							<input type="hidden" id="loginUserId" th:value="${session.login_user}!=null?${session.login_user.id}:''">
+							<button th:if="(${session.login_user}==null)or((${session.login_user.id}!=${user.id})and((${follow}!=null)and(${follow.status}!='2')))" id="follow"
+									 th:class="(${follow}==null)or(${follow.status}=='0')?'unfollow layui-btn layui-btn-primary layui-btn-xs':'follow layui-btn layui-btn-xs'"
+										th:text="(${follow}==null)or(${follow.status}=='0')?'关注':'已关注'"></button>
+							<button th:if="(${session.login_user}==null)or((${session.login_user.id}!=${user.id})and((${follow}!=null)and(${follow.status}!='2')))"
+									class="layui-btn layui-btn-xs" id="mail">私信</button>
+							<button id="black" th:if="(${session.login_user}==null)or(${session.login_user.id}!=${user.id})"
+									th:class="(${follow}==null)or(${follow.status}=='2')?'layui-btn layui-btn-xs black':'layui-btn layui-btn-primary layui-btn-xs white'"
+									th:text="(${follow}==null)or(${follow.status}=='2')?'已拉黑':'黑名单'"></button>
+						</div>
+						<span th:text="${#dates.format(article.releaseDate,'yyyy.MM.dd hh:mm:ss')}"></span>
 						<span>分类：
-							<a th:each="articleCate : ${articleCategories}"
-							   th:href="@{/article/list/{uid}/{cid}(uid=${user.id},cid=${articleCate.id})}" th:text="${articleCate.name}+' '"></a></span>
+						<a th:each="articleCate : ${articleCategories}"
+						   th:href="@{/article/list/{uid}/{cid}(uid=${user.id},cid=${articleCate.id})}" th:text="${articleCate.name}+' '"></a></span>
 						<span class="layui-icon pull-right">&#xe6b2 [[${article.commentNum}]]</span>
 						<span class="layui-icon pull-right">&#xe705 [[${article.readNum}]]</span>
 					</div>
 				</div>
-				<div id="content" th:utext="${article.content}">
-				</div>
-				<div>
-					<i class="layui-icon" style="font-size: 30px; color: red;">&#xe6c6;</i>
-					<span style="float: right" th:text="${article.updateDate}!=null?${'最后更改时间：'+#dates.format(article.updateDate,'yyyy年MM月dd日 hh:mm:ss')}:''"></span>
-				</div>
-				<input type="hidden" id="aid" th:value="${article.id}">
+				<div style="clear: both;"></div>
 			</div>
-			<div id="comment">
-				<div th:if="${article.isComment}" class="comment-write">
-					<img th:src="${user.headUrl}" style="border-radius: 50%;">
-					<form class="comment-input">
-						<textarea class="form-control" placeholder="写下你的评论..."></textarea>
-						<a>发送</a>
-						<a>取消</a>
-					</form>
-					<div style="clear: both;"></div>
-				</div>
-				<div th:if="!${article.isComment}" class="comment-write" style="text-align: center">
-					此文章已禁止评论
-				</div>
-				<input type="hidden" id="isComment" th:value="${article.isComment}"/>
-				<div id="comment-list">
-				</div>
+			<div id="content" th:utext="${article.content}">
+			</div>
+			<div>
+				<i class="layui-icon" style="font-size: 30px; color: red;">&#xe6c6;</i>
+				<span style="float: right" th:text="${article.updateDate}!=null?${'最后更改时间：'+#dates.format(article.updateDate,'yyyy年MM月dd日 hh:mm:ss')}:''"></span>
+			</div>
+			<input type="hidden" id="aid" th:value="${article.id}">
+		</div>
+		<div id="comment">
+			<div th:if="${article.isComment}" class="comment-write">
+				<img th:src="${user.headUrl}" style="border-radius: 50%;">
+				<form class="comment-input">
+					<textarea class="form-control" placeholder="写下你的评论..."></textarea>
+					<a>发送</a>
+					<a>取消</a>
+				</form>
+				<div style="clear: both;"></div>
+			</div>
+			<div th:if="!${article.isComment}" class="comment-write" style="text-align: center">
+				此文章已禁止评论
+			</div>
+			<input type="hidden" id="isComment" th:value="${article.isComment}"/>
+			<div id="comment-list">
 			</div>
 		</div>
-		<div id="side">
-			<div id="user-info">
-				<div id="header">
-					<img th:src="@{${user.headUrl}}" style="border-radius: 50%;">
-					<div>
-						<span th:text="${user.name}"></span>
-						<div th:if="${user.id}!=${session.login_user.id}">
-							<button  class="btn btn-default">关注</button>
-							<input th:if="${user.id}!=${session.login_user.id}" type="hidden" id="toUserId" th:value="${user.id}">
-							<button th:if="${user.id}!=${session.login_user.id}" class="btn btn-default" id="mail">私信</button>
-						</div>
-						<div th:if="${user.id}==${session.login_user.id}" style="margin-bottom: 20px;"></div>
-					</div>
-				</div>
-				<div id="num">
-					<dl>
-						<dt>入驻时间</dt>
-						<dd th:text="${#dates.format(user.birth,'yyyy.MM.dd')}"></dd>
-					</dl>
-					<dl>
-						<dt>文章</dt>
-						<dd>12</dd>
-					</dl>
-					<dl>
-						<dt>关注</dt>
-						<dd>32</dd>
-					</dl>
-				</div>
-			</div>
-			<div class="side-list">
-				<h3>文章分类</h3>
-				<ul class="list">
-					<li th:if="${categories} != null and ${#lists.size(categories) > 0}" th:each="category : ${categories}">
-						<a th:href="@{/article/list/{uid}/{cid}(uid=${user.id},cid=${category.id})}" th:text="${category.name}">Java基础知识Java基础知识Java基础知识</a>
-						<span th:text="${category.articleNum}">4篇</span>
-					</li>
-				</ul>
-				<div style="clear: both"></div>
-			</div>
-			<div class="side-list">
-				<h3>热门文章</h3>
-				<ul class="list">
-					<li>
-						<a href="#">Java基础知识Java基础知识Java基础知识</a>
-						<span class="layui-icon">&#xe705 200</span>
-					</li>
-					<li>
-						<a href="#">Java基础知识</a>
-						<span class="layui-icon">&#xe705 30</span>
-					</li>
-				</ul>
-				<div style="clear: both"></div>
-			</div>
-		</div>
-		<div style="clear: both;"></div>
 	</div>
-</div>
+</div>'
 </body>
 </html>

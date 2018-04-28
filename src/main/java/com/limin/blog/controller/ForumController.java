@@ -2,8 +2,11 @@ package com.limin.blog.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.limin.blog.constant.BlogConst;
+import com.limin.blog.enums.EntityEnum;
+import com.limin.blog.enums.FollowEnum;
 import com.limin.blog.enums.ForumTopicEnum;
 import com.limin.blog.model.*;
+import com.limin.blog.service.FollowService;
 import com.limin.blog.service.ForumService;
 import com.limin.blog.util.ResponseUtil;
 import com.limin.blog.vo.Response;
@@ -21,6 +24,9 @@ public class ForumController {
 
     @Autowired
     private ForumService forumService;
+
+    @Autowired
+    private FollowService followService;
 
     @GetMapping(value = {"","/","/{themeId}"})
     public ModelAndView forum(@PathVariable(value = "themeId",required = false)Integer themeId,
@@ -64,6 +70,13 @@ public class ForumController {
                             @RequestParam(value="content")String content,
                             HttpSession session){
         User user = (User) session.getAttribute(BlogConst.LOGIN_SESSION_KEY);
+        ForumTopic forumTopic = forumService.selectTopicById(topicId);
+        Follow follow = followService.select(forumTopic.getUserId(), EntityEnum.USER.getVal(), user.getId());
+        if (follow!=null&&follow.getStatus().equals(FollowEnum.FORBIDDEN.getVal())) {
+            return ResponseUtil.error(2,"你已被对方拉入黑名单");
+        }
+        forumTopic.setCommentNum(forumTopic.getCommentNum()+1);
+        forumService.updateTopicByIdSelective(forumTopic);
         ForumReply reply = new ForumReply();
         reply.setUserId(user.getId());
         reply.setUserName(user.getName());
@@ -71,9 +84,6 @@ public class ForumController {
         reply.setTopicId(topicId);
         reply.setContent(content);
         reply = forumService.addReply(reply);
-        ForumTopic forumTopic = forumService.selectTopicById(topicId);
-        forumTopic.setCommentNum(forumTopic.getCommentNum()+1);
-        forumService.updateTopicByIdSelective(forumTopic);
         return ResponseUtil.success(reply);
     }
 

@@ -2,9 +2,7 @@ package com.limin.blog.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.limin.blog.constant.BlogConst;
-import com.limin.blog.enums.ArticleEnum;
-import com.limin.blog.enums.ArticleTypeEnum;
-import com.limin.blog.enums.CategoryEnum;
+import com.limin.blog.enums.*;
 import com.limin.blog.model.*;
 import com.limin.blog.service.*;
 import com.limin.blog.util.ResponseUtil;
@@ -37,13 +35,13 @@ public class ArticleController {
     private ArticleCategoryService articleCategoryService;
 
     @Autowired
-    private CommentService commentService;
-
-    @Autowired
     private SysCategoryService sysCategoryService;
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private FollowService followService;
 
     @Autowired
     private RedisTemplate redisTemplate;
@@ -54,7 +52,8 @@ public class ArticleController {
      * @return
      */
     @GetMapping(value = "detail/{id}")
-    public ModelAndView article(@PathVariable("id") Integer id){
+    public ModelAndView article(@PathVariable("id") Integer id,
+                                HttpSession session){
         ModelAndView mv = new ModelAndView("article/detail");
         //文章
         Article article = articleService.selectById(id);
@@ -70,11 +69,14 @@ public class ArticleController {
             articleCategories.add(category);
         }
         mv.addObject("articleCategories",articleCategories);
-        //所有个人分类
-        CategoryExample categoryExample = new CategoryExample();
-        categoryExample.createCriteria().andUserIdEqualTo(user.getId()).andStatusEqualTo(CategoryEnum.PUBLISHED.getVal());
-        List<Category> categories = categoryService.selectByExample(categoryExample);
-        mv.addObject("categories",categories);
+
+        user = (User) session.getAttribute(BlogConst.LOGIN_SESSION_KEY);
+        if (user!=null){
+            Follow follow = followService.select(user.getId(), EntityEnum.USER.getVal(), article.getUserId());
+            mv.addObject("follow",follow);
+            Follow mark = followService.select(user.getId(),EntityEnum.ARITCLE.getVal(),article.getId());
+            mv.addObject("mark",mark);
+        }
         return mv;
     }
 
@@ -85,7 +87,8 @@ public class ArticleController {
      */
     @GetMapping(value = {"list/{uid}","list/{uid}/{cid}"})
     public ModelAndView articles(@PathVariable("uid") Integer uid,
-                                 @PathVariable(value = "cid",required = false)Integer cid){
+                                 @PathVariable(value = "cid",required = false)Integer cid,
+                                 HttpSession session){
         ModelAndView mv = new ModelAndView("article/articles");
         mv.addObject("uid",uid);
         mv.addObject("cid",cid);
@@ -102,6 +105,12 @@ public class ArticleController {
         categoryExample.createCriteria().andUserIdEqualTo(uid).andStatusEqualTo(CategoryEnum.PUBLISHED.getVal());
         List<Category> categories = categoryService.selectByExample(categoryExample);
         mv.addObject("categories",categories);
+
+        user = (User) session.getAttribute(BlogConst.LOGIN_SESSION_KEY);
+        if (user!=null){
+            Follow follow = followService.select(user.getId(), EntityEnum.USER.getVal(), uid);
+            mv.addObject("follow",follow);
+        }
         return mv;
     }
     @GetMapping(value = {"page/{uid}","page/{uid}/{cid}"})

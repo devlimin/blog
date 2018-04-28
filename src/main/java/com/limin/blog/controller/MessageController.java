@@ -2,9 +2,13 @@ package com.limin.blog.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.limin.blog.constant.BlogConst;
+import com.limin.blog.enums.EntityEnum;
+import com.limin.blog.enums.FollowEnum;
 import com.limin.blog.enums.MessageEnum;
+import com.limin.blog.model.Follow;
 import com.limin.blog.model.Message;
 import com.limin.blog.model.User;
+import com.limin.blog.service.FollowService;
 import com.limin.blog.service.MessageService;
 import com.limin.blog.service.UserService;
 import com.limin.blog.util.ResponseUtil;
@@ -29,6 +33,9 @@ public class MessageController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private FollowService followService;
 
     @GetMapping(value = "man/conversation")
     public ModelAndView conversations(@RequestParam(value = "type",defaultValue = "1")Integer type,
@@ -82,8 +89,10 @@ public class MessageController {
         if (messagePageInfo.getList()!=null&& messagePageInfo.getList().size()>0) {
             for (Message message : messagePageInfo.getList()) {
                 User user = userService.selectById(message.getUserId());
-                if (!user.getId().equals(login_user.getId())){
-                    mv.addObject("toUserId",user.getId());
+                if (!message.getUserId().equals(login_user.getId())){
+                    mv.addObject("toUserId",message.getUserId());
+                } else {
+                    mv.addObject("toUserId",message.getToUserId());
                 }
                 MessageVo messageVo = new MessageVo();
                 messageVo.setMessage(message);
@@ -103,6 +112,10 @@ public class MessageController {
                         @RequestParam(value = "content")String content,
                         HttpSession session){
         User login_user = (User) session.getAttribute(BlogConst.LOGIN_SESSION_KEY);
+        Follow follow = followService.select(toUserId, EntityEnum.USER.getVal(), login_user.getId());
+        if (follow!=null&&follow.getStatus().equals(FollowEnum.FORBIDDEN.getVal())) {
+            return ResponseUtil.error(2,"你已被对方拉入黑名单");
+        }
         Message message = new Message();
         message.setUserId(login_user.getId());
         message.setToUserId(toUserId);

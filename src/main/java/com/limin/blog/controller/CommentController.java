@@ -3,14 +3,10 @@ package com.limin.blog.controller;
 import com.github.pagehelper.PageInfo;
 import com.limin.blog.constant.BlogConst;
 import com.limin.blog.enums.CommentEnum;
-import com.limin.blog.model.Article;
-import com.limin.blog.model.Comment;
-import com.limin.blog.model.CommentExample;
-import com.limin.blog.model.User;
-import com.limin.blog.service.ArticleService;
-import com.limin.blog.service.CommentService;
-import com.limin.blog.service.SensitiveService;
-import com.limin.blog.service.UserService;
+import com.limin.blog.enums.EntityEnum;
+import com.limin.blog.enums.FollowEnum;
+import com.limin.blog.model.*;
+import com.limin.blog.service.*;
 import com.limin.blog.util.ResponseUtil;
 import com.limin.blog.vo.CommentVo;
 import com.limin.blog.vo.Response;
@@ -37,6 +33,9 @@ public class CommentController {
 
     @Autowired
     private SensitiveService sensitiveService;
+
+    @Autowired
+    private FollowService followService;
 
     @ResponseBody
     @GetMapping(value = "list")
@@ -88,6 +87,10 @@ public class CommentController {
             return ResponseUtil.error(2,"该文章已禁止评论");
         }
         User user = (User) session.getAttribute(BlogConst.LOGIN_SESSION_KEY);
+        Follow follow = followService.select(article.getUserId(), EntityEnum.USER.getVal(), user.getId());
+        if (follow!=null&&follow.getStatus().equals(FollowEnum.FORBIDDEN.getVal())) {
+            return ResponseUtil.error(2,"你已被对方拉入黑名单");
+        }
         Comment comment = new Comment();
         comment.setArticleId(aid);
         comment.setContent(sensitiveService.filter(content));
@@ -108,6 +111,10 @@ public class CommentController {
                                  HttpSession session){
         User user = (User) session.getAttribute(BlogConst.LOGIN_SESSION_KEY);
         Comment comment = commentService.selectById(cid);
+        Follow follow = followService.select(comment.getUserId(), EntityEnum.USER.getVal(), user.getId());
+        if (follow!=null&&follow.getStatus().equals(FollowEnum.FORBIDDEN.getVal())) {
+            return ResponseUtil.error(2,"你已被对方拉入黑名单");
+        }
         Comment quickcomment = new Comment();
         quickcomment.setUserId(user.getId());
         quickcomment.setContent(sensitiveService.filter(content));

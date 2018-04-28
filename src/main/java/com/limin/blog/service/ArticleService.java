@@ -62,6 +62,7 @@ public class ArticleService {
      * 发表文章
      * @param article
      */
+    @CacheEvict(key = "'article:'+#article.id.toString()",condition = "#article.id!=null")
     public Article publish(Article article,  List<Integer> cIds) {
         article.setContent(sensitiveService.filter(article.getContent()));
         article.setTitle(sensitiveService.filter(article.getTitle()));
