@@ -3,7 +3,7 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{common/head}">
 <head>
-    <title>博客</title>
+    <title>[[topic.title]]</title>
     <link th:href="@{/css/forum/topic.css}" rel="stylesheet">
     <script th:src="@{/js/forum/topic.js}"></script>
 </head>
@@ -12,7 +12,11 @@
     <div id="main">
         <div id="topic">
             <div id="top">
-                <span style="font-size:36px;margin-top: 20px;margin-bottom: 10px;word-wrap:break-word;word-break:break-all;float: left;width: 690px;" th:text="${topic.title}"></span>
+                <a th:href="@{/forum/}" style="float: left;text-decoration: none">全部&nbsp; / &nbsp;</a>
+                <a th:href="@{/forum/{id}(id=${topic.themeId})}" th:text="' '+${topic.themeName}"
+                    style="text-decoration: none"></a>
+                <span style="font-size:36px;margin-top: 20px;margin-bottom: 10px;word-wrap:break-word;word-break:break-all;float: left;width: 690px;clear:both;"
+                      th:text="${topic.title}"></span>
                 <button id="mark" th:if="(${session.login_user}==null)or((${session.login_user.id}!=${topic.userId})and((${follow}!=null)and(${follow.status}!='2')))" style="margin-top: 25px;"
                         th:class="(${mark}==null)or(${mark.status}=='0')?'unMark layui-btn layui-btn-primary pull-right':'Mark layui-btn pull-right'"
                         th:text="(${mark}==null)or(${mark.status}=='0')?'收藏':'已收藏'"></button>

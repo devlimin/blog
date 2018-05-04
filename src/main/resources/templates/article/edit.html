@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
 	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	  layout:decorate="~{common/backend}">
+	  layout:decorate="~{common/head}">
 <head>
-	<title>博客</title>
+	<title>文章编辑</title>
 	<link th:href="@{/css/manage/article/edit.css}" rel="stylesheet">
 	<script th:src="@{/wangeditor/release/wangEditor.min.js}"></script>
 	<script th:src="@{/js/manage/article/edit.js}"></script>
 <body>
-<div layout:fragment="right">
-	<form method="post" class="layui-form">
+<div layout:fragment="content">
+	<form style="background-color: white;width: 1045px;padding-right: 20px;padding-left: 20px;padding-top: 20px;margin: auto"
+		  method="post" class="layui-form">
 		<div class="layui-form-item">
 			<div class="layui-input-block" style="margin: 0">
 				<div style="display: inline-block;width: 100px;">

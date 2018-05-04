@@ -1,7 +1,7 @@
 package com.limin.blog.enums;
 
 public enum ForumTopicEnum {
-    DELETED(-1,"删除"),PUBLISHED(0,"发表");
+    DELETED(-1,"删除"),PUBLISHED(0,"发表"),DRAFT(1,"草稿"),GARBAGE(2,"回收站"),NO_COMMENT(3,"禁止评论");
 
     private Integer val;
     private String msg;

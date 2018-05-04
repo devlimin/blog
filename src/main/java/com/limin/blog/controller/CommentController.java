@@ -94,14 +94,16 @@ public class CommentController {
         if (followService.blackcheck(user.getId(),article.getUserId())) {
             return ResponseUtil.error(2,"对方已被你拉入黑名单");
         }
-        Comment comment = commentService.selectById(cid);
-        if(followService.blackcheck(comment.getUserId(),user.getId())){
-            return ResponseUtil.error(2,"你已被对方拉入黑名单");
+        if(cid!=-1){
+            Comment comment = commentService.selectById(cid);
+            if(followService.blackcheck(comment.getUserId(),user.getId())){
+                return ResponseUtil.error(2,"你已被对方拉入黑名单");
+            }
+            if (followService.blackcheck(user.getId(),comment.getUserId())) {
+                return ResponseUtil.error(2,"对方已被你拉入黑名单");
+            }
         }
-        if (followService.blackcheck(user.getId(),comment.getUserId())) {
-            return ResponseUtil.error(2,"对方已被你拉入黑名单");
-        }
-        comment = new Comment();
+        Comment comment = new Comment();
         comment.setArticleId(aid);
         comment.setContent(sensitiveService.filter(content));
         comment.setUserId(user.getId());

@@ -1,16 +1,35 @@
 $(function () {
-    layui.use(['laypage', 'layer'], function () {
+    layui.use(['laypage', 'layer','element'], function () {
         var laypage = layui.laypage;
         var layer = layui.layer;
-        page(1, 10);
+        var element = layui.element;
 
-        function page(pageNum, pageSize) {
+        page(0, 1, 2);
+
+        element.on('tab(test1)', function(data){
+            layid = this.getAttribute('lay-id');
+            // location.hash = 'test1='+ layid;
+            if (layid == 0){
+                page(0,1,2);
+            }
+            if (layid == 1){
+                page(1,1,1);
+            }
+        })
+
+        function page(status,pageNum, pageSize) {
             var uid = $("#uid").val();
             var cid = $("#cid").val();
-            var url = "/article/page/" + uid;
-            if (cid != "") {
-                url += "/" + cid;
+            var url=null;
+            if (status==0) {
+                url = "/article/page/" + uid;
+                if (cid != "") {
+                    url += "/" + cid;
+                }
+            } else if(status==1){
+                url="/forum/page/"+uid;
             }
+
             $.ajax({
                 url: url,
                 data: "pageNum=" + pageNum + "&pageSize=" + pageSize,
@@ -25,9 +44,13 @@ $(function () {
                             return false;
                         }
                         $.each(data.list, function (i, article) {
-                            html += '<div class="article">' +
-                                '<a href="/article/detail/' + article.id + '" class="title">' + article.title + '</a>' +
-                                '<p class="detail">' + article.content + '...' +
+                            html += '<div class="article">';
+                            if(status==0) {
+                                html+='<a href="/article/detail/' + article.id + '" class="title">' + article.title + '</a>';
+                            }else if(status==1){
+                                html+='<a href="/forum/topic/'+ article.id + '" class="title">' + article.title + '</a>';
+                            }
+                                html+='<p class="detail">' + article.content + '...' +
                                 '</p>' +
                                 '<div class="other">' +
                                 '<span>' + new Date(article.releaseDate).format() + '</span>' +
@@ -36,22 +59,52 @@ $(function () {
                                 '</div>' +
                                 '</div>'
                         })
-                        html += '<div class="text-center" id="page"></div>';
-                        $("#article").html(html);
-                        if (data.total>pageSize) {
-                            laypage.render({
-                                elem: 'page',
-                                count: data.total,
-                                limit: pageSize,
-                                curr: pageNum,
-                                layout: ['count', 'prev', 'page', 'next', 'skip'],
-                                jump: function (obj, first) {
-                                    if (!first) {
-                                        page(obj.curr, pageSize)
-                                        $('html').animate({scrollTop: 0}, 100)
+                        if (status == 0) {
+                            if (data == null || data.list == null || data.list.length == 0) {
+                                html = "<div style='text-align: center;margin-top: 40px;margin-bottom: 30px;'>该分类暂无数据</div>";
+                                $("#article").html(html);
+                                return false;
+                            }
+                            html += '<div id="articlePage" class="text-center"></div>';
+                            $("#article").html(html);
+                            if (data.total>pageSize) {
+                                laypage.render({
+                                    elem: 'articlePage',
+                                    count: data.total,
+                                    limit: pageSize,
+                                    curr: pageNum,
+                                    layout: ['count', 'prev', 'page', 'next', 'skip'],
+                                    jump: function (obj, first) {
+                                        if (!first) {
+                                            page(0, obj.curr, pageSize)
+                                            $('html').animate({scrollTop: 0}, 100)
+                                        }
                                     }
-                                }
-                            });
+                                });
+                            }
+                        } else if(status == 1) {
+                            if (data == null || data.list == null || data.list.length == 0) {
+                                html = "<div style='text-align: center;margin-top: 40px;margin-bottom: 30px;'>该分类暂无数据</div>";
+                                $(".layui-tab-item:nth-child(2)").html(html);
+                                return false;
+                            }
+                            html += '<div id="topicPage" class="text-center"></div>';
+                            $(".layui-tab-item:nth-child(2)").html(html);
+                            if (data.total>pageSize) {
+                                laypage.render({
+                                    elem: 'topicPage',
+                                    count: data.total,
+                                    limit: pageSize,
+                                    curr: pageNum,
+                                    layout: ['count', 'prev', 'page', 'next', 'skip'],
+                                    jump: function (obj, first) {
+                                        if (!first) {
+                                            page(1, obj.curr, pageSize)
+                                            $('html').animate({scrollTop: 0}, 100)
+                                        }
+                                    }
+                                });
+                            }
                         }
                     } else {
                         layer.msg(resp.msg, {icon: 5, anim: 6});

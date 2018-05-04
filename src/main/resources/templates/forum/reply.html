@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/backend}">
+<head>
+    <meta charset="UTF-8">
+    <title>回复管理</title>
+</head>
+<body>
+<div layout:fragment="right">
+    <div class="layui-tab layui-tab-brief" lay-filter="test1">
+        <ul class="layui-tab-title">
+            <li class="layui-this" lay-id="0">我的帖子回复</li>
+            <li lay-id="1">我发表的回复</li>
+        </ul>
+
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show"></div>
+            <div class="layui-tab-item"></div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

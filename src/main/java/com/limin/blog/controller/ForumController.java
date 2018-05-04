@@ -9,6 +9,10 @@ import com.limin.blog.service.FollowService;
 import com.limin.blog.service.ForumService;
 import com.limin.blog.util.ResponseUtil;
 import com.limin.blog.vo.Response;
+import org.apache.commons.lang3.StringUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -71,6 +75,27 @@ public class ForumController {
         PageInfo<ForumReply> forumReplyPageInfo = forumService.selectReplyByTopicId(topicId, pageNum, pageSize);
         return ResponseUtil.success(forumReplyPageInfo);
     }
+
+    @ResponseBody
+    @GetMapping(value = "page/{uid}")
+    public Response page(@PathVariable(value = "uid")Integer uid,
+                        @RequestParam(value = "pageNum")Integer pageNum,
+                         @RequestParam(value = "pageSize")Integer pageSize) {
+        ForumTopicExample topicExample = new ForumTopicExample();
+        topicExample.createCriteria().andUserIdEqualTo(uid).andStatusEqualTo(ForumTopicEnum.PUBLISHED.getVal());
+        topicExample.setOrderByClause("release_date desc");
+        PageInfo<ForumTopic> pageInfo = forumService.selectTopicByExample(topicExample, pageNum, pageSize);
+        if (pageInfo.getList().size()>0) {
+            for (ForumTopic topic : pageInfo.getList()) {
+                Document document = Jsoup.parseBodyFragment(topic.getContent());
+                Element body = document.body();
+                topic.setContent(StringUtils.substring(body.text(), 0, 180));
+            }
+        }
+        return ResponseUtil.success(pageInfo);
+    }
+
+
     @ResponseBody
     @PostMapping(value = "man/reply")
     public Response doreply(@RequestParam(value = "topicId")Integer topicId,

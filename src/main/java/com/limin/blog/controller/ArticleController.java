@@ -94,9 +94,7 @@ public class ArticleController {
         mv.addObject("cid",cid);
         User user = userService.selectById(uid);
         mv.addObject("user",user);
-        if(cid==null) {
-            mv.addObject("title","全部");
-        } else {
+        if(cid!=null) {
             Category category = categoryService.selectById(cid);
             mv.addObject("title",category==null?"":category.getName());
         }

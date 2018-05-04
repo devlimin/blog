@@ -2,12 +2,22 @@ package com.limin.blog.vo;
 
 import com.limin.blog.model.Article;
 import com.limin.blog.model.Follow;
+import com.limin.blog.model.ForumTopic;
 import com.limin.blog.model.User;
 
 public class FollowVo {
     private Follow follow;
     private User user;
     private Article article;
+    private ForumTopic topic;
+
+    public ForumTopic getTopic() {
+        return topic;
+    }
+
+    public void setTopic(ForumTopic topic) {
+        this.topic = topic;
+    }
 
     public Follow getFollow() {
         return follow;

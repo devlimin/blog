@@ -46,9 +46,11 @@ public class FollowController {
     public Response followUser(HttpSession session,
                            @RequestParam(value = "entityId")Integer entityId){
         User user = (User) session.getAttribute(BlogConst.LOGIN_SESSION_KEY);
-        Follow follow = followService.select(entityId, EntityEnum.USER.getVal(), user.getId());
-        if (follow!=null&&follow.getStatus().equals(FollowEnum.FORBIDDEN.getVal())) {
+        if(followService.blackcheck(entityId,user.getId())){
             return ResponseUtil.error(2,"你已被对方拉入黑名单");
+        }
+        if (followService.blackcheck(user.getId(),entityId)) {
+            return ResponseUtil.error(2,"对方已被你拉入黑名单");
         }
         followService.follow(user.getId(), EntityEnum.USER.getVal(),entityId);
         return ResponseUtil.success();
@@ -59,6 +61,12 @@ public class FollowController {
     public Response unfollow(HttpSession session,
                              @RequestParam(value = "entityId")Integer entityId){
         User user = (User) session.getAttribute(BlogConst.LOGIN_SESSION_KEY);
+        if(followService.blackcheck(entityId,user.getId())){
+            return ResponseUtil.error(2,"你已被对方拉入黑名单");
+        }
+        if (followService.blackcheck(user.getId(),entityId)) {
+            return ResponseUtil.error(2,"对方已被你拉入黑名单");
+        }
         followService.unfollow(user.getId(), EntityEnum.USER.getVal(),entityId);
         return ResponseUtil.success();
     }
@@ -248,6 +256,37 @@ public class FollowController {
         pageInfo.setList(list);
         mv.addObject("pageInfo",pageInfo);
         mv.addObject("type","article");
+        return mv;
+    }
+    @GetMapping("man/topic")
+    public ModelAndView markTopics(@RequestParam(value = "pageNum",defaultValue = "1")Integer pageNum,
+                                     @RequestParam(value = "pageSize",defaultValue = "10")Integer pageSize,
+                                     HttpSession session){
+        ModelAndView mv = new ModelAndView("follow/mark");
+        User user = (User) session.getAttribute(BlogConst.LOGIN_SESSION_KEY);
+        PageInfo<Follow> follows = followService.selectByUserId(user.getId(), EntityEnum.TOPIC.getVal(), FollowEnum.FOLLOW.getVal(), pageNum, pageSize);
+        PageInfo<FollowVo> pageInfo = new PageInfo<>();
+        pageInfo.setPageNum(follows.getPageNum());
+        pageInfo.setPageSize(follows.getPageSize());
+        pageInfo.setTotal(follows.getTotal());
+        List<FollowVo> list = new ArrayList<>();
+        if (follows.getList()!=null&&follows.getList().size()>0) {
+            for (Follow follow:follows.getList()) {
+                ForumTopic forumTopic = forumService.selectTopicById(follow.getEntityId());
+                Document document = Jsoup.parseBodyFragment(forumTopic.getContent());
+                Element body = document.body();
+                forumTopic.setContent(StringUtils.substring(body.text(), 0, 180));
+                user = userService.selectById(forumTopic.getUserId());
+                FollowVo followVo = new FollowVo();
+                followVo.setFollow(follow);
+                followVo.setUser(user);
+                followVo.setTopic(forumTopic);
+                list.add(followVo);
+            }
+        }
+        pageInfo.setList(list);
+        mv.addObject("pageInfo",pageInfo);
+        mv.addObject("type","topic");
         return mv;
     }
 }
