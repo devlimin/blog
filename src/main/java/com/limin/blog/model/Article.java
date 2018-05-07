@@ -19,10 +19,6 @@ public class Article {
 
     private Integer commentNum;
 
-    private Integer type;
-
-    private Boolean isPrivate;
-
     private Boolean isComment;
 
     private Integer status;
@@ -91,22 +87,6 @@ public class Article {
 
     public void setCommentNum(Integer commentNum) {
         this.commentNum = commentNum;
-    }
-
-    public Integer getType() {
-        return type;
-    }
-
-    public void setType(Integer type) {
-        this.type = type;
-    }
-
-    public Boolean getIsPrivate() {
-        return isPrivate;
-    }
-
-    public void setIsPrivate(Boolean isPrivate) {
-        this.isPrivate = isPrivate;
     }
 
     public Boolean getIsComment() {

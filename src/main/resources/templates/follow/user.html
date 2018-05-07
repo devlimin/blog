@@ -34,16 +34,26 @@
                                 <span class="pull-right" th:text="${'关注于'+#dates.format(followVo.follow.followDate,'yyyy.MM.dd hh:mm:ss')}"></span>
                             </div>
                             <div style="clear: both"></div>
-                            <div class="pull-right">
+                            <div th:if="${type}=='ifollow'" class="pull-right">
                                 <input type="hidden" class="toUserId" th:value="${followVo.user.id}">
                                 <button class="layui-btn mail">私信</button>
                                 <button class="layui-btn follow">已关注</button>
+                            </div>
+                            <div th:if="${type}=='followi'" class="pull-right">
+                                <input type="hidden" class="toUserId" th:value="${followVo.user.id}">
+                                <button class="layui-btn mail">私信</button>
+                                <button class="layui-btn layui-btn-primary unfollow">关注他</button>
+                            </div>
+                            <div th:if="${type}=='iblack'" class="pull-right">
+                                <input type="hidden" class="toUserId" th:value="${followVo.user.id}">
+                                <button class="layui-btn black">已拉黑</button>
                             </div>
                         </div>
                         <div style="clear: both"></div>
                         <hr style="margin-top: 20px;"/>
                     </div>
                 </div>
+                <input type="hidden" id="loginUserId" th:value="${session.login_user}!=null?${session.login_user.id}:''">
                 <input type="hidden" id="pageNum" th:value="${pageInfo.pageNum}"/>
                 <input type="hidden" id="pageSize" th:value="${pageInfo.pageSize}"/>
                 <input type="hidden" id="total" th:value="${pageInfo.total}"/>

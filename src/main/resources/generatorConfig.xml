@@ -63,11 +63,11 @@
         <!--<table tableName="forum_topic">-->
             <!--<generatedKey column="ID" sqlStatement="MySql" identity="true" />-->
         <!--</table>-->
-        <!--<table tableName="forum_reply">-->
-            <!--<generatedKey column="ID" sqlStatement="MySql" identity="true" />-->
-        <!--</table>-->
-        <table tableName="follow">
+        <table tableName="forum_reply">
             <generatedKey column="ID" sqlStatement="MySql" identity="true" />
         </table>
+        <!--<table tableName="follow">-->
+            <!--<generatedKey column="ID" sqlStatement="MySql" identity="true" />-->
+        <!--</table>-->
     </context>
 </generatorConfiguration>

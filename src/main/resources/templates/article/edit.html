@@ -13,15 +13,6 @@
 		  method="post" class="layui-form">
 		<div class="layui-form-item">
 			<div class="layui-input-block" style="margin: 0">
-				<div style="display: inline-block;width: 100px;">
-					<select name="type" lay-verify="aritcle_type">
-						<option value="">请选择</option>
-						<option th:each="type : ${types}"
-								th:value="${type.val}" th:text="${type.msg}"
-								th:selected="${article}!=null and (${article.type} == ${type.val}) ? 'selected'">
-						</option>
-					</select>
-				</div>
 				<input type="text" name="title" th:value="${article}?${article.title}"
 					   style="display: inline-block;width: 900px" lay-verify="article_title" placeholder="请输入标题" autocomplete="off" class="layui-input">
 			</div>
@@ -51,13 +42,6 @@
 							th:selected="(${article}!=null) and (${article.sysCateId} == ${sysCategory.id}) ? 'selected'">
 					</option>
 				</select>
-			</div>
-		</div>
-		<div class="layui-form-item">
-			<label class="layui-form-label" style="width: 100px;">私密文章：</label>
-			<div class="layui-input-block">
-				<input type="checkbox" name="isPrivate" title="私密"
-					   th:checked="(${article} != null) and (${article.isPrivate}) ? 'checked'">
 			</div>
 		</div>
 		<div class="layui-form-item">

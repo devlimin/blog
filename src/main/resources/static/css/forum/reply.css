@@ -1,0 +1,39 @@
+.comment{
+    border-bottom: 1px dashed #DDDDDD;
+    padding-top: 10px;
+    padding-bottom: 15px;
+}
+.comment .title img{
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+}
+.comment .title span{
+    margin-right: 10px;
+}
+.comment .title span a{
+    text-decoration: none;
+    color: #349edf;
+    cursor: pointer;
+}
+.comment .detail{
+    padding-top: 10px;
+}
+
+.action{
+    float: right;
+    display: none;
+}
+a.comment-btn{
+    text-decoration: none;
+    color: #349edf;
+    cursor: pointer;
+}
+a.comment-btn:hover{
+    color: #34bfff;
+}
+a.comment-del{
+    color: red;
+    text-decoration: none;
+    cursor: pointer;
+}

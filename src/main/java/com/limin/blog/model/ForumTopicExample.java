@@ -815,6 +815,66 @@ public class ForumTopicExample {
             return (Criteria) this;
         }
 
+        public Criteria andIsCommentIsNull() {
+            addCriterion("is_comment is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsCommentIsNotNull() {
+            addCriterion("is_comment is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsCommentEqualTo(Boolean value) {
+            addCriterion("is_comment =", value, "isComment");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsCommentNotEqualTo(Boolean value) {
+            addCriterion("is_comment <>", value, "isComment");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsCommentGreaterThan(Boolean value) {
+            addCriterion("is_comment >", value, "isComment");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsCommentGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("is_comment >=", value, "isComment");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsCommentLessThan(Boolean value) {
+            addCriterion("is_comment <", value, "isComment");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsCommentLessThanOrEqualTo(Boolean value) {
+            addCriterion("is_comment <=", value, "isComment");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsCommentIn(List<Boolean> values) {
+            addCriterion("is_comment in", values, "isComment");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsCommentNotIn(List<Boolean> values) {
+            addCriterion("is_comment not in", values, "isComment");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsCommentBetween(Boolean value1, Boolean value2) {
+            addCriterion("is_comment between", value1, value2, "isComment");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsCommentNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("is_comment not between", value1, value2, "isComment");
+            return (Criteria) this;
+        }
+
         public Criteria andStatusIsNull() {
             addCriterion("status is null");
             return (Criteria) this;

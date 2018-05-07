@@ -2,7 +2,9 @@ package com.limin.blog.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.limin.blog.constant.BlogConst;
-import com.limin.blog.enums.*;
+import com.limin.blog.enums.ArticleEnum;
+import com.limin.blog.enums.CategoryEnum;
+import com.limin.blog.enums.EntityEnum;
 import com.limin.blog.model.*;
 import com.limin.blog.service.*;
 import com.limin.blog.util.ResponseUtil;
@@ -17,9 +19,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Controller
 @RequestMapping("article")
@@ -53,10 +57,20 @@ public class ArticleController {
      */
     @GetMapping(value = "detail/{id}")
     public ModelAndView article(@PathVariable("id") Integer id,
-                                HttpSession session){
+                                HttpSession session,
+                                HttpServletRequest request){
         ModelAndView mv = new ModelAndView("article/detail");
         //文章
-        Article article = articleService.selectById(id);
+        Article article = articleService.detailById(id);
+        String remoteAddr = request.getRemoteAddr();
+        if(!redisTemplate.opsForSet().isMember("ip:"+remoteAddr,id)){
+            redisTemplate.opsForSet().add("ip:"+remoteAddr,id);
+            if (redisTemplate.opsForSet().size("ip:"+remoteAddr)==1) {
+                redisTemplate.expire("ip:"+remoteAddr,1, TimeUnit.DAYS);
+            }
+            article.setReadNum(article.getReadNum()+1);
+            articleService.updateReadNum(id, article.getReadNum()+1);
+        }
         mv.addObject("article",article);
         User user = userService.selectById(article.getUserId());
         mv.addObject("user",user);
@@ -193,8 +207,6 @@ public class ArticleController {
         //系统分类
         List<SysCategory> sysCategories = sysCategoryService.selectAll();
         mv.addObject("sysCategories", sysCategories);
-        //文章类型，是否原创
-        mv.addObject("types", ArticleTypeEnum.values());
         return mv;
     }
 

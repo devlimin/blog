@@ -13,6 +13,7 @@
     <result column="release_date" jdbcType="TIMESTAMP" property="releaseDate" />
     <result column="read_num" jdbcType="INTEGER" property="readNum" />
     <result column="comment_num" jdbcType="INTEGER" property="commentNum" />
+    <result column="is_comment" jdbcType="BIT" property="isComment" />
     <result column="status" jdbcType="INTEGER" property="status" />
   </resultMap>
   <sql id="Example_Where_Clause">
@@ -75,7 +76,7 @@
   </sql>
   <sql id="Base_Column_List">
     id, theme_id, theme_name, user_id, user_name, user_head_url, title, content, release_date, 
-    read_num, comment_num, status
+    read_num, comment_num, is_comment, status
   </sql>
   <select id="selectByExample" parameterType="com.limin.blog.model.ForumTopicExample" resultMap="BaseResultMap">
     select
@@ -114,11 +115,13 @@
     insert into forum_topic (theme_id, theme_name, user_id, 
       user_name, user_head_url, title, 
       content, release_date, read_num, 
-      comment_num, status)
+      comment_num, is_comment, status
+      )
     values (#{themeId,jdbcType=INTEGER}, #{themeName,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER}, 
       #{userName,jdbcType=VARCHAR}, #{userHeadUrl,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, 
       #{content,jdbcType=VARCHAR}, #{releaseDate,jdbcType=TIMESTAMP}, #{readNum,jdbcType=INTEGER}, 
-      #{commentNum,jdbcType=INTEGER}, #{status,jdbcType=INTEGER})
+      #{commentNum,jdbcType=INTEGER}, #{isComment,jdbcType=BIT}, #{status,jdbcType=INTEGER}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.limin.blog.model.ForumTopic">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -156,6 +159,9 @@
       <if test="commentNum != null">
         comment_num,
       </if>
+      <if test="isComment != null">
+        is_comment,
+      </if>
       <if test="status != null">
         status,
       </if>
@@ -190,6 +196,9 @@
       </if>
       <if test="commentNum != null">
         #{commentNum,jdbcType=INTEGER},
+      </if>
+      <if test="isComment != null">
+        #{isComment,jdbcType=BIT},
       </if>
       <if test="status != null">
         #{status,jdbcType=INTEGER},
@@ -238,6 +247,9 @@
       <if test="record.commentNum != null">
         comment_num = #{record.commentNum,jdbcType=INTEGER},
       </if>
+      <if test="record.isComment != null">
+        is_comment = #{record.isComment,jdbcType=BIT},
+      </if>
       <if test="record.status != null">
         status = #{record.status,jdbcType=INTEGER},
       </if>
@@ -259,6 +271,7 @@
       release_date = #{record.releaseDate,jdbcType=TIMESTAMP},
       read_num = #{record.readNum,jdbcType=INTEGER},
       comment_num = #{record.commentNum,jdbcType=INTEGER},
+      is_comment = #{record.isComment,jdbcType=BIT},
       status = #{record.status,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -297,6 +310,9 @@
       <if test="commentNum != null">
         comment_num = #{commentNum,jdbcType=INTEGER},
       </if>
+      <if test="isComment != null">
+        is_comment = #{isComment,jdbcType=BIT},
+      </if>
       <if test="status != null">
         status = #{status,jdbcType=INTEGER},
       </if>
@@ -315,6 +331,7 @@
       release_date = #{releaseDate,jdbcType=TIMESTAMP},
       read_num = #{readNum,jdbcType=INTEGER},
       comment_num = #{commentNum,jdbcType=INTEGER},
+      is_comment = #{isComment,jdbcType=BIT},
       status = #{status,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>

@@ -5,19 +5,19 @@
 <head>
     <meta charset="UTF-8">
     <title>帖子管理</title>
+    <link th:href="@{/css/forum/list.css}" rel="stylesheet">
+    <script th:src="@{/js/forum/list.js}"></script>
 </head>
 <body>
 <div layout:fragment="right">
     <div class="layui-tab layui-tab-brief" lay-filter="test1">
         <ul class="layui-tab-title">
             <li class="layui-this" lay-id="0">已发表</li>
-            <li lay-id="1">草稿箱</li>
-            <li lay-id="2">回收站</li>
+            <li lay-id="1">回收站</li>
         </ul>
 
         <div class="layui-tab-content">
             <div class="layui-tab-item layui-show"></div>
-            <div class="layui-tab-item"></div>
             <div class="layui-tab-item"></div>
         </div>
     </div>

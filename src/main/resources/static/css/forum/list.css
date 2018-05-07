@@ -1,0 +1,35 @@
+.article{
+    margin-top: 18px;
+    color: #999;
+    font-size: 12px;
+    padding-bottom: 15px;
+    border-bottom: 1px dotted #ddd;
+}
+.article .title{
+    font-size: 18px;
+    color: black;
+    margin-bottom: 10px;
+}
+.article .title a{
+    text-decoration: none;
+    cursor: pointer;
+}
+.article .info .left{
+    float: left;
+}
+.article .info .left span{
+    margin-right: 10px;
+    font-size: 12px;
+}
+.article .info .right{
+    float: right;
+}
+.article .info .right a{
+    color: #349edf;
+    text-decoration: none;
+    cursor: pointer;
+    margin-left: 10px;
+}
+.article .info .right a.del{
+    color: red;
+}

@@ -41,6 +41,7 @@
                 <a th:href="@{/forum/}" style="text-decoration: none" class="layui-btn layui-btn-primary">取消</a>
             </div>
         </div>
+        <input  name="id" type="hidden" th:value="${topic}?${topic.id}">
     </form>
 </div>
 </body>

@@ -39,7 +39,6 @@ layui.use(['laypage','element'], function(){
                         }
                             html+='<div class="info">' +
                             '<div class="left">' +
-                            '<span>原创</span>' +
                             '<span>'+new Date(article.releaseDate).format()+'</span>' +
                             '<span class="layui-icon">&#xe705 '+article.readNum+'</span>' +
                             '<span class="layui-icon">&#xe6b2 '+article.commentNum+'</span>' +
@@ -48,7 +47,6 @@ layui.use(['laypage','element'], function(){
                             '<a href="/article/man/edit/'+article.id+'">编辑</a>';
                             if(status == 0) {
                                 html += '<a class="iscomment">'+(article.isComment?'允许评论':'禁止评论')+'</a>' +
-                                    '<a>置顶</a>' +
                                     '<a class="del">删除</a>';
                             }
                             if(status == 1) {
@@ -142,22 +140,11 @@ layui.use(['laypage','element'], function(){
             }
         })
     }
-
-
 })
 Date.prototype.format = function () {
     return this.getFullYear() + "年" + (this.getMonth() + 1) + "月" + this.getDate() + "日 " + this.getHours() + ":" + this.getMinutes() + ":"+this.getSeconds();
 }
     $(document).on("click",".iscomment",function() {
-        // var text = $(this).text();
-        // var comment = false;
-        // if(text == "禁止评论") {
-        //     $(this).text("允许评论");
-        //     comment = true;
-        // } else {
-        //     $(this).text("禁止评论");
-        //     comment = false;
-        // }
         var id=$(this).parent().parent().parent().attr('id');
         $this=$(this);
         $.ajax({
@@ -178,28 +165,44 @@ Date.prototype.format = function () {
     })
     $(document).on("click",".del",function() {
         var id=$(this).parent().parent().parent().attr('id');
-        $(this).parent().parent().parent().remove();
+        $this=$(this)
         $.ajax({
             url: "/article/man/del",
             type:"post",
             data:"id="+id,
             success:function (resp) {
                 if(resp.code == 0) {
+                    $this.parent().parent().parent().remove();
+                } else {
+                    layer.msg(resp.msg, {icon: 5,anim: 6});
                 }
+                return false;
+            },
+            error:function (resp) {
+                layer.msg("系统出现问题，请联系管理员", {icon: 5,anim: 6});
+                return false;
             }
         })
     })
 
     $(document).on("click",".deepdel",function() {
         var id=$(this).parent().parent().parent().attr('id');
-        $(this).parent().parent().parent().remove();
+        $this=$(this)
         $.ajax({
             url: "/article/man/deepdel",
             type:"post",
             data:"id="+id,
             success:function (resp) {
                 if(resp.code == 0) {
+                    $this.parent().parent().parent().remove();
+                } else {
+                    layer.msg(resp.msg, {icon: 5,anim: 6});
                 }
+                return false;
+            },
+            error:function (resp) {
+                layer.msg("系统出现问题，请联系管理员", {icon: 5,anim: 6});
+                return false;
             }
         })
     })

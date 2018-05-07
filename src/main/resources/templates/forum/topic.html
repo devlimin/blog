@@ -3,7 +3,7 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{common/head}">
 <head>
-    <title>[[topic.title]]</title>
+    <title>[[${topic.title}]]</title>
     <link th:href="@{/css/forum/topic.css}" rel="stylesheet">
     <script th:src="@{/js/forum/topic.js}"></script>
 </head>
@@ -49,9 +49,14 @@
             <div id="content" style="padding: 20px 30px;" th:utext="${topic.content}"></div>
         </div>
         <div id="reply">
-            <textarea class="layui-textarea"></textarea>
-            <button id="reply-btn" class="layui-btn pull-right" style="margin-top: 15px;">回帖</button>
-            <div style="clear:both;"></div>
+            <div th:if="${topic.isComment}">
+                <textarea class="layui-textarea"></textarea>
+                <button id="reply-btn" class="layui-btn pull-right" style="margin-top: 15px;">回帖</button>
+                <div style="clear:both;"></div>
+            </div>
+            <div th:if="!${topic.isComment}" style="text-align: center;margin-top: 20px;margin-bottom: 40px;">
+                该帖子已禁止评论
+            </div>
             <input type="hidden" id="topicId" th:value="${topic.id}">
             <div id="replies">
             </div>

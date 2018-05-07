@@ -4,6 +4,9 @@
   <resultMap id="BaseResultMap" type="com.limin.blog.model.ForumReply">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="topic_id" jdbcType="INTEGER" property="topicId" />
+    <result column="topic_title" jdbcType="VARCHAR" property="topicTitle" />
+    <result column="topic_user_id" jdbcType="INTEGER" property="topicUserId" />
+    <result column="topic_user_name" jdbcType="VARCHAR" property="topicUserName" />
     <result column="user_id" jdbcType="INTEGER" property="userId" />
     <result column="user_name" jdbcType="VARCHAR" property="userName" />
     <result column="user_head_url" jdbcType="VARCHAR" property="userHeadUrl" />
@@ -70,7 +73,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, topic_id, user_id, user_name, user_head_url, content, release_date, status
+    id, topic_id, topic_title, topic_user_id, topic_user_name, user_id, user_name, user_head_url, 
+    content, release_date, status
   </sql>
   <select id="selectByExample" parameterType="com.limin.blog.model.ForumReplyExample" resultMap="BaseResultMap">
     select
@@ -106,10 +110,12 @@
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into forum_reply (topic_id, user_id, user_name, 
+    insert into forum_reply (topic_id, topic_title, topic_user_id, 
+      topic_user_name, user_id, user_name, 
       user_head_url, content, release_date, 
       status)
-    values (#{topicId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, 
+    values (#{topicId,jdbcType=INTEGER}, #{topicTitle,jdbcType=VARCHAR}, #{topicUserId,jdbcType=INTEGER}, 
+      #{topicUserName,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, 
       #{userHeadUrl,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, #{releaseDate,jdbcType=TIMESTAMP}, 
       #{status,jdbcType=INTEGER})
   </insert>
@@ -121,6 +127,15 @@
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="topicId != null">
         topic_id,
+      </if>
+      <if test="topicTitle != null">
+        topic_title,
+      </if>
+      <if test="topicUserId != null">
+        topic_user_id,
+      </if>
+      <if test="topicUserName != null">
+        topic_user_name,
       </if>
       <if test="userId != null">
         user_id,
@@ -144,6 +159,15 @@
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="topicId != null">
         #{topicId,jdbcType=INTEGER},
+      </if>
+      <if test="topicTitle != null">
+        #{topicTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="topicUserId != null">
+        #{topicUserId,jdbcType=INTEGER},
+      </if>
+      <if test="topicUserName != null">
+        #{topicUserName,jdbcType=VARCHAR},
       </if>
       <if test="userId != null">
         #{userId,jdbcType=INTEGER},
@@ -180,6 +204,15 @@
       <if test="record.topicId != null">
         topic_id = #{record.topicId,jdbcType=INTEGER},
       </if>
+      <if test="record.topicTitle != null">
+        topic_title = #{record.topicTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="record.topicUserId != null">
+        topic_user_id = #{record.topicUserId,jdbcType=INTEGER},
+      </if>
+      <if test="record.topicUserName != null">
+        topic_user_name = #{record.topicUserName,jdbcType=VARCHAR},
+      </if>
       <if test="record.userId != null">
         user_id = #{record.userId,jdbcType=INTEGER},
       </if>
@@ -207,6 +240,9 @@
     update forum_reply
     set id = #{record.id,jdbcType=INTEGER},
       topic_id = #{record.topicId,jdbcType=INTEGER},
+      topic_title = #{record.topicTitle,jdbcType=VARCHAR},
+      topic_user_id = #{record.topicUserId,jdbcType=INTEGER},
+      topic_user_name = #{record.topicUserName,jdbcType=VARCHAR},
       user_id = #{record.userId,jdbcType=INTEGER},
       user_name = #{record.userName,jdbcType=VARCHAR},
       user_head_url = #{record.userHeadUrl,jdbcType=VARCHAR},
@@ -222,6 +258,15 @@
     <set>
       <if test="topicId != null">
         topic_id = #{topicId,jdbcType=INTEGER},
+      </if>
+      <if test="topicTitle != null">
+        topic_title = #{topicTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="topicUserId != null">
+        topic_user_id = #{topicUserId,jdbcType=INTEGER},
+      </if>
+      <if test="topicUserName != null">
+        topic_user_name = #{topicUserName,jdbcType=VARCHAR},
       </if>
       <if test="userId != null">
         user_id = #{userId,jdbcType=INTEGER},
@@ -247,6 +292,9 @@
   <update id="updateByPrimaryKey" parameterType="com.limin.blog.model.ForumReply">
     update forum_reply
     set topic_id = #{topicId,jdbcType=INTEGER},
+      topic_title = #{topicTitle,jdbcType=VARCHAR},
+      topic_user_id = #{topicUserId,jdbcType=INTEGER},
+      topic_user_name = #{topicUserName,jdbcType=VARCHAR},
       user_id = #{userId,jdbcType=INTEGER},
       user_name = #{userName,jdbcType=VARCHAR},
       user_head_url = #{userHeadUrl,jdbcType=VARCHAR},

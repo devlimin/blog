@@ -7,6 +7,12 @@ public class ForumReply {
 
     private Integer topicId;
 
+    private String topicTitle;
+
+    private Integer topicUserId;
+
+    private String topicUserName;
+
     private Integer userId;
 
     private String userName;
@@ -33,6 +39,30 @@ public class ForumReply {
 
     public void setTopicId(Integer topicId) {
         this.topicId = topicId;
+    }
+
+    public String getTopicTitle() {
+        return topicTitle;
+    }
+
+    public void setTopicTitle(String topicTitle) {
+        this.topicTitle = topicTitle == null ? null : topicTitle.trim();
+    }
+
+    public Integer getTopicUserId() {
+        return topicUserId;
+    }
+
+    public void setTopicUserId(Integer topicUserId) {
+        this.topicUserId = topicUserId;
+    }
+
+    public String getTopicUserName() {
+        return topicUserName;
+    }
+
+    public void setTopicUserName(String topicUserName) {
+        this.topicUserName = topicUserName == null ? null : topicUserName.trim();
     }
 
     public Integer getUserId() {

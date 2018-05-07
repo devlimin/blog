@@ -4,7 +4,13 @@ $(function(){
         var layer = layui.layer;
 
         var toUserId;
+        var index;
         $(".mail").click(function () {
+            var loginUserId= $("#loginUserId").val();
+            if (loginUserId=="") {
+                window.location.href="/account?action=login&next="+window.location.pathname;
+                return false;
+            }
             toUserId =$(this).prev(".toUserId").val();
             index = layer.open({
                 type: 1,
@@ -56,7 +62,12 @@ $(function(){
             layer.close(index);
         })
 
-        $(".follow").click(function () {
+        $(document).on("click",".follow,.unfollow",function () {
+            var loginUserId= $("#loginUserId").val();
+            if (loginUserId=="") {
+                window.location.href="/account?action=login&next="+window.location.pathname;
+                return false;
+            }
             var entityId = $(this).prev().prev(".toUserId").val();
             $this=$(this);
             if($this.hasClass("unfollow")){
@@ -79,9 +90,52 @@ $(function(){
                             $this.text("已关注");
                         } else if ($this.hasClass("follow")){
                             $this.removeClass("follow");
-                            $this.addClass("unfollow");
-                            $this.addClass("layui-btn-primary");
+                            $this.addClass("unfollow")
+                            $this.addClass("layui-btn-primary");;
                             $this.text("关注");
+                        }
+                    } else {
+                        layer.msg(resp.msg, {icon: 5,anim: 6});
+                    }
+                },
+                error:function (resp) {
+                    layer.msg("系统出现问题，请联系管理员", {icon: 5,anim: 6});
+                }
+            })
+        })
+
+        $(document).on("click",".black,.white",function () {
+            var entityId =$(this).prev(".toUserId").val();
+            var loginUserId= $("#loginUserId").val();
+            if (loginUserId=="") {
+                window.location.href="/account?action=login&next="+window.location.pathname;
+                return false;
+            }
+            $this=$(this);
+            var url = null;
+            if($this.hasClass("white")){
+                url="/follow/man/black"
+            } else if($this.hasClass("black")){
+                url="/follow/man/white"
+            } else {
+                return false;
+            }
+            $.ajax({
+                url:url,
+                data:"entityId="+entityId,
+                type:"post",
+                success:function (resp) {
+                    if (resp.code==0){
+                        if($this.hasClass("black")) {
+                            $this.removeClass("black");
+                            $this.addClass("white")
+                            $this.addClass("layui-btn-primary")
+                            $this.text("黑名单")
+                        } else if($this.hasClass("white")) {
+                            $this.removeClass("white");
+                            $this.addClass("black")
+                            $this.removeClass("layui-btn-primary")
+                            $this.text("已拉黑")
                         }
                     } else {
                         layer.msg(resp.msg, {icon: 5,anim: 6});

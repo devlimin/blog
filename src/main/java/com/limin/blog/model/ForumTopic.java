@@ -25,6 +25,8 @@ public class ForumTopic {
 
     private Integer commentNum;
 
+    private Boolean isComment;
+
     private Integer status;
 
     public Integer getId() {
@@ -113,6 +115,14 @@ public class ForumTopic {
 
     public void setCommentNum(Integer commentNum) {
         this.commentNum = commentNum;
+    }
+
+    public Boolean getIsComment() {
+        return isComment;
+    }
+
+    public void setIsComment(Boolean isComment) {
+        this.isComment = isComment;
     }
 
     public Integer getStatus() {

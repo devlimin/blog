@@ -116,14 +116,21 @@ public class ForumController {
         reply.setUserName(user.getName());
         reply.setUserHeadUrl(user.getHeadUrl());
         reply.setTopicId(topicId);
+        reply.setTopicTitle(forumTopic.getTitle());
+        reply.setTopicUserId(forumTopic.getUserId());
+        reply.setTopicUserName(forumTopic.getUserName());
         reply.setContent(content);
         reply = forumService.addReply(reply);
         return ResponseUtil.success(reply);
     }
 
-    @GetMapping("man/post")
-    public ModelAndView post(){
+    @GetMapping(value = {"man/post","man/post/{id}"})
+    public ModelAndView post(@PathVariable(value = "id",required = false)Integer id){
         ModelAndView mv = new ModelAndView("forum/post");
+        if(id != null) {
+            ForumTopic forumTopic = forumService.selectTopicById(id);
+            mv.addObject("topic",forumTopic);
+        }
         List<ForumTheme> forumThemes = forumService.selectAllForumTheme();
         mv.addObject("themes",forumThemes);
         return mv;
@@ -137,5 +144,78 @@ public class ForumController {
         forumTopic.setUserHeadUrl(user.getHeadUrl());
         forumTopic = forumService.addTopic(forumTopic);
         return ResponseUtil.success(forumTopic.getId());
+    }
+    @GetMapping("man/list")
+    public String list(){
+        return "/forum/list";
+    }
+
+    @ResponseBody
+    @GetMapping("man/page")
+    public Response mpage(@RequestParam(value = "status")Integer status,
+                         @RequestParam(value = "pageNum",defaultValue = "1")Integer pageNum,
+                         @RequestParam(value = "pageSize",defaultValue = "2")Integer pageSize,
+                          HttpSession session){
+        User user = (User) session.getAttribute(BlogConst.LOGIN_SESSION_KEY);
+        ForumTopicExample example = new ForumTopicExample();
+        example.createCriteria().andStatusEqualTo(status).andUserIdEqualTo(user.getId());
+        PageInfo pageInfo = forumService.selectTopicByExample(example, pageNum, pageSize);
+        return ResponseUtil.success(pageInfo);
+    }
+
+    @ResponseBody
+    @PostMapping(value = "man/iscomment")
+    public Response iscomment(@RequestParam(value = "id")Integer id){
+        ForumTopic forumTopic = forumService.changeTopicCommentStatus(id);
+        return ResponseUtil.success(forumTopic.getIsComment());
+    }
+
+    @PostMapping("man/del")
+    @ResponseBody
+    public Response del(
+            @RequestParam(value = "id")Integer id) {
+        forumService.del(id);
+        return ResponseUtil.success();
+    }
+
+    @ResponseBody
+    @PostMapping("man/deepdel")
+    public Response deepdel(
+            @RequestParam(value = "id")Integer id) {
+        forumService.deepdel(id);
+        return ResponseUtil.success();
+    }
+
+    @GetMapping("man/reply")
+    public String reply(){
+        return "/forum/reply";
+    }
+
+    @ResponseBody
+    @GetMapping("man/replys")
+    public Response replys(@RequestParam(value = "status")Integer status,
+                           @RequestParam(value = "pageNum",defaultValue = "1")Integer pageNum,
+                           @RequestParam(value = "pageSize",defaultValue = "10")Integer pageSize,
+                           HttpSession session){
+        User user = (User) session.getAttribute(BlogConst.LOGIN_SESSION_KEY);
+        PageInfo pageInfo = null;
+        if (status == 0){
+            ForumReplyExample replyExample = new ForumReplyExample();
+            replyExample.createCriteria().andTopicUserIdEqualTo(user.getId()).andStatusEqualTo(ForumTopicEnum.PUBLISHED.getVal());
+            replyExample.setOrderByClause("release_date desc");
+            pageInfo = forumService.selectReplyByExample(replyExample,pageNum,pageSize);
+        } else if (status == 1){
+            ForumReplyExample replyExample = new ForumReplyExample();
+            replyExample.createCriteria().andUserIdEqualTo(user.getId()).andStatusEqualTo(ForumTopicEnum.PUBLISHED.getVal());
+            replyExample.setOrderByClause("release_date desc");
+            pageInfo = forumService.selectReplyByExample(replyExample,pageNum,pageSize);
+        }
+        return ResponseUtil.success(pageInfo);
+    }
+    @ResponseBody
+    @PostMapping(value = "man/replydel")
+    public Response replydel(@RequestParam(value = "id")Integer id) {
+        forumService.deleteReplyById(id);
+        return ResponseUtil.success();
     }
 }

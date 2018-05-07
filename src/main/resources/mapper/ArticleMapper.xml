@@ -10,8 +10,6 @@
     <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
     <result column="read_num" jdbcType="INTEGER" property="readNum" />
     <result column="comment_num" jdbcType="INTEGER" property="commentNum" />
-    <result column="type" jdbcType="INTEGER" property="type" />
-    <result column="is_private" jdbcType="BIT" property="isPrivate" />
     <result column="is_comment" jdbcType="BIT" property="isComment" />
     <result column="status" jdbcType="INTEGER" property="status" />
   </resultMap>
@@ -78,7 +76,7 @@
   </sql>
   <sql id="Base_Column_List">
     id, user_id, sys_cate_id, title, release_date, update_date, read_num, comment_num, 
-    type, is_private, is_comment, status
+    is_comment, status
   </sql>
   <sql id="Blob_Column_List">
     content
@@ -137,14 +135,12 @@
     </selectKey>
     insert into article (user_id, sys_cate_id, title, 
       release_date, update_date, read_num, 
-      comment_num, type, is_private, 
-      is_comment, status, content
-      )
+      comment_num, is_comment, status, 
+      content)
     values (#{userId,jdbcType=INTEGER}, #{sysCateId,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, 
       #{releaseDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}, #{readNum,jdbcType=INTEGER}, 
-      #{commentNum,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{isPrivate,jdbcType=BIT}, 
-      #{isComment,jdbcType=BIT}, #{status,jdbcType=INTEGER}, #{content,jdbcType=LONGVARCHAR}
-      )
+      #{commentNum,jdbcType=INTEGER}, #{isComment,jdbcType=BIT}, #{status,jdbcType=INTEGER}, 
+      #{content,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.limin.blog.model.Article">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -172,12 +168,6 @@
       </if>
       <if test="commentNum != null">
         comment_num,
-      </if>
-      <if test="type != null">
-        type,
-      </if>
-      <if test="isPrivate != null">
-        is_private,
       </if>
       <if test="isComment != null">
         is_comment,
@@ -210,12 +200,6 @@
       </if>
       <if test="commentNum != null">
         #{commentNum,jdbcType=INTEGER},
-      </if>
-      <if test="type != null">
-        #{type,jdbcType=INTEGER},
-      </if>
-      <if test="isPrivate != null">
-        #{isPrivate,jdbcType=BIT},
       </if>
       <if test="isComment != null">
         #{isComment,jdbcType=BIT},
@@ -261,12 +245,6 @@
       <if test="record.commentNum != null">
         comment_num = #{record.commentNum,jdbcType=INTEGER},
       </if>
-      <if test="record.type != null">
-        type = #{record.type,jdbcType=INTEGER},
-      </if>
-      <if test="record.isPrivate != null">
-        is_private = #{record.isPrivate,jdbcType=BIT},
-      </if>
       <if test="record.isComment != null">
         is_comment = #{record.isComment,jdbcType=BIT},
       </if>
@@ -291,8 +269,6 @@
       update_date = #{record.updateDate,jdbcType=TIMESTAMP},
       read_num = #{record.readNum,jdbcType=INTEGER},
       comment_num = #{record.commentNum,jdbcType=INTEGER},
-      type = #{record.type,jdbcType=INTEGER},
-      is_private = #{record.isPrivate,jdbcType=BIT},
       is_comment = #{record.isComment,jdbcType=BIT},
       status = #{record.status,jdbcType=INTEGER},
       content = #{record.content,jdbcType=LONGVARCHAR}
@@ -310,8 +286,6 @@
       update_date = #{record.updateDate,jdbcType=TIMESTAMP},
       read_num = #{record.readNum,jdbcType=INTEGER},
       comment_num = #{record.commentNum,jdbcType=INTEGER},
-      type = #{record.type,jdbcType=INTEGER},
-      is_private = #{record.isPrivate,jdbcType=BIT},
       is_comment = #{record.isComment,jdbcType=BIT},
       status = #{record.status,jdbcType=INTEGER}
     <if test="_parameter != null">
@@ -342,12 +316,6 @@
       <if test="commentNum != null">
         comment_num = #{commentNum,jdbcType=INTEGER},
       </if>
-      <if test="type != null">
-        type = #{type,jdbcType=INTEGER},
-      </if>
-      <if test="isPrivate != null">
-        is_private = #{isPrivate,jdbcType=BIT},
-      </if>
       <if test="isComment != null">
         is_comment = #{isComment,jdbcType=BIT},
       </if>
@@ -369,8 +337,6 @@
       update_date = #{updateDate,jdbcType=TIMESTAMP},
       read_num = #{readNum,jdbcType=INTEGER},
       comment_num = #{commentNum,jdbcType=INTEGER},
-      type = #{type,jdbcType=INTEGER},
-      is_private = #{isPrivate,jdbcType=BIT},
       is_comment = #{isComment,jdbcType=BIT},
       status = #{status,jdbcType=INTEGER},
       content = #{content,jdbcType=LONGVARCHAR}
@@ -385,8 +351,6 @@
       update_date = #{updateDate,jdbcType=TIMESTAMP},
       read_num = #{readNum,jdbcType=INTEGER},
       comment_num = #{commentNum,jdbcType=INTEGER},
-      type = #{type,jdbcType=INTEGER},
-      is_private = #{isPrivate,jdbcType=BIT},
       is_comment = #{isComment,jdbcType=BIT},
       status = #{status,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}

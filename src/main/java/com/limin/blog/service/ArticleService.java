@@ -57,6 +57,9 @@ public class ArticleService {
     public Article selectById(Integer id) {
         return articleMapper.selectByPrimaryKey(id);
     }
+    public Article detailById(Integer id) {
+        return articleMapper.selectByPrimaryKey(id);
+    }
 
     /**
      * 发表文章
@@ -66,14 +69,13 @@ public class ArticleService {
     public Article publish(Article article,  List<Integer> cIds) {
         article.setContent(sensitiveService.filter(article.getContent()));
         article.setTitle(sensitiveService.filter(article.getTitle()));
+        //发表状态
+        article.setStatus(ArticleEnum.PUBLISHED.getVal());
         //若已存在则修改
         if (article.getId() != null && articleMapper.selectByPrimaryKey(article.getId()) != null) {
             article.setUpdateDate(new Date());
             articleMapper.updateByPrimaryKeySelective(article);
         } else {
-            //发表状态
-            article.setStatus(ArticleEnum.PUBLISHED.getVal());
-            article.setIsPrivate(false);
             article.setIsComment(true);
             article.setReleaseDate(new Date());
             article.setReadNum(0);
@@ -115,7 +117,6 @@ public class ArticleService {
         article.setContent(sensitiveService.filter(article.getContent()));
         article.setTitle(sensitiveService.filter(article.getTitle()));
         article.setStatus(ArticleEnum.DRAFT.getVal());
-        article.setIsPrivate(false);
         article.setIsComment(true);
         article.setReleaseDate(new Date());
         article.setReadNum(0);
@@ -176,4 +177,10 @@ public class ArticleService {
         articleMapper.updateByPrimaryKeySelective(article);
     }
 
+    public void updateReadNum(Integer id, int readNum) {
+        Article article = new Article();
+        article.setId(id);
+        article.setReadNum(readNum);
+        articleMapper.updateByPrimaryKeySelective(article);
+    }
 }
