@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>后台</title>
+    <script th:src="@{/jquery/jquery.js}"></script>
+    <link th:href="@{/layui/css/layui.css}" rel="stylesheet">
+    <script th:src="@{/layui/layui.js}"></script>
+    <link th:href="@{/bootstrap/css/bootstrap.css}" rel="stylesheet">
+    <script th:src="@{/bootstrap/js/bootstrap.js}"></script>
+    <link th:href="@{/css/common/head.css}" rel="stylesheet">
+</head>
+<body>
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+        <div class="layui-logo">layui 后台布局</div>
+        <!-- 头部区域（可配合layui已有的水平导航）
+        <ul class="layui-nav layui-layout-left">
+          <li class="layui-nav-item"><a href="">控制台</a></li>
+          <li class="layui-nav-item"><a href="">商品管理</a></li>
+          <li class="layui-nav-item"><a href="">用户</a></li>
+          <li class="layui-nav-item">
+            <a href="javascript:;">其它系统</a>
+            <dl class="layui-nav-child">
+              <dd><a href="">邮件管理</a></dd>
+              <dd><a href="">消息管理</a></dd>
+              <dd><a href="">授权管理</a></dd>
+            </dl>
+          </li>
+        </ul> -->
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item">
+                <a href="javascript:;">
+                    <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
+                    管理员
+                </a>
+                <dl class="layui-nav-child">
+                    <dd><a href="">基本资料</a></dd>
+                    <dd><a href="">退出</a></dd>
+                </dl>
+            </li>
+        </ul>
+    </div>
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+            <ul class="layui-nav layui-nav-tree"  lay-filter="test">
+                <li th:class="${#strings.contains(type,'user')} ? 'layui-nav-item layui-nav-itemed': 'layui-nav-item'">
+                    <a class="" href="javascript:;">用户管理</a>
+                    <dl class="layui-nav-child">
+                        <dd th:class="${type}=='user/info'?'layui-this':''">
+                            <a th:href="@{/admin/user/info}">用户信息</a>
+                        </dd>
+                    </dl>
+                </li>
+                <li th:class="${#strings.contains(type,'article')} ? 'layui-nav-item layui-nav-itemed': 'layui-nav-item'">
+                    <a href="javascript:;">文章管理</a>
+                    <dl class="layui-nav-child">
+                        <dd th:class="${type}=='article/article'?'layui-this':''">
+                            <a th:href="@{/admin/article/article}">文章信息</a>
+                        </dd>
+                        <dd th:class="${type}=='article/comment'?'layui-this':''">
+                            <a th:href="@{/admin/article/comment}">文章评论</a>
+                        </dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;">帖子管理</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;">帖子信息</a></dd>
+                        <dd><a href="javascript:;">帖子回复</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;">消息管理</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;">消息信息</a></dd>
+                        <dd><a href="javascript:;">发消息</a></dd>
+                    </dl>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+        <div layout:fragment="content" style="padding: 15px;">
+
+        </div>
+    </div>
+    <div class="layui-footer">
+        <!-- 底部固定区域 -->
+        © layui.com - 底部固定区域
+    </div>
+</div>
+</body>
+</html>

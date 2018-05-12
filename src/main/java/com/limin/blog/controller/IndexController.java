@@ -65,7 +65,7 @@ public class IndexController {
         } else{
             example.createCriteria().andStatusEqualTo(ArticleEnum.PUBLISHED.getVal());
         }
-        example.setOrderByClause("release_date");
+        example.setOrderByClause("release_date desc");
         PageInfo<Article> pageInfo = articleService.selectPageByExampleWithBLOBS(example, pageNum, pageSize);
         if (pageInfo.getList().size()>0) {
             for (Article article : pageInfo.getList()) {

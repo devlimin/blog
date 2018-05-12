@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/admin}">
+<head>
+    <title>文章信息</title>
+    <!--<link th:href="@{/css/index.css}" rel="stylesheet">-->
+    <script th:src="@{/js/admin/article/article.js}"></script>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="layui-form demoTable">
+        搜索ID：
+        <div class="layui-inline">
+            <input class="layui-input" name="id" id="demoReload" autocomplete="off">
+        </div>
+        <div class="layui-form-item" style="display: inline-block;width: 300px;">
+            <label class="layui-form-label">状态</label>
+            <div class="layui-input-block">
+                <select name="city" lay-verify="required">
+                    <option value=""></option>
+                    <option value="0">已激活</option>
+                    <option value="1">未激活</option>
+                </select>
+            </div>
+        </div>
+        <button class="layui-btn" data-type="reload">搜索</button>
+    </div>
+
+    <table id="table" class="table">
+        <tr>
+            <th>ID</th>
+            <th>系统分类</th>
+            <th>标题</th>
+            <th>作者</th>
+            <th>发布日期</th>
+            <th>状态</th>
+            <th>操作</th>
+        </tr>
+    </table>
+    <div id="page" class="text-center"></div>
+</div>
+</body>
+</html>

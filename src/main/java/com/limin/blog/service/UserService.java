@@ -1,5 +1,7 @@
 package com.limin.blog.service;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.limin.blog.enums.UserEnum;
 import com.limin.blog.exception.BizException;
 import com.limin.blog.mapper.UserMapper;
@@ -147,5 +149,11 @@ public class UserService {
     public void updatePass(User user, String newpass) {
         user.setPassword(EncryptUtil.MD5(EncryptUtil.MD5(newpass+user.getSalt())));
         userMapper.updateByPrimaryKeySelective(user);
+    }
+
+    public PageInfo selectPageByExample(UserExample example, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum,pageSize);
+        List<User> users = userMapper.selectByExample(example);
+        return new PageInfo(users);
     }
 }
