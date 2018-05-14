@@ -56,6 +56,7 @@ public class ForumService {
         } else {
             forumTopicMapper.insertSelective(forumTopic);
         }
+
         return forumTopic;
     }
     public ForumTopic selectTopicById(Integer id){

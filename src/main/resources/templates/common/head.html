@@ -13,6 +13,7 @@
     <link th:href="@{/bootstrap/css/bootstrap.css}" rel="stylesheet">
     <script th:src="@{/bootstrap/js/bootstrap.js}"></script>
     <link th:href="@{/css/common/head.css}" rel="stylesheet">
+    <script th:src="@{/js/head.js}"></script>
 </head>
 <body>
     <nav class="navbar navbar-default" style="background-color: white;">
@@ -65,10 +66,5 @@
     </div>
     </nav>
     <div layout:fragment="content"></div>
-<script>
-    $(document).on("click","#search-btn",function() {
-        console.log($("#search-input").val());
-    })
-</script>
 </body>
 </html>

@@ -5,6 +5,7 @@ import com.limin.blog.enums.ArticleEnum;
 import com.limin.blog.mapper.SysCategoryMapper;
 import com.limin.blog.model.*;
 import com.limin.blog.service.ArticleService;
+import com.limin.blog.service.SearchService;
 import com.limin.blog.service.SysCategoryService;
 import com.limin.blog.service.UserService;
 import com.limin.blog.util.ResponseUtil;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,6 +43,8 @@ public class IndexController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    SearchService searchService;
 
     @GetMapping({"/","index"})
     public ModelAndView index(@RequestParam(value = "sysCateId",defaultValue = "-1")Integer sysCateId){
@@ -84,5 +88,47 @@ public class IndexController {
         articleVoPageInfo.setTotal(pageInfo.getTotal());
 
         return ResponseUtil.success(articleVoPageInfo);
+    }
+
+    @GetMapping(value = "search")
+    private ModelAndView search(@RequestParam(value = "keywords")String keywords,
+                                @RequestParam(value = "type",defaultValue = "article")String type){
+        ModelAndView mv = new ModelAndView("search");
+        mv.addObject("keywords",keywords);
+        mv.addObject("type",type);
+        return mv;
+    }
+
+    @ResponseBody
+    @GetMapping(value = "searcharticle")
+    public Response searcharticle(@RequestParam(value = "keywords")String keywords,
+                                @RequestParam(value = "pageNum",defaultValue = "1")Integer pageNum,
+                                @RequestParam(value = "pageSize",defaultValue = "10")Integer pageSize){
+        PageInfo<Article> pageInfo = searchService.searchArticle(keywords, pageNum, pageSize);
+        PageInfo<ArticleVo> articleVoPageInfo = new PageInfo<>();
+        articleVoPageInfo.setList(new ArrayList<>());
+        if (pageInfo.getList().size()>0) {
+            for (Article article : pageInfo.getList()) {
+                Article temp = articleService.selectById(article.getId());
+                article.setReadNum(temp.getReadNum());
+                article.setCommentNum(temp.getCommentNum());
+                ArticleVo articleVo = new ArticleVo();
+                articleVo.setArticle(article);
+                User user = userService.selectById(temp.getUserId());
+                articleVo.setUser(user);
+                articleVoPageInfo.getList().add(articleVo);
+            }
+        }
+        articleVoPageInfo.setTotal(pageInfo.getTotal());
+        return ResponseUtil.success(articleVoPageInfo);
+    }
+
+    @ResponseBody
+    @GetMapping(value = "searchTopic")
+    public Response searchTopic(@RequestParam(value = "keywords")String keywords,
+                             @RequestParam(value = "pageNum",defaultValue = "1")Integer pageNum,
+                             @RequestParam(value = "pageSize",defaultValue = "10")Integer pageSize){
+        PageInfo<ForumTopic> forumTopicPageInfo = searchService.searchTopic(keywords, pageNum, pageSize);
+        return ResponseUtil.success(forumTopicPageInfo);
     }
 }

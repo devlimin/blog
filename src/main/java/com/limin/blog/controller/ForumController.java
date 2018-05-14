@@ -7,6 +7,7 @@ import com.limin.blog.enums.ForumTopicEnum;
 import com.limin.blog.model.*;
 import com.limin.blog.service.FollowService;
 import com.limin.blog.service.ForumService;
+import com.limin.blog.service.SearchService;
 import com.limin.blog.util.ResponseUtil;
 import com.limin.blog.vo.Response;
 import org.apache.commons.lang3.StringUtils;
@@ -30,6 +31,9 @@ public class ForumController {
 
     @Autowired
     private FollowService followService;
+
+    @Autowired
+    private SearchService searchService;
 
     @GetMapping(value = {"","/","/{themeId}"})
     public ModelAndView forum(@PathVariable(value = "themeId",required = false)Integer themeId,
@@ -143,6 +147,7 @@ public class ForumController {
         forumTopic.setUserName(user.getName());
         forumTopic.setUserHeadUrl(user.getHeadUrl());
         forumTopic = forumService.addTopic(forumTopic);
+        searchService.indexTopic(forumTopic);
         return ResponseUtil.success(forumTopic.getId());
     }
     @GetMapping("man/list")

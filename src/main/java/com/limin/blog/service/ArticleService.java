@@ -30,6 +30,9 @@ public class ArticleService {
     @Autowired
     private CategoryService categoryService;
 
+    @Autowired
+    private SearchService searchService;
+
     public PageInfo<Article> selectPageByUserIdAndStatus(Integer userId, Integer status, Integer pageNum,Integer pageSize){
         ArticleExample example = new ArticleExample();
         example.createCriteria().andUserIdEqualTo(userId).andStatusEqualTo(status);
@@ -82,6 +85,7 @@ public class ArticleService {
             article.setCommentNum(0);
             //新增文章
             articleMapper.insert(article);
+            searchService.indexArticle(article);
         }
         //修改文章个人分类
         ArticleCategoryExample example = new ArticleCategoryExample();
