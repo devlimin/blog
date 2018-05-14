@@ -136,4 +136,11 @@ public class ForumService {
         forumTopic.setCommentNum(forumTopic.getCommentNum()-1);
         forumTopicMapper.updateByPrimaryKeySelective(forumTopic);
     }
+
+    public void updateReadNum(Integer topicId, Integer readNum) {
+        ForumTopic topic = new ForumTopic();
+        topic.setId(topicId);
+        topic.setReadNum(readNum);
+        forumTopicMapper.updateByPrimaryKeySelective(topic);
+    }
 }

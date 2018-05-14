@@ -15,12 +15,15 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Controller
 @RequestMapping("forum")
@@ -34,6 +37,9 @@ public class ForumController {
 
     @Autowired
     private SearchService searchService;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     @GetMapping(value = {"","/","/{themeId}"})
     public ModelAndView forum(@PathVariable(value = "themeId",required = false)Integer themeId,
@@ -57,9 +63,19 @@ public class ForumController {
 
     @GetMapping(value = "topic/{topicId}")
     public ModelAndView topic(@PathVariable(value = "topicId")Integer topicId,
-                              HttpSession session){
+                              HttpSession session,
+                              HttpServletRequest request){
         ModelAndView mv = new ModelAndView("forum/topic");
         ForumTopic forumTopic = forumService.selectTopicById(topicId);
+        String remoteAddr = request.getRemoteAddr();
+        if(!redisTemplate.opsForSet().isMember("ip:"+remoteAddr,"topic:"+topicId)){
+            redisTemplate.opsForSet().add("ip:"+remoteAddr,"topic:"+topicId);
+            if (redisTemplate.opsForSet().size("ip:"+remoteAddr)==1) {
+                redisTemplate.expire("ip:"+remoteAddr,1, TimeUnit.DAYS);
+            }
+            forumTopic.setReadNum(forumTopic.getReadNum()+1);
+            forumService.updateReadNum(topicId, forumTopic.getReadNum());
+        }
         mv.addObject("topic",forumTopic);
         User user = (User) session.getAttribute(BlogConst.LOGIN_SESSION_KEY);
         if (user!=null){

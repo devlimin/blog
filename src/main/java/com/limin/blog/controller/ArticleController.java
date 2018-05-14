@@ -63,13 +63,13 @@ public class ArticleController {
         //文章
         Article article = articleService.detailById(id);
         String remoteAddr = request.getRemoteAddr();
-        if(!redisTemplate.opsForSet().isMember("ip:"+remoteAddr,id)){
-            redisTemplate.opsForSet().add("ip:"+remoteAddr,id);
+        if(!redisTemplate.opsForSet().isMember("ip:"+remoteAddr,"article:"+id)){
+            redisTemplate.opsForSet().add("ip:"+remoteAddr,"article:"+id);
             if (redisTemplate.opsForSet().size("ip:"+remoteAddr)==1) {
                 redisTemplate.expire("ip:"+remoteAddr,1, TimeUnit.DAYS);
             }
             article.setReadNum(article.getReadNum()+1);
-            articleService.updateReadNum(id, article.getReadNum()+1);
+            articleService.updateReadNum(id, article.getReadNum());
         }
         mv.addObject("article",article);
         User user = userService.selectById(article.getUserId());
