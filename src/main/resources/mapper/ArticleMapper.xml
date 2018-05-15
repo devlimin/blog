@@ -355,4 +355,11 @@
       status = #{status,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="selectArchive" parameterType="int" resultType="java.util.Map">
+    SELECT COUNT(*) AS count,DATE_FORMAT(article.release_date, '%Y-%c') as date
+    FROM blog.article
+    where user_id=#{id} and status=0
+    GROUP BY DATE_FORMAT(article.release_date, '%Y-%c');
+  </select>
 </mapper>

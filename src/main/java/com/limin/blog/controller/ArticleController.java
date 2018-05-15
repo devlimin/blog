@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @Controller
@@ -117,6 +118,9 @@ public class ArticleController {
         categoryExample.createCriteria().andUserIdEqualTo(uid).andStatusEqualTo(CategoryEnum.PUBLISHED.getVal());
         List<Category> categories = categoryService.selectByExample(categoryExample);
         mv.addObject("categories",categories);
+
+        List<Map> archive = articleService.selectArchive(uid);
+        mv.addObject("archives",archive);
 
         user = (User) session.getAttribute(BlogConst.LOGIN_SESSION_KEY);
         if (user!=null){

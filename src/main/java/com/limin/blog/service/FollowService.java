@@ -147,7 +147,7 @@ public class FollowService {
     }
     public boolean blackcheck(Integer fromId,Integer toId) {
         Follow follow = select(fromId, EntityEnum.USER.getVal(), toId);
-        if (follow!=null&follow.getStatus().equals(FollowEnum.FORBIDDEN.getVal())) {
+        if (follow!=null&&follow.getStatus().equals(FollowEnum.FORBIDDEN.getVal())) {
             return true;
         }
         return false;

@@ -25,10 +25,6 @@
 					<div style="margin-bottom: 20px;">
 						<a class="pull-left" th:href="@{/article/list/{id}(id=${uid})}">全部文章</a>&nbsp;
 						<div class="pull-left" style="display: block;" th:text="${title}==null?'':' / '+${title}"></div>
-						<div class="pull-right">
-						<input type="text" name="keywords" class="form-control " placeholder="搜博主文章">
-						<a  class="layui-icon">&#xe615;</a>
-						</div>
 					</div>
 					<div id="article"></div>
 					<div style="clear:both;"></div>
@@ -36,17 +32,10 @@
 				<div class="layui-tab-item"></div>
 			</div>
 		</div>
-		<!--<div id="articles">-->
-			<!--<div class="pull-left" th:text="${title}"></div>-->
-			<!--<div class="pull-right">-->
-				<!--<input type="text" name="keywords" class="form-control " placeholder="搜博主文章">-->
-				<!--<a  class="layui-icon">&#xe615;</a>-->
-			<!--</div>-->
-			<!--<div id="article" style="clear: both;margin-top: 50px;">-->
-			<!--</div>-->
-			<input id="uid" type="hidden" name="uid" th:value="${uid}"/>
-			<input id="cid" type="hidden" name="cid" th:value="${cid}?${cid}"/>
-		<!--</div>-->
+
+		<input id="uid" type="hidden" name="uid" th:value="${uid}"/>
+		<input id="cid" type="hidden" name="cid" th:value="${cid}?${cid}"/>
+
 		<div id="side">
 			<div id="user-info">
 				<div id="header">
@@ -93,15 +82,11 @@
 				<div style="clear: both"></div>
 			</div>
 			<div class="side-list">
-				<h3>热门文章</h3>
+				<h3>文章归档</h3>
 				<ul class="list">
-					<li>
-						<a href="#">Java基础知识Java基础知识Java基础知识</a>
-						<span class="layui-icon">&#xe705 200</span>
-					</li>
-					<li>
-						<a href="#">Java基础知识</a>
-						<span class="layui-icon">&#xe705 30</span>
+					<li th:if="${archives} != null and ${#lists.size(archives) > 0}" th:each="archive : ${archives}">
+						<span style="float: left" th:text="${archive['date']}"></span>
+						<span th:text="${archive['count']}"></span>
 					</li>
 				</ul>
 				<div style="clear: both"></div>

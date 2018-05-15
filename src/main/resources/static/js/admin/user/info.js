@@ -1,10 +1,40 @@
 $(function () {
-    layui.use(['layer','laypage','element'], function(){
+    layui.use(['layer','laypage','element','laydate','form'], function(){
+        var layer = layui.layer;
         var laypage = layui.laypage;
         var element = layui.element;
+        var laydate = layui.laydate;
+        var form = layui.form;
+
+        //执行一个laydate实例
+        //同时绑定多个
+        lay('.time-item').each(function(){
+            laydate.render({
+                elem: this,
+                type: 'datetime',
+                max:0,
+                trigger: 'click'
+            });
+        });
+
+        $("#search_btn").click(function () {
+            page(1,5);
+            return false;
+        })
         page(1,5);
         function page(pageNum,pageSize) {
-            var data = "pageNum="+pageNum+"&pageSize="+pageSize
+            var data = $("form").serialize();
+            var beginTime = "";
+            console.log($("#beginTime").val());
+            if($("#beginTime").val()!="") {
+                beginTime = new Date($("#beginTime").val()).getTime();
+            }
+            var endTime = ""
+            if($("#endTime").val()!="") {
+                endTime = new Date($("#endTime").val()).getTime();
+            }
+            data += "&beginTime="+beginTime+"&endTime="+endTime+"&pageNum="+pageNum+"&pageSize="+pageSize
+            console.log(data);
             $.ajax({
                 url:'/admin/user/page',
                 type:"get",
@@ -23,10 +53,17 @@ $(function () {
                                 +'<td>'+user.id+'</td>'
                                 +'<td>'+user.email+'</td>'
                                 +'<td>'+user.name+'</td>'
-                                +'<td>'+user.motto+'</td>'
-                                +'<td>'+user.birth+'</td>'
-                                +'<td>'+user.status+'</td>'
-                                +'<td><button>操作</button></td>'
+                                +'<td>'+new Date(user.birth).format()+'</td>';
+                            if(user.state==0) {
+                                html+='<td>未激活</td>'
+                            } else if(user.state == 1){
+                                html+='<td>已激活</td>'
+                            } else {
+                                html+='<td>未知</td>'
+                            }
+                            html+='<td>' +
+                                        '<button class="layui-btn layui-btn-xs">详情</button>' +
+                                    '</td>'
                                 +'</tr>'
                         })
                         $("#table tr:not(:first)").remove();

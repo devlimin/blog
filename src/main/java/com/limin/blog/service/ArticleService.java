@@ -1,6 +1,5 @@
 package com.limin.blog.service;
 
-import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.limin.blog.enums.ArticleEnum;
@@ -8,11 +7,15 @@ import com.limin.blog.exception.BizException;
 import com.limin.blog.mapper.ArticleMapper;
 import com.limin.blog.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.*;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @CacheConfig(cacheNames = "article")
@@ -32,6 +35,10 @@ public class ArticleService {
 
     @Autowired
     private SearchService searchService;
+
+    public List<Map> selectArchive(Integer userId){
+        return articleMapper.selectArchive(userId);
+    }
 
     public PageInfo<Article> selectPageByUserIdAndStatus(Integer userId, Integer status, Integer pageNum,Integer pageSize){
         ArticleExample example = new ArticleExample();

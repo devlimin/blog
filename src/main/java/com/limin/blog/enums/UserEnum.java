@@ -1,7 +1,7 @@
 package com.limin.blog.enums;
 
 public enum UserEnum {
-    INITED(0,"初始"),ACTIVED(1,"激活");
+    INITED(0,"初始"),ACTIVED(1,"激活"),DISABLE(2,"禁用");
 
     private Integer val;
     private String msg;

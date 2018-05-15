@@ -2,8 +2,10 @@ package com.limin.blog.mapper;
 
 import com.limin.blog.model.Article;
 import com.limin.blog.model.ArticleExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
+import java.util.Map;
 
 public interface ArticleMapper {
     long countByExample(ArticleExample example);
@@ -33,4 +35,6 @@ public interface ArticleMapper {
     int updateByPrimaryKeyWithBLOBs(Article record);
 
     int updateByPrimaryKey(Article record);
+
+    List<Map> selectArchive(Integer userId);
 }
