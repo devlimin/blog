@@ -1,10 +1,73 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/admin}">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <title>帖子信息</title>
+    <link th:href="@{/css/admin/article/article.css}" rel="stylesheet"/>
+    <script th:src="@{/js/admin/forum/topic.js}"></script>
 </head>
 <body>
+<div layout:fragment="content">
+    <form class="layui-form">
+        <div class="layui-form-item search-row">
+            <div class="layui-inline">
+                <label class="search-label">帖子id</label>
+                <div class="search-input">
+                    <input type="text" name="tid" class="layui-input" value="">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="search-label">作者id</label>
+                <div class="search-input">
+                    <input type="text" name="uid" class="layui-input" value="">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="search-label">状态</label>
+                <div class="search-input">
+                    <select name="state">
+                        <option value=""></option>
+                        <option value="0">已发表</option>
+                        <option value="1">回收站</option>
+                        <option value="-1">已删除</option>
+                    </select><div class="layui-unselect layui-form-select"><div class="layui-select-title"><input type="text" placeholder="请选择" value="" readonly="" class="layui-input layui-unselect"><i class="layui-edge"></i></div><dl class="layui-anim layui-anim-upbit"><dd lay-value="" class="layui-select-tips">请选择</dd><dd lay-value="0" class="">初始化</dd><dd lay-value="1" class="">正常</dd><dd lay-value="2" class="">封禁</dd></dl></div>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="search-label">创建时间</label>
+                <div class="date-input">
+                    <input type="text" id="beginTime" class="layui-input time-item" value="" placeholder="开始时间" lay-key="1">
+                </div>
+                <div class="layui-form-mid">-</div>
+                <div class="date-input">
+                    <input type="text" id="endTime" class="layui-input time-item" value="" placeholder="截止时间" lay-key="2">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <button class="layui-btn" id="search_btn"><i class="layui-icon"></i>查询</button>
+            </div>
+            <div class="layui-inline">
 
+            </div>
+        </div>
+        <input type="hidden" name="page" id="pg">
+        <input type="hidden" name="size" id="se">
+    </form>
+
+    <table id="table" class="table">
+        <tr id="thead" style="background-color: #f2f2f2;">
+            <th>帖子ID</th>
+            <th>系统分类</th>
+            <th>帖子标题</th>
+            <th>作者ID</th>
+            <th>作者</th>
+            <th>发布日期</th>
+            <th>状态</th>
+            <th>操作</th>
+        </tr>
+    </table>
+    <div id="page" class="text-center"></div>
+</div>
 </body>
 </html>

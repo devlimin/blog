@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Controller(value = "adminArticle")
@@ -46,10 +47,31 @@ public class ArticleController {
     @ResponseBody
     @GetMapping(value = "articlePage")
     public Response articlePage(@RequestParam(value = "pageNum",defaultValue = "1")Integer pageNum,
-                                @RequestParam(value = "pageSize",defaultValue = "10")Integer pageSize){
+                                @RequestParam(value = "pageSize",defaultValue = "10")Integer pageSize,
+                                @RequestParam(value = "aid",required = false)Integer aid,
+                                @RequestParam(value = "uid",required = false)Integer uid,
+                                @RequestParam(value = "state",required = false)Integer state,
+                                @RequestParam(value = "beginTime",required = false)Long beginTime,
+                                @RequestParam(value = "endTime",required = false)Long endTime){
         PageInfo<ArticleVo> articleVoPageInfo = new PageInfo<>();
         articleVoPageInfo.setList(new ArrayList<>());
         ArticleExample example = new ArticleExample();
+        ArticleExample.Criteria criteria = example.createCriteria();
+        if (aid!=null) {
+            criteria.andIdEqualTo(aid);
+        }
+        if (uid!=null) {
+            criteria.andUserIdEqualTo(uid);
+        }
+        if (state!=null) {
+            criteria.andStatusEqualTo(state);
+        }
+        if (beginTime!=null) {
+            criteria.andReleaseDateGreaterThanOrEqualTo(new Date(beginTime));
+        }
+        if (endTime!=null) {
+            criteria.andReleaseDateLessThanOrEqualTo(new Date(endTime));
+        }
         example.setOrderByClause("release_date desc");
         PageInfo<Article> pageInfo = articleService.selectPageByExampleWithBLOBS(example, pageNum, pageSize);
         if (pageInfo.getList().size()>0) {
@@ -80,8 +102,29 @@ public class ArticleController {
     @ResponseBody
     @GetMapping(value = "commentPage")
     public Response commentPage(@RequestParam(value = "pageNum",defaultValue = "1")Integer pageNum,
-                                @RequestParam(value = "pageSize",defaultValue = "10")Integer pageSize){
+                                @RequestParam(value = "pageSize",defaultValue = "10")Integer pageSize,
+                                @RequestParam(value = "aid",required = false)Integer aid,
+                                @RequestParam(value = "uid",required = false)Integer uid,
+                                @RequestParam(value = "state",required = false)Integer state,
+                                @RequestParam(value = "beginTime",required = false)Long beginTime,
+                                @RequestParam(value = "endTime",required = false)Long endTime){
         CommentExample example = new CommentExample();
+        CommentExample.Criteria criteria = example.createCriteria();
+        if (aid!=null) {
+            criteria.andArticleIdEqualTo(aid);
+        }
+        if (uid!=null) {
+            criteria.andUserIdEqualTo(uid);
+        }
+        if (state!=null) {
+            criteria.andStatusEqualTo(state);
+        }
+        if (beginTime!=null) {
+            criteria.andReleaseDateGreaterThanOrEqualTo(new Date(beginTime));
+        }
+        if (endTime!=null) {
+            criteria.andReleaseDateLessThanOrEqualTo(new Date(endTime));
+        }
         example.setOrderByClause("release_date desc");
         PageInfo<Comment> commentPageInfo = commentService.selectPageByExampleWithBLOGS(example, pageNum, pageSize);
         List<CommentVo> commentVos =null;

@@ -58,17 +58,20 @@
                         </dd>
                     </dl>
                 </li>
-                <li class="layui-nav-item">
+                <li th:class="${#strings.contains(type,'forum')} ? 'layui-nav-item layui-nav-itemed': 'layui-nav-item'">
                     <a href="javascript:;">帖子管理</a>
                     <dl class="layui-nav-child">
-                        <dd><a href="javascript:;">帖子信息</a></dd>
-                        <dd><a href="javascript:;">帖子回复</a></dd>
+                        <dd th:class="${type}=='forum/topic'?'layui-this':''">
+                            <a th:href="@{/admin/forum/topic}">帖子信息</a></dd>
+                        <dd th:class="${type}=='forum/reply'?'layui-this':''">
+                            <a th:href="@{/admin/forum/reply}">帖子回复</a></dd>
                     </dl>
                 </li>
-                <li class="layui-nav-item">
+                <li th:class="${#strings.contains(type,'message')} ? 'layui-nav-item layui-nav-itemed': 'layui-nav-item'">
                     <a href="javascript:;">消息管理</a>
                     <dl class="layui-nav-child">
-                        <dd><a href="javascript:;">消息信息</a></dd>
+                        <dd th:class="${type}=='message/msg'?'layui-this':''">
+                            <a th:href="@{/admin/message/msg}">消息信息</a></dd>
                         <dd><a href="javascript:;">发消息</a></dd>
                     </dl>
                 </li>

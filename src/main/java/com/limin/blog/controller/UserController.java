@@ -30,6 +30,13 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @ResponseBody
+    @GetMapping(value = "info")
+    public Response info(@RequestParam(value = "userId")Integer userId){
+        User user = userService.selectById(userId);
+        return ResponseUtil.success(user);
+    }
+
     @GetMapping(value = "active")
     public ModelAndView acvive(@RequestParam(value = "id")Integer id,
                          @RequestParam(value = "code")String code){

@@ -33,7 +33,7 @@ $(function () {
             }
             data += "&beginTime="+beginTime+"&endTime="+endTime+"&pageNum="+pageNum+"&pageSize="+pageSize
             $.ajax({
-                url:'/admin/article/articlePage',
+                url:'/admin/message/msgPage',
                 type:"get",
                 data:data,
                 success:function (resp) {
@@ -50,24 +50,18 @@ $(function () {
                         }
                         $("#nocontent").remove();
                         $("#thead").css({"display":"table-row"});
-                        $.each(data.list,function (i, articleVo) {
+                        $.each(data.list,function (i, message) {
                             html+='<tr>'
-                                +'<td>'+articleVo.article.id+'</td>'
-                                +'<td>'+articleVo.sysCategory.name+'</td>'
-                                +'<td>'+articleVo.article.title+'</td>'
-                                +'<td>'+articleVo.user.id+'</td>'
-                                +'<td>'+articleVo.user.name+'</td>'
-                                +'<td>'+new Date(articleVo.article.releaseDate).format()+'</td>';
-                            if(articleVo.article.status==-1){
+                                +'<td>'+message.id+'</td>'
+                                +'<td>'+message.userId+'</td>'
+                                +'<td>'+message.toUserId+'</td>'
+                                +'<td>'+new Date(message.releaseDate).format()+'</td>';
+                            if(message.status==-1){
                                 html+='<td>已删除</td>'
-                            } else if(articleVo.article.status==0){
+                            } else if(message.status==0){
                                 html+='<td>已发表</td>'
-                            } else if(articleVo.article.status==1){
-                                html+='<td>草稿</td>'
-                            } else if(articleVo.article.status==2){
-                                html+='<td>回收站</td>'
                             }
-                                html+='<td><button>操作</button></td>'
+                            html+='<td><button>操作</button></td>'
                                 +'</tr>'
                         })
                         $("#table tr:not(:first)").remove();

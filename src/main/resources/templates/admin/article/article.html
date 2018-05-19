@@ -4,34 +4,64 @@
       layout:decorate="~{admin/admin}">
 <head>
     <title>文章信息</title>
-    <!--<link th:href="@{/css/index.css}" rel="stylesheet">-->
+    <link th:href="@{/css/admin/article/article.css}" rel="stylesheet"/>
     <script th:src="@{/js/admin/article/article.js}"></script>
 </head>
 <body>
 <div layout:fragment="content">
-    <div class="layui-form demoTable">
-        搜索ID：
-        <div class="layui-inline">
-            <input class="layui-input" name="id" id="demoReload" autocomplete="off">
-        </div>
-        <div class="layui-form-item" style="display: inline-block;width: 300px;">
-            <label class="layui-form-label">状态</label>
-            <div class="layui-input-block">
-                <select name="city" lay-verify="required">
-                    <option value=""></option>
-                    <option value="0">已激活</option>
-                    <option value="1">未激活</option>
-                </select>
+    <form class="layui-form">
+        <div class="layui-form-item search-row">
+            <div class="layui-inline">
+                <label class="search-label">文章id</label>
+                <div class="search-input">
+                    <input type="text" name="aid" class="layui-input" value="">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="search-label">作者id</label>
+                <div class="search-input">
+                    <input type="text" name="uid" class="layui-input" value="">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="search-label">状态</label>
+                <div class="search-input">
+                    <select name="state">
+                        <option value=""></option>
+                        <option value="0">已发表</option>
+                        <option value="1">草稿</option>
+                        <option value="2">回收站</option>
+                        <option value="-1">已删除</option>
+                    </select><div class="layui-unselect layui-form-select"><div class="layui-select-title"><input type="text" placeholder="请选择" value="" readonly="" class="layui-input layui-unselect"><i class="layui-edge"></i></div><dl class="layui-anim layui-anim-upbit"><dd lay-value="" class="layui-select-tips">请选择</dd><dd lay-value="0" class="">初始化</dd><dd lay-value="1" class="">正常</dd><dd lay-value="2" class="">封禁</dd></dl></div>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="search-label">创建时间</label>
+                <div class="date-input">
+                    <input type="text" id="beginTime" class="layui-input time-item" value="" placeholder="开始时间" lay-key="1">
+                </div>
+                <div class="layui-form-mid">-</div>
+                <div class="date-input">
+                    <input type="text" id="endTime" class="layui-input time-item" value="" placeholder="截止时间" lay-key="2">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <button class="layui-btn" id="search_btn"><i class="layui-icon"></i>查询</button>
+            </div>
+            <div class="layui-inline">
+
             </div>
         </div>
-        <button class="layui-btn" data-type="reload">搜索</button>
-    </div>
+        <input type="hidden" name="page" id="pg">
+        <input type="hidden" name="size" id="se">
+    </form>
 
     <table id="table" class="table">
-        <tr>
-            <th>ID</th>
+        <tr id="thead" style="background-color: #f2f2f2;">
+            <th>文章ID</th>
             <th>系统分类</th>
             <th>标题</th>
+            <th>作者ID</th>
             <th>作者</th>
             <th>发布日期</th>
             <th>状态</th>

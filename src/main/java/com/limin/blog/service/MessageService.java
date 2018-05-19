@@ -50,4 +50,10 @@ public class MessageService {
         long count = messageMapper.countByExample(example);
         return count;
     }
+
+    public PageInfo selectByExample(MessageExample example, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum,pageSize);
+        List<Message> messages = messageMapper.selectByExample(example);
+        return new PageInfo(messages);
+    }
 }
