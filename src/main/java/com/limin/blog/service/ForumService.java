@@ -143,4 +143,8 @@ public class ForumService {
         topic.setReadNum(readNum);
         forumTopicMapper.updateByPrimaryKeySelective(topic);
     }
+
+    public ForumReply selectReplyById(Integer id) {
+        return forumReplyMapper.selectByPrimaryKey(id);
+    }
 }

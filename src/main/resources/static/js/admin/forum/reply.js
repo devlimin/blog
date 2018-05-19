@@ -54,7 +54,7 @@ $(function () {
                         $("#nocontent").remove();
                         $("#thead").css({"display":"table-row"});
                         $.each(data.list,function (i, topic) {
-                            html+='<tr>'
+                            html+='<tr id="'+topic.id+'">'
                                 +'<td>'+topic.id+'</td>'
                                 +'<td>'+topic.topicTitle+'</td>'
                                 +'<td>'+topic.userId+'</td>'
@@ -67,7 +67,9 @@ $(function () {
                             } else if(topic.status==1){
                                 html+='<td>回收站</td>'
                             }
-                            html+='<td><button class="layui-btn layui-btn-xs" >详情</button></td>'
+                            html+='<td>' +
+                                    '<button class="layui-btn layui-btn-xs detail">详情</button>' +
+                                    '</td>'
                                 +'</tr>'
                         })
                         $("#table tr:not(:first)").remove();
@@ -100,40 +102,38 @@ $(function () {
             })
         }
 
-        var index;
         $(document).on("click",".detail",function () {
-            var userId = $(this).parent().parent().attr("id");
+            var topicId = $(this).parent().parent().attr("id");
             $.ajax({
-                url:'/user/info',
+                url:'/admin/forum/replyInfo',
                 type:'get',
-                data:'userId='+userId,
+                data:'id='+topicId,
                 success:function (resp) {
                     if(resp.code==0){
-                        var data = resp.data;
+                        var reply = resp.data;
+                        var html='';
+                        html+='<table class="layui-table">' +
+                            '<tr>' +
+                            '<td><label>帖子：</label><span>'+reply.topicTitle+'</span></td>' +
+                            '</tr>'+
+                            '<tr>' +
+                            '<td><label>评论人：</label><span>'+reply.userName+'</span></td>' +
+                            '</tr>'+
+                            '<tr>' +
+                            '<td>' +
+                            '<label>发表时间：</label><span>'+new Date(reply.releaseDate).format()+'</span>&nbsp;&nbsp;&nbsp;&nbsp;' +
+                            '</td>' +
+                            '</tr>'+
+                            '<tr>' +
+                            '<td><label>内容：</label><span>'+reply.content+'</span></td>' +
+                            '</tr>'+
+                            '</table>'
                         index = layer.open({
                             type: 1,
                             skin: 'layui-layer-molv', //加上边框
-                            area: ['600px', '450px'], //宽高
-                            title: "用户信息",
-                            content:
-                            '<table class="layui-table">' +
-                            '<tr>' +
-                            '<td>邮箱</td>' +
-                            '<td>'+data.email+'</td>' +
-                            '<td>用户名</td>' +
-                            '<td>'+data.name+'</td>' +
-                            '</tr>' +
-                            '<tr>' +
-                            '<td>头像</td>' +
-                            '<td><img src="'+data.headUrl+'"/></td>' +
-                            '<td>入驻时间</td>' +
-                            '<td>'+new Date(data.birth).format()+'</td>' +
-                            '</tr>' +
-                            '<tr>' +
-                            '<td>座右铭</td>' +
-                            '<td colspan="3">'+data.motto+'</td>' +
-                            '</tr>' +
-                            '</table>'
+                            area: ['600px', '400px'], //宽高
+                            title: "文章信息",
+                            content:html
                         })
                     } else {
                         layer.msg(resp.msg, {icon: 5,anim: 6});
@@ -146,27 +146,6 @@ $(function () {
                 }
             })
 
-        })
-        $(document).on("click",".updatepsss",function () {
-            var userId = $(this).parent().parent().attr("id");
-            $.ajax({
-                url:'',
-                data:'',
-                type:'post',
-                success:function (resp) {
-                    if (resp.code==0) {
-
-                    } else {
-                        layer.msg(resp.msg, {icon: 5,anim: 6});
-                    }
-                    return false;
-                },
-                error:function (resp) {
-                    layer.msg("系统出现问题，请联系管理员", {icon: 5,anim: 6});
-                    return false;
-                }
-
-            })
         })
     });
 })

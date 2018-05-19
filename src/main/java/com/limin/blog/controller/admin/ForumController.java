@@ -1,7 +1,9 @@
 package com.limin.blog.controller.admin;
 
 import com.github.pagehelper.PageInfo;
+import com.limin.blog.model.ForumReply;
 import com.limin.blog.model.ForumReplyExample;
+import com.limin.blog.model.ForumTopic;
 import com.limin.blog.model.ForumTopicExample;
 import com.limin.blog.service.ForumService;
 import com.limin.blog.util.ResponseUtil;
@@ -60,7 +62,12 @@ public class ForumController {
         PageInfo pageInfo = forumService.selectTopicByExample(example, pageNum, pageSize);
         return ResponseUtil.success(pageInfo);
     }
-
+    @ResponseBody
+    @GetMapping(value = "topicInfo")
+    public Response topicInfo(@RequestParam(value = "id")Integer id){
+        ForumTopic topic = forumService.selectTopicById(id);
+        return ResponseUtil.success(topic);
+    }
 
     @GetMapping(value = "reply")
     public ModelAndView reply(){
@@ -98,5 +105,12 @@ public class ForumController {
         example.setOrderByClause("release_date desc");
         PageInfo pageInfo = forumService.selectReplyByExample(example, pageNum, pageSize);
         return ResponseUtil.success(pageInfo);
+    }
+
+    @ResponseBody
+    @GetMapping(value = "replyInfo")
+    public Response replyInfo(@RequestParam(value = "id")Integer id){
+        ForumReply reply = forumService.selectReplyById(id);
+        return ResponseUtil.success(reply);
     }
 }
