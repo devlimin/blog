@@ -19,4 +19,8 @@ public class SysCategoryService {
         List<SysCategory> sysCategories =  sysCategoryMapper.selectByExample(sysCategoryExample);
         return sysCategories;
     }
+
+    public SysCategory selectById(Integer sysCateId) {
+        return sysCategoryMapper.selectByPrimaryKey(sysCateId);
+    }
 }

@@ -103,7 +103,6 @@ $(function () {
             })
         }
 
-        var index;
         $(document).on("click",".detail",function () {
             var userId = $(this).parent().parent().attr("id");
             $.ajax({

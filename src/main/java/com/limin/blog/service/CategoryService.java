@@ -3,6 +3,7 @@ package com.limin.blog.service;
 import com.limin.blog.enums.CategoryEnum;
 import com.limin.blog.mapper.ArticleCategoryMapper;
 import com.limin.blog.mapper.CategoryMapper;
+import com.limin.blog.model.ArticleCategory;
 import com.limin.blog.model.ArticleCategoryExample;
 import com.limin.blog.model.Category;
 import com.limin.blog.model.CategoryExample;
@@ -13,6 +14,7 @@ import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -73,5 +75,20 @@ public class CategoryService {
         category.setStatus(CategoryEnum.PUBLISHED.getVal());
         categoryMapper.insert(category);
         return category.getId();
+    }
+
+    public List<Category> selectByArticleId(Integer id) {
+        CategoryExample example = new CategoryExample();
+        ArticleCategoryExample articleCategoryExample =new ArticleCategoryExample();
+        articleCategoryExample.createCriteria().andArticleIdEqualTo(id);
+        List<ArticleCategory> articleCategories = articleCategoryService.select(articleCategoryExample);
+        List<Category> categories = new ArrayList<>();
+        if (articleCategories!=null) {
+            for (ArticleCategory articleCategory : articleCategories) {
+                Category category = selectById(articleCategory.getCategoryId());
+                categories.add(category);
+            }
+        }
+        return categories;
     }
 }

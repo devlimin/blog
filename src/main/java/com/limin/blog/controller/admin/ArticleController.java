@@ -1,19 +1,12 @@
 package com.limin.blog.controller.admin;
 
 import com.github.pagehelper.PageInfo;
-import com.limin.blog.mapper.SysCategoryMapper;
 import com.limin.blog.model.*;
-import com.limin.blog.service.ArticleService;
-import com.limin.blog.service.CommentService;
-import com.limin.blog.service.UserService;
+import com.limin.blog.service.*;
 import com.limin.blog.util.ResponseUtil;
 import com.limin.blog.vo.ArticleVo;
 import com.limin.blog.vo.CommentVo;
 import com.limin.blog.vo.Response;
-import org.apache.commons.lang3.StringUtils;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -36,7 +28,9 @@ public class ArticleController {
     @Autowired
     private UserService userService;
     @Autowired
-    private SysCategoryMapper sysCategoryMapper;
+    private SysCategoryService sysCategoryService;
+    @Autowired
+    private CategoryService categoryService;
 
     @GetMapping(value = "article")
     public ModelAndView article(){
@@ -53,8 +47,7 @@ public class ArticleController {
                                 @RequestParam(value = "state",required = false)Integer state,
                                 @RequestParam(value = "beginTime",required = false)Long beginTime,
                                 @RequestParam(value = "endTime",required = false)Long endTime){
-        PageInfo<ArticleVo> articleVoPageInfo = new PageInfo<>();
-        articleVoPageInfo.setList(new ArrayList<>());
+
         ArticleExample example = new ArticleExample();
         ArticleExample.Criteria criteria = example.createCriteria();
         if (aid!=null) {
@@ -73,25 +66,26 @@ public class ArticleController {
             criteria.andReleaseDateLessThanOrEqualTo(new Date(endTime));
         }
         example.setOrderByClause("release_date desc");
-        PageInfo<Article> pageInfo = articleService.selectPageByExampleWithBLOBS(example, pageNum, pageSize);
-        if (pageInfo.getList().size()>0) {
-            for (Article article : pageInfo.getList()) {
-                Document document = Jsoup.parseBodyFragment(article.getContent());
-                Element body = document.body();
-                article.setContent(StringUtils.substring(body.text(), 0, 180));
-                User user = userService.selectById(article.getUserId());
-                SysCategory sysCategory = sysCategoryMapper.selectByPrimaryKey(article.getSysCateId());
-                ArticleVo articleVo = new ArticleVo();
-                articleVo.setArticle(article);
-                articleVo.setUser(user);
-                articleVo.setSysCategory(sysCategory);
-                articleVoPageInfo.getList().add(articleVo);
-            }
-        }
-        articleVoPageInfo.setTotal(pageInfo.getTotal());
-        return ResponseUtil.success(articleVoPageInfo);
+        PageInfo<Article> pageInfo = articleService.selectPageByExample(example, pageNum, pageSize);
+        return ResponseUtil.success(pageInfo);
     }
-
+    @ResponseBody
+    @GetMapping(value = "articleInfo")
+    public Response articleInfo(@RequestParam(value = "id")Integer id){
+        Article article = articleService.selectById(id);
+        if (article==null) {
+            return ResponseUtil.error(2,"不存在该文章");
+        }
+        User user = userService.selectById(article.getUserId());
+        SysCategory sysCategory = sysCategoryService.selectById(article.getSysCateId());
+        List<Category> categories = categoryService.selectByArticleId(article.getId());
+        ArticleVo articleVo = new ArticleVo();
+        articleVo.setArticle(article);
+        articleVo.setUser(user);
+        articleVo.setSysCategory(sysCategory);
+        articleVo.setCategories(categories);
+        return ResponseUtil.success(articleVo);
+    }
 
     @GetMapping(value = "comment")
     public ModelAndView comment(){
@@ -126,21 +120,19 @@ public class ArticleController {
             criteria.andReleaseDateLessThanOrEqualTo(new Date(endTime));
         }
         example.setOrderByClause("release_date desc");
-        PageInfo<Comment> commentPageInfo = commentService.selectPageByExampleWithBLOGS(example, pageNum, pageSize);
-        List<CommentVo> commentVos =null;
-        if (commentPageInfo.getList()!= null&& commentPageInfo.getList().size()>0) {
-            commentVos = new ArrayList<>();
-            for (Comment comment:commentPageInfo.getList()) {
-                CommentVo commentVo = new CommentVo();
-                commentVo.setComment(comment);
-                commentVo.setArticle(articleService.selectById(comment.getArticleId()));
-                commentVo.setUser(userService.selectById(comment.getUserId()));
-                commentVos.add(commentVo);
-            }
-        }
-        PageInfo<CommentVo> commentVoPageInfo = new PageInfo<>(commentVos);
-        commentVoPageInfo.setList(commentVos);
-        commentVoPageInfo.setTotal(commentPageInfo.getTotal());
-        return ResponseUtil.success(commentVoPageInfo);
+        PageInfo<Comment> pageInfo = commentService.selectPageByExampleWithBLOGS(example, pageNum, pageSize);
+        return ResponseUtil.success(pageInfo);
+    }
+    @ResponseBody
+    @GetMapping(value = "commentInfo")
+    public Response commentInfo(@RequestParam(value = "id")Integer id){
+        Comment comment = commentService.selectById(id);
+        User user = userService.selectById(comment.getUserId());
+        Article article = articleService.selectById(comment.getArticleId());
+        CommentVo commentVo = new CommentVo();
+        commentVo.setComment(comment);
+        commentVo.setUser(user);
+        commentVo.setArticle(article);;
+        return ResponseUtil.success(commentVo);
     }
 }

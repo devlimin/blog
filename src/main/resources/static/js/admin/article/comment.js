@@ -51,19 +51,20 @@ $(function () {
                         }
                         $("#nocontent").remove();
                         $("#thead").css({"display":"table-row"});
-                        $.each(data.list,function (i, commentVo) {
-                            html+='<tr>'
-                                +'<td>'+commentVo.article.id+'</td>'
-                                +'<td>'+commentVo.article.title+'</td>'
-                                +'<td>'+commentVo.user.id+'</td>'
-                                +'<td>'+commentVo.user.name+'</td>'
-                                +'<td>'+new Date(commentVo.comment.releaseDate).format()+'</td>';
-                            if(commentVo.comment.status==0) {
+                        $.each(data.list,function (i, comment) {
+                            html+='<tr id="'+comment.id+'">'
+                                +'<td>'+comment.id+'</td>'
+                                +'<td>'+comment.articleId+'</td>'
+                                +'<td>'+comment.userId+'</td>'
+                                +'<td>'+new Date(comment.releaseDate).format()+'</td>';
+                            if(comment.status==0) {
                                 html+='<td>已发表</td>'
-                            } else if(commentVo.comment.status==-1) {
+                            } else if(comment.status==-1) {
                                 html+='<td>已删除</td>'
                             }
-                                html+='<td><button>操作</button></td>'
+                                html+='<td>' +
+                                    '<button class="layui-btn layui-btn-xs detail">详情</button>' +
+                                    '</td>'
                                 +'</tr>'
                         })
                         $("#table tr:not(:first)").remove();
@@ -96,6 +97,53 @@ $(function () {
             })
         }
     });
+
+    $(document).on("click",".detail",function () {
+        var commentId = $(this).parent().parent().attr("id");
+        $.ajax({
+            url:'/admin/article/commentInfo',
+            type:'get',
+            data:'id='+commentId,
+            success:function (resp) {
+                if(resp.code==0){
+                    var commentVo = resp.data;
+                    var html='';
+                    html+='<table class="layui-table">' +
+                        '<tr>' +
+                        '<td><label>文章：</label><span>'+commentVo.article.title+'</span></td>' +
+                        '</tr>'+
+                        '<tr>' +
+                        '<td><label>评论人：</label><span>'+commentVo.user.name+'</span></td>' +
+                        '</tr>'+
+                        '<tr>' +
+                        '<td>' +
+                        '<label>发表时间：</label><span>'+new Date(commentVo.comment.releaseDate).format()+'</span>&nbsp;&nbsp;&nbsp;&nbsp;' +
+                        '</td>' +
+                        '</tr>'+
+                        '<tr>' +
+                        '<td><label>内容：</label><span>'+commentVo.comment.content+'</span></td>' +
+                        '</tr>'+
+                        '</table>'
+                    index = layer.open({
+                        type: 1,
+                        skin: 'layui-layer-molv', //加上边框
+                        area: ['600px', '400px'], //宽高
+                        title: "文章信息",
+                        content:html
+                    })
+                } else {
+                    layer.msg(resp.msg, {icon: 5,anim: 6});
+                }
+                return false;
+            },
+            error:function (resp) {
+                layer.msg("系统出现问题，请联系管理员", {icon: 5,anim: 6});
+                return false;
+            }
+        })
+
+    })
+
     Date.prototype.format = function () {
         return this.getFullYear() + "." + (this.getMonth() + 1) + "." + this.getDate() + " " + this.getHours() + ":" + this.getMinutes() + ":"+this.getSeconds();
     }

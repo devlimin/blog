@@ -63,6 +63,12 @@ public class ArticleService {
         return new PageInfo(articles);
     }
 
+    public PageInfo selectPageByExample(ArticleExample articleExample, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<Article> articles = articleMapper.selectByExample(articleExample);
+        return new PageInfo(articles);
+    }
+
     @Cacheable(key = "'article:'+#id.toString()")
     public Article selectById(Integer id) {
         return articleMapper.selectByPrimaryKey(id);

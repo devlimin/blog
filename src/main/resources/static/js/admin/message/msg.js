@@ -61,7 +61,7 @@ $(function () {
                             } else if(message.status==0){
                                 html+='<td>已发表</td>'
                             }
-                            html+='<td><button>操作</button></td>'
+                            html+='<td><button class="layui-btn layui-btn-xs" >详情</button></td>'
                                 +'</tr>'
                         })
                         $("#table tr:not(:first)").remove();
