@@ -1,16 +1,17 @@
 package com.limin.blog.controller.admin;
 
 import com.github.pagehelper.PageInfo;
+import com.limin.blog.model.Message;
 import com.limin.blog.model.MessageExample;
+import com.limin.blog.model.User;
 import com.limin.blog.service.MessageService;
+import com.limin.blog.service.UserService;
 import com.limin.blog.util.ResponseUtil;
+import com.limin.blog.vo.MessageVo;
 import com.limin.blog.vo.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Date;
@@ -21,6 +22,9 @@ public class MessageController {
 
     @Autowired
     private MessageService messageService;
+
+    @Autowired
+    private UserService userService;
 
     @GetMapping(value = "msg")
     public ModelAndView msg(){
@@ -62,5 +66,33 @@ public class MessageController {
         example.setOrderByClause("release_date desc");
         PageInfo pageInfo = messageService.selectByExample(example,pageNum,pageSize);
         return ResponseUtil.success(pageInfo);
+    }
+
+    @ResponseBody
+    @GetMapping(value = "msgInfo")
+    public Response replyInfo(@RequestParam(value = "id")Integer id){
+        Message message = messageService.selectById(id);
+        User user = userService.selectById(message.getUserId());
+        User toUser = userService.selectById(message.getToUserId());
+        MessageVo messageVo = new MessageVo();
+        messageVo.setMessage(message);
+        messageVo.setUser(user);
+        messageVo.setToUser(toUser);
+        return ResponseUtil.success(messageVo);
+    }
+
+    @ResponseBody
+    @PostMapping(value = "updateMsgStatus")
+    public Response updateReplyStatus(@RequestParam(value = "msgId")Integer msgId,
+                                      @RequestParam(value = "status")Integer status){
+        messageService.updateStatus(msgId,status);
+        return ResponseUtil.success();
+    }
+
+    @GetMapping(value = "send")
+    public ModelAndView send(){
+        ModelAndView mv = new ModelAndView("admin/message/send");
+        mv.addObject("type","message/send");
+        return mv;
     }
 }

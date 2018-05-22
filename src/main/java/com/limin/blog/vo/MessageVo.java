@@ -6,7 +6,16 @@ import com.limin.blog.model.User;
 public class MessageVo {
     private Message message;
     private User user;
+    private User toUser;
     private long count;
+
+    public User getToUser() {
+        return toUser;
+    }
+
+    public void setToUser(User toUser) {
+        this.toUser = toUser;
+    }
 
     public Message getMessage() {
         return message;

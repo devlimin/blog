@@ -21,8 +21,8 @@ $(function () {
         })
         page(1,5);
         function page(pageNum,pageSize) {
-            if(!isPositiveInteger($("input[name='aid']").val())){
-                layer.msg('文章id为正整数', {icon: 5,anim: 6});
+            if(!isPositiveInteger($("input[name='cid']").val())){
+                layer.msg('分类id为正整数', {icon: 5,anim: 6});
                 return false;
             }
             if(!isPositiveInteger($("input[name='uid']").val())){
@@ -30,19 +30,9 @@ $(function () {
                 return false;
             }
             var data = $("form").serialize();
-            var beginTime = "";
-            console.log($("#beginTime").val());
-            if($("#beginTime").val()!="") {
-                beginTime = new Date($("#beginTime").val()).getTime();
-            }
-            var endTime = ""
-            if($("#endTime").val()!="") {
-                endTime = new Date($("#endTime").val()).getTime();
-            }
-            data += "&beginTime="+beginTime+"&endTime="+endTime+"&pageNum="+pageNum+"&pageSize="+pageSize
-            console.log(data);
+            data += "&pageNum="+pageNum+"&pageSize="+pageSize
             $.ajax({
-                url:'/admin/article/commentPage',
+                url:'/admin/article/categoryPage',
                 type:"get",
                 data:data,
                 success:function (resp) {
@@ -59,21 +49,21 @@ $(function () {
                             return false;
                         }
                         $("#thead").css({"display":"table-row"});
-                        $.each(data.list,function (i, comment) {
-                            html+='<tr id="'+comment.id+'">'
-                                +'<td>'+comment.id+'</td>'
-                                +'<td>'+comment.articleId+'</td>'
-                                +'<td>'+comment.userId+'</td>'
-                                +'<td>'+new Date(comment.releaseDate).format()+'</td>';
-                            if(comment.status==0) {
-                                html+='<td>已发表</td>'
-                            } else if(comment.status==-1) {
+                        $.each(data.list,function (i, category) {
+                            html+='<tr id="'+category.id+'">'
+                                +'<td>'+category.id+'</td>'
+                                +'<td>'+category.name+'</td>'
+                                +'<td>'+category.userId+'</td>'
+                                +'<td>'+category.articleNum+'</td>'
+                            if(category.status==-1){
                                 html+='<td>已删除</td>'
+                            } else if(category.status==0){
+                                html+='<td>已发表</td>'
                             }
-                                html+='<td>' +
-                                    '<button class="layui-btn layui-btn-xs detail">详情</button>' +
-                                    '<button class="layui-btn layui-btn-xs updatestate" >状态更改</button>' +
-                                    '</td>'
+                            html+='<td>' +
+                                '<button class="layui-btn layui-btn-xs detail">详情</button>' +
+                                '<button class="layui-btn layui-btn-xs updatestate" >状态更改</button>' +
+                                '</td>'
                                 +'</tr>'
                         })
                         $("#table tr:not(:first)").remove();
@@ -108,36 +98,31 @@ $(function () {
     });
 
     $(document).on("click",".detail",function () {
-        var commentId = $(this).parent().parent().attr("id");
+        var msgId = $(this).parent().parent().attr("id");
         $.ajax({
-            url:'/admin/article/commentInfo',
+            url:'/admin/message/msgInfo',
             type:'get',
-            data:'id='+commentId,
+            data:'id='+msgId,
             success:function (resp) {
                 if(resp.code==0){
-                    var commentVo = resp.data;
+                    var messageVo = resp.data;
                     var html='';
                     html+='<table class="layui-table">' +
                         '<tr>' +
-                        '<td><label>文章：</label><span>'+commentVo.article.title+'</span></td>' +
+                        '<td><label>发送者：</label><span>'+messageVo.user.name+'</span></td>' +
                         '</tr>'+
                         '<tr>' +
-                        '<td><label>评论人：</label><span>'+commentVo.user.name+'</span></td>' +
+                        '<td><label>接收者：</label><span>'+messageVo.toUser.name+'</span></td>' +
                         '</tr>'+
                         '<tr>' +
-                        '<td>' +
-                        '<label>发表时间：</label><span>'+new Date(commentVo.comment.releaseDate).format()+'</span>&nbsp;&nbsp;&nbsp;&nbsp;' +
-                        '</td>' +
-                        '</tr>'+
-                        '<tr>' +
-                        '<td><label>内容：</label><span>'+commentVo.comment.content+'</span></td>' +
+                        '<td><label>内容：</label><span>'+messageVo.message.content+'</span></td>' +
                         '</tr>'+
                         '</table>'
                     index = layer.open({
                         type: 1,
                         skin: 'layui-layer-molv', //加上边框
-                        area: ['600px', '400px'], //宽高
-                        title: "文章评论",
+                        area: ['800px', '600px'], //宽高
+                        title: "文章信息",
                         content:html
                     })
                 } else {
@@ -153,12 +138,12 @@ $(function () {
 
     })
 
-    var commentIdstatus;
+    var categoryIdstatus;
     var index;
     var tr;
     $(document).on("click",".updatestate",function () {
-        var commentId = $(this).parent().parent().attr("id");
-        commentIdstatus = commentId;
+        var categoryId = $(this).parent().parent().attr("id");
+        categoryIdstatus = categoryId;
         var status = $(this).parent().parent().children("td:nth-child(5)").text();
         tr = $(this).parent().parent();
         index = layer.open({
@@ -185,15 +170,15 @@ $(function () {
         });
     })
     $(document).on("click",".status-update-btn",function () {
-        var commentId = commentIdstatus;
+        var categoryId = categoryIdstatus;
         var status = $("#status-select").val();
         if(status==''){
             layer.msg("请选择一个状态", {icon: 5,anim: 6});
             return false;
         }
-        var data = 'commentId='+commentId+"&status="+status
+        var data = 'categoryId='+categoryId+"&status="+status
         $.ajax({
-            url:'/admin/article/updateCommentStatus',
+            url:'/admin/article/updateCategoryStatus',
             data:data,
             type:'post',
             success:function (resp) {

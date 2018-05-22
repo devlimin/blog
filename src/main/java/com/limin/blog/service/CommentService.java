@@ -65,4 +65,13 @@ public class CommentService {
     public Comment selectById(Integer cid) {
         return commentMapper.selectByPrimaryKey(cid);
     }
+
+    public void updateStatus(Integer commentId, Integer status) {
+        Comment comment = selectById(commentId);
+        if (comment==null) {
+            throw new BizException(2,"没有该评论");
+        }
+        comment.setStatus(status);
+        commentMapper.updateByPrimaryKeySelective(comment);
+    }
 }

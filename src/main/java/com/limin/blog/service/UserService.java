@@ -156,4 +156,13 @@ public class UserService {
         List<User> users = userMapper.selectByExample(example);
         return new PageInfo(users);
     }
+
+    public void updateStatus(Integer userId, Integer status) {
+        User user = selectById(userId);
+        if (user==null) {
+            throw  new BizException(2,"没有该用户");
+        }
+        user.setState(status);
+        userMapper.updateByPrimaryKeySelective(user);
+    }
 }

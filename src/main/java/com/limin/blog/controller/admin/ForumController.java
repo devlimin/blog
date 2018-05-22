@@ -10,10 +10,7 @@ import com.limin.blog.util.ResponseUtil;
 import com.limin.blog.vo.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Date;
@@ -69,6 +66,14 @@ public class ForumController {
         return ResponseUtil.success(topic);
     }
 
+    @ResponseBody
+    @PostMapping(value = "updateTopicStatus")
+    public Response updateTopicStatus(@RequestParam(value = "topicId")Integer topicId,
+                                         @RequestParam(value = "status")Integer status){
+        forumService.updateTopicStatus(topicId,status);
+        return ResponseUtil.success();
+    }
+
     @GetMapping(value = "reply")
     public ModelAndView reply(){
         ModelAndView mv = new ModelAndView("admin/forum/reply");
@@ -112,5 +117,12 @@ public class ForumController {
     public Response replyInfo(@RequestParam(value = "id")Integer id){
         ForumReply reply = forumService.selectReplyById(id);
         return ResponseUtil.success(reply);
+    }
+    @ResponseBody
+    @PostMapping(value = "updateReplyStatus")
+    public Response updateReplyStatus(@RequestParam(value = "replyId")Integer replyId,
+                                      @RequestParam(value = "status")Integer status){
+        forumService.updateReplyStatus(replyId,status);
+        return ResponseUtil.success();
     }
 }

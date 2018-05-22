@@ -200,4 +200,13 @@ public class ArticleService {
         article.setReadNum(readNum);
         articleMapper.updateByPrimaryKeySelective(article);
     }
+
+    public void updateStatus(Integer articleId, Integer status) {
+        Article article = selectById(articleId);
+        if (article==null){
+            throw new BizException(2,"没有该文章");
+        }
+        article.setStatus(status);
+        articleMapper.updateByPrimaryKeySelective(article);
+    }
 }

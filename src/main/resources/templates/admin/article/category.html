@@ -3,30 +3,24 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{admin/admin}">
 <head>
-    <title>用户信息</title>
-    <link th:href="@{/css/admin/user/info.css}" rel="stylesheet"/>
-    <script th:src="@{/js/admin/user/info.js}"></script>
+    <title>文章信息</title>
+    <link th:href="@{/css/admin/article/article.css}" rel="stylesheet"/>
+    <script th:src="@{/js/admin/article/category.js}"></script>
 </head>
 <body>
 <div layout:fragment="content">
     <form class="layui-form">
         <div class="layui-form-item search-row">
             <div class="layui-inline">
-                <label class="search-label">用户id</label>
+                <label class="search-label">分类id</label>
                 <div class="search-input">
-                    <input type="text" name="id" class="layui-input" value="">
+                    <input type="text" name="cid" class="layui-input" value="">
                 </div>
             </div>
             <div class="layui-inline">
-                <label class="search-label">用户名</label>
+                <label class="search-label">作者id</label>
                 <div class="search-input">
-                    <input type="text" name="name" class="layui-input" value="">
-                </div>
-            </div>
-            <div class="layui-inline">
-                <label class="search-label">邮箱</label>
-                <div class="search-input">
-                    <input type="text" name="email" class="layui-input" value="">
+                    <input type="text" name="uid" class="layui-input" value="">
                 </div>
             </div>
             <div class="layui-inline">
@@ -34,20 +28,9 @@
                 <div class="search-input">
                     <select name="state">
                         <option value=""></option>
-                        <option value="0">未激活</option>
-                        <option value="1">已激活</option>
-                        <option value="2">禁用</option>
+                        <option value="0">已发表</option>
+                        <option value="-1">已删除</option>
                     </select><div class="layui-unselect layui-form-select"><div class="layui-select-title"><input type="text" placeholder="请选择" value="" readonly="" class="layui-input layui-unselect"><i class="layui-edge"></i></div><dl class="layui-anim layui-anim-upbit"><dd lay-value="" class="layui-select-tips">请选择</dd><dd lay-value="0" class="">初始化</dd><dd lay-value="1" class="">正常</dd><dd lay-value="2" class="">封禁</dd></dl></div>
-                </div>
-            </div>
-            <div class="layui-inline">
-                <label class="search-label">创建时间</label>
-                <div class="date-input">
-                    <input type="text" id="beginTime" class="layui-input time-item" value="" placeholder="开始时间" lay-key="1">
-                </div>
-                <div class="layui-form-mid">-</div>
-                <div class="date-input">
-                    <input type="text" id="endTime" class="layui-input time-item" value="" placeholder="截止时间" lay-key="2">
                 </div>
             </div>
             <div class="layui-inline">
@@ -63,10 +46,10 @@
 
     <table id="table" class="table">
         <tr id="thead" style="background-color: #f2f2f2;">
-            <th>ID</th>
-            <th>邮箱</th>
-            <th>用户名</th>
-            <th>入驻时间</th>
+            <th>分类ID</th>
+            <th>分类名称</th>
+            <th>作者ID</th>
+            <th>文章数</th>
             <th>状态</th>
             <th>操作</th>
         </tr>

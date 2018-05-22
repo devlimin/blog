@@ -2,7 +2,6 @@ package com.limin.blog.service;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.limin.blog.enums.CommentEnum;
 import com.limin.blog.enums.ForumTopicEnum;
 import com.limin.blog.exception.BizException;
 import com.limin.blog.mapper.ForumReplyMapper;
@@ -146,5 +145,23 @@ public class ForumService {
 
     public ForumReply selectReplyById(Integer id) {
         return forumReplyMapper.selectByPrimaryKey(id);
+    }
+
+    public void updateTopicStatus(Integer topicId, Integer status) {
+        ForumTopic topic = selectTopicById(topicId);
+        if (topic==null) {
+            throw new BizException(2,"没有该帖子");
+        }
+        topic.setStatus(status);
+        forumTopicMapper.updateByPrimaryKeySelective(topic);
+    }
+
+    public void updateReplyStatus(Integer replyId, Integer status) {
+        ForumReply reply = selectReplyById(replyId);
+        if (reply==null) {
+            throw new BizException(2,"没有该回复");
+        }
+        reply.setStatus(status);
+        forumReplyMapper.updateByPrimaryKeySelective(reply);
     }
 }

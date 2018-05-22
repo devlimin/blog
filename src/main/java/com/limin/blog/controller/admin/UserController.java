@@ -8,10 +8,7 @@ import com.limin.blog.vo.Response;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Date;
@@ -35,12 +32,16 @@ public class UserController {
     public Response page(@RequestParam(value = "pageNum",defaultValue = "1")Integer pageNum,
                          @RequestParam(value = "pageSize",defaultValue = "10")Integer pageSize,
                          @RequestParam(value = "name",required = false)String name,
+                         @RequestParam(value = "id",required = false)Integer id,
                          @RequestParam(value = "email",required = false)String email,
                          @RequestParam(value = "state",required = false)Integer state,
                          @RequestParam(value = "beginTime",required = false)Long beginTime,
                          @RequestParam(value = "endTime",required = false)Long endTime){
         UserExample example = new UserExample();
         UserExample.Criteria criteria = example.createCriteria();
+        if (id!=null) {
+            criteria.andIdEqualTo(id);
+        }
         if (StringUtils.isNotBlank(name)) {
             criteria.andNameLike("%"+name+"%");
         }
@@ -59,5 +60,13 @@ public class UserController {
         example.setOrderByClause("birth desc");
         PageInfo pageInfo = userService.selectPageByExample(example, pageNum, pageSize);
         return ResponseUtil.success(pageInfo);
+    }
+
+    @ResponseBody
+    @PostMapping(value = "updateStatus")
+    public Response updateStatus(@RequestParam(value = "userId")Integer userId,
+                                 @RequestParam(value = "status")Integer status){
+        userService.updateStatus(userId,status);
+        return ResponseUtil.success();
     }
 }

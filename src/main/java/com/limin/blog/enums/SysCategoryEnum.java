@@ -1,13 +1,13 @@
 package com.limin.blog.enums;
 
-public enum UserEnum {
-    INITED(0,"初始"),ACTIVED(1,"激活"),DISABLE(-2,"禁用");
+public enum SysCategoryEnum {
+    DELETED(-1,"禁用"),PUBLISHED(0,"可用");
 
     private Integer val;
     private String msg;
-    private UserEnum(Integer val, String msg) {
+    private SysCategoryEnum(Integer val, String value){
         this.val = val;
-        this.msg = msg;
+        this.msg = value;
     }
 
     public Integer getVal() {

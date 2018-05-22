@@ -3,6 +3,7 @@ package com.limin.blog.service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.limin.blog.enums.MessageEnum;
+import com.limin.blog.exception.BizException;
 import com.limin.blog.mapper.MessageMapper;
 import com.limin.blog.mapper.UserMapper;
 import com.limin.blog.model.Message;
@@ -55,5 +56,18 @@ public class MessageService {
         PageHelper.startPage(pageNum,pageSize);
         List<Message> messages = messageMapper.selectByExample(example);
         return new PageInfo(messages);
+    }
+
+    public Message selectById(Integer id) {
+        return messageMapper.selectByPrimaryKey(id);
+    }
+
+    public void updateStatus(Integer msgId, Integer status) {
+        Message message = selectById(msgId);
+        if (message==null) {
+            throw new BizException(2,"没有该消息");
+        }
+        message.setStatus(status);
+        messageMapper.updateByPrimaryKeySelective(message);
     }
 }

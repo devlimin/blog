@@ -1,6 +1,9 @@
 package com.limin.blog.service;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.limin.blog.enums.CategoryEnum;
+import com.limin.blog.exception.BizException;
 import com.limin.blog.mapper.ArticleCategoryMapper;
 import com.limin.blog.mapper.CategoryMapper;
 import com.limin.blog.model.ArticleCategory;
@@ -90,5 +93,20 @@ public class CategoryService {
             }
         }
         return categories;
+    }
+
+    public PageInfo selectByExample(CategoryExample example, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum,pageSize);
+        List<Category> categories = categoryMapper.selectByExample(example);
+        return new PageInfo(categories);
+    }
+
+    public void updateStatus(Integer categoryId, Integer status) {
+        Category category = selectById(categoryId);
+        if (category==null) {
+            throw new BizException(2,"不存在该个人分类");
+        }
+        category.setStatus(status);
+        categoryMapper.updateByPrimaryKeySelective(category);
     }
 }

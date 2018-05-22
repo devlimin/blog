@@ -23,6 +23,10 @@ $(function () {
         })
         page(1,5);
         function page(pageNum,pageSize) {
+            if(!isPositiveInteger($("input[name='id']").val())){
+                layer.msg('作者id为正整数', {icon: 5,anim: 6});
+                return false;
+            }
             var data = $("form").serialize();
             var beginTime = "";
             console.log($("#beginTime").val());
@@ -43,6 +47,7 @@ $(function () {
                     if (resp.code==0) {
                         var html='';
                         var data = resp.data;
+                        $("#nocontent").remove();
                         if (data == null || data.list == null || data.list.length == 0) {
                             html = "<div id='nocontent' style='text-align: center;margin-top: 40px;margin-bottom: 30px;'>暂无数据</div>";
                             $("#table").append(html);
@@ -51,7 +56,6 @@ $(function () {
                             $("#table tr:not(:first)").remove();
                             return false;
                         }
-                        $("#nocontent").remove();
                         $("#thead").css({"display":"table-row"});
                         $.each(data.list,function (i, user) {
                             html+='<tr id="'+user.id+'">'
@@ -63,8 +67,8 @@ $(function () {
                                 html+='<td>未激活</td>'
                             } else if(user.state == 1){
                                 html+='<td>已激活</td>'
-                            } else {
-                                html+='<td>未知</td>'
+                            } else if(user.state == 2) {
+                                html+='<td>禁用</td>'
                             }
                             html+='<td>' +
                                         '<button class="layui-btn layui-btn-xs detail">详情</button>' +
@@ -148,6 +152,74 @@ $(function () {
                 }
             })
 
+        })
+        var userIdstatus;
+        var index;
+        var tr;
+        $(document).on("click",".updatestate",function () {
+            var userId = $(this).parent().parent().attr("id");
+            userIdstatus = userId;
+            var status = $(this).parent().parent().children("td:nth-child(5)").text();
+            tr = $(this).parent().parent();
+            index = layer.open({
+                type: 1,
+                skin: 'layui-layer-molv', //加上边框
+                area: ['500px', '250px'], //宽高
+                title: "状态更改",
+                content:
+                '<table class="layui-table">' +
+                '<tr>' +
+                '<td><label>当前状态</label>：'+status+'</td>' +
+                '</tr>' +
+                '<tr>' +
+                '<td><label>可选状态</label>：' +
+                '<select id="status-select" class="form-control" style="width:300px;display: inline-block;" name="status">' +
+                '<option value="">请选择</option>\n' +
+                '<option value="0">未激活</option>\n' +
+                '<option value="1">已激活</option>\n' +
+                '<option value="2">禁用</option>\n' +
+                '</select>' +
+                '<button class="layui-btn status-update-btn">提交</button>' +
+                '</td>' +
+                '</tr>' +
+                '</table>'
+            });
+        })
+        $(document).on("click",".status-update-btn",function () {
+            var userId = userIdstatus;
+            var status = $("#status-select").val();
+            if(status==''){
+                layer.msg("请选择一个状态", {icon: 5,anim: 6});
+                return false;
+            }
+            var data = 'userId='+userId+"&status="+status
+            $.ajax({
+                url:'/admin/user/updateStatus',
+                data:data,
+                type:'post',
+                success:function (resp) {
+                    if (resp.code==0) {
+                        layer.close(index);
+                        var text=''
+                        if (status==0) {
+                            text='未激活'
+                        } else if (status==1) {
+                            text='已激活'
+                        } else if (status==2) {
+                            text='禁用'
+                        }
+                        tr.children("td:nth-child(5)").text(text);
+                    } else {
+                        layer.msg(resp.msg, {icon: 5,anim: 6});
+                    }
+                    return false;
+                },
+                error:function (resp) {
+                    layer.msg("系统出现问题，请联系管理员", {icon: 5,anim: 6});
+                    return false;
+                }
+
+            })
         })
         $(document).on("click",".updatepsss",function () {
             var userId = $(this).parent().parent().attr("id");
