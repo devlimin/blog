@@ -59,4 +59,13 @@ public class SysCategoryService {
         sysCategoryMapper.insertSelective(sysCategory);
         return sysCategory;
     }
+
+    public void updateName(Integer scId, String name) {
+        SysCategory sysCategory = selectById(scId);
+        if (sysCategory==null) {
+            throw new BizException(2,"没有该系统分类");
+        }
+        sysCategory.setName(name);
+        sysCategoryMapper.updateByPrimaryKeySelective(sysCategory);
+    }
 }

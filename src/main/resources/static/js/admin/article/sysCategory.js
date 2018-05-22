@@ -96,11 +96,13 @@ $(function () {
                                 html+='<td>已删除</td>'+
                                     '<td>' +
                                     '<button class="layui-btn layui-btn-xs layui-btn-primary enable">启用</button>' +
+                                    '<button class="layui-btn layui-btn-xs updatename">更改名称</button>' +
                                     '</td>'
                             } else if(sysCategory.status==0){
                                 html+='<td>已发表</td>' +
                                     '<td>' +
                                     '<button class="layui-btn layui-btn-xs disable">禁用</button>' +
+                                    '<button class="layui-btn layui-btn-xs updatename">更改名称</button>' +
                                     '</td>'
                             }
                             html+='</tr>'
@@ -174,6 +176,60 @@ $(function () {
                     $this.removeClass("layui-btn-primary");
                     $this.addClass("disable");
                     $this.text("禁用")
+                } else {
+                    layer.msg(resp.msg, {icon: 5,anim: 6});
+                }
+                return false;
+            },
+            error:function (resp) {
+                layer.msg("系统出现问题，请联系管理员", {icon: 5,anim: 6});
+                return false;
+            }
+        })
+    })
+
+    var tr;
+    var scIdName
+    var index;
+    $(document).on("click",".updatename",function () {
+        var scId = $(this).parent().parent().attr("id");
+        scIdName = scId;
+        var scName = $(this).parent().parent().children("td:nth-child(2)").text();
+        tr = $(this).parent().parent();
+        index = layer.open({
+            type: 1,
+            skin: 'layui-layer-molv', //加上边框
+            area: ['500px', '250px'], //宽高
+            title: "更改名称",
+            content:
+            '<table class="layui-table">' +
+            '<tr>' +
+            '<td><label>当前名称</label>：'+scName+'</td>' +
+            '</tr>' +
+            '<tr>' +
+            '<td><label>更改名称</label>：' +
+            '<input type="text" id="update-name" class="form-control" style="width:300px;display: inline-block;"/>' +
+            '<button class="layui-btn name-update-btn">提交</button></td>' +
+            '</tr>' +
+            '</table>'
+        });
+    })
+    $(document).on("click",".name-update-btn",function () {
+        var scId = scIdName;
+        var name = $.trim($("#update-name").val());
+        if(name==''){
+            layer.msg("系统分类名称不能为空", {icon: 5,anim: 6});
+            return false;
+        }
+        var data = 'scId='+scId+"&name="+name
+        $.ajax({
+            url:'/admin/article/updateSCName',
+            data:data,
+            type:'post',
+            success:function (resp) {
+                if (resp.code==0) {
+                    layer.close(index);
+                    tr.children("td:nth-child(2)").text(name);
                 } else {
                     layer.msg(resp.msg, {icon: 5,anim: 6});
                 }

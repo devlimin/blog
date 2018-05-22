@@ -228,4 +228,12 @@ public class ArticleController {
         SysCategory sysCategory = sysCategoryService.add(name);
         return ResponseUtil.success(sysCategory.getId());
     }
+
+    @ResponseBody
+    @PostMapping(value = "updateSCName")
+    public Response updateSCName(@RequestParam(value = "scId")Integer scId,
+                                 @RequestParam(value = "name")String name){
+        sysCategoryService.updateName(scId,name);
+        return ResponseUtil.success();
+    }
 }
