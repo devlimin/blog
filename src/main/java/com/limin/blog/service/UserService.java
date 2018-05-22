@@ -5,8 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.limin.blog.enums.UserEnum;
 import com.limin.blog.exception.BizException;
 import com.limin.blog.mapper.UserMapper;
-import com.limin.blog.model.User;
-import com.limin.blog.model.UserExample;
+import com.limin.blog.model.*;
 import com.limin.blog.util.EmailHelper;
 import com.limin.blog.util.EncryptUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +27,9 @@ public class UserService {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private ForumService forumService;
 
     @Autowired
     private EmailHelper emailHelper;
@@ -130,6 +132,33 @@ public class UserService {
         user.setId(id);
         user.setName(name);
         userMapper.updateByPrimaryKeySelective(user);
+        ForumTopicExample example = new ForumTopicExample();
+        example.createCriteria().andUserIdEqualTo(id);
+        List<ForumTopic> topics = forumService.selectTopicByExample(example);
+        if (topics!=null){
+            for (ForumTopic topic : topics){
+                topic.setUserName(name);
+                forumService.updateTopicByIdSelective(topic);
+            }
+        }
+        ForumReplyExample replyExample = new ForumReplyExample();
+        replyExample.createCriteria().andUserIdEqualTo(id);
+        List<ForumReply> forumReplies = forumService.selectReplyByExample(replyExample);
+        if (forumReplies!=null){
+            for (ForumReply reply : forumReplies){
+                reply.setUserName(name);
+                forumService.updateReplyByIdSelective(reply);
+            }
+        }
+        replyExample = new ForumReplyExample();
+        replyExample.createCriteria().andTopicUserIdEqualTo(id);
+        forumReplies = forumService.selectReplyByExample(replyExample);
+        if (forumReplies!=null){
+            for (ForumReply reply : forumReplies){
+                reply.setTopicUserName(name);
+                forumService.updateReplyByIdSelective(reply);
+            }
+        }
     }
     @CacheEvict(key = "'user:'+#id")
     public void updateMotto(Integer id, String motto) {

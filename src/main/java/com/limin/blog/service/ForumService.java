@@ -164,4 +164,57 @@ public class ForumService {
         reply.setStatus(status);
         forumReplyMapper.updateByPrimaryKeySelective(reply);
     }
+
+    public PageInfo selectThemeByExample(ForumThemeExample example, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum,pageSize);
+        List<ForumTheme> forumThemes = forumThemeMapper.selectByExample(example);
+        return new PageInfo(forumThemes);
+    }
+
+    public ForumTheme addTheme(String name) {
+        ForumTheme theme = new ForumTheme();
+        theme.setName(name);
+        theme.setStatus(ForumTopicEnum.PUBLISHED.getVal());
+        forumThemeMapper.insertSelective(theme);
+        return theme;
+    }
+
+    public void disableTheme(Integer id) {
+        ForumTheme theme = selectThemeById(id);
+        if (theme==null) {
+            throw new BizException(2,"没有该论坛主题");
+        }
+        theme.setStatus(ForumTopicEnum.DELETED.getVal());
+        forumThemeMapper.updateByPrimaryKeySelective(theme);
+    }
+
+    public void enableTheme(Integer id) {
+        ForumTheme theme = selectThemeById(id);
+        if (theme==null) {
+            throw new BizException(2,"没有该论坛主题");
+        }
+        theme.setStatus(ForumTopicEnum.PUBLISHED.getVal());
+        forumThemeMapper.updateByPrimaryKeySelective(theme);
+    }
+
+    public void updateThemeName(Integer id, String name) {
+        ForumTheme theme = selectThemeById(id);
+        if (theme==null) {
+            throw new BizException(2,"没有该论坛主题");
+        }
+        theme.setName(name);
+        forumThemeMapper.updateByPrimaryKeySelective(theme);
+    }
+
+    public List<ForumTopic> selectTopicByExample(ForumTopicExample example) {
+        return forumTopicMapper.selectByExample(example);
+    }
+
+    public List<ForumReply> selectReplyByExample(ForumReplyExample replyExample) {
+        return forumReplyMapper.selectByExample(replyExample);
+    }
+
+    public void updateReplyByIdSelective(ForumReply reply) {
+        forumReplyMapper.updateByPrimaryKeySelective(reply);
+    }
 }

@@ -34,7 +34,11 @@ $(function () {
     window.wangEditor.fullscreen = {
         // editor create之后调用
         init: function(editorSelector){
-            $(editorSelector + " .w-e-toolbar").prepend('<div class="w-e-menu"><a class="_wangEditor_btn_fullscreen" href="###" onclick="window.wangEditor.fullscreen.toggleFullscreen(\'' + editorSelector + '\')">全屏</a></div>');
+            $(editorSelector + " .w-e-toolbar").prepend('' +
+                '<div class="w-e-menu">' +
+                    '<a class="_wangEditor_btn_fullscreen" href="###" ' +
+                        'onclick="window.wangEditor.fullscreen.toggleFullscreen(\'' + editorSelector + '\')">全屏' +
+                '</a></div>');
         },
         toggleFullscreen: function(editorSelector){
             $(editorSelector).toggleClass('fullscreen-editor');
@@ -50,6 +54,82 @@ $(function () {
     };
     E.fullscreen.init('#editor');
     $("#editor .w-e-text-container").css("height","500");
+    var wangeditor = $("#wangeditor").remove();
+
+    var html = $(".editormd-markdown-textarea").val();
+    if(html!=null){
+        var turndownService = new TurndownService()
+        var markdown = turndownService.turndown(html)
+        $(".editormd-markdown-textarea").val(markdown);
+    }
+    var md_editor = editormd("my-editormd", {//注意1：这里的就是上面的DIV的id属性值
+        width   : "100%",
+        height  : 640,
+        syncScrolling : "single",
+        path    : "/editormd/lib/",//注意2：你的路径
+        saveHTMLToTextarea : true,//注意3：这个配置，方便post提交表单
+
+        /**上传图片相关配置如下*/
+        imageUpload : true,
+        imageFormats : ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+        imageUploadURL : "/smart-api/upload/editormdPic/",//注意你后端的上传图片服务地址
+
+        onfullscreen : function() {
+            $("#my-editormd").css({"z-index":"10000"})
+        },
+        onfullscreenExit : function() {
+            $("#my-editormd").css({"z-index":"0"})
+        }
+    });
+//markdown的html格式的博文
+    $(".editormd-html-textarea").attr("name", "content");
+    $(".editormd-markdown-textarea").attr("name", "");
+
+    var mdeditor;
+    $("#editor-btn").click(function () {
+        var text = $(this).text();
+        if(text=="markdown") {
+            $(this).text("富文本");
+            var html = $("textarea[name='content']").val();
+            mdeditor = $("#my-editormd").remove();
+            $("#editor-area").append(wangeditor);
+            editor.txt.html(html)
+        } else if(text=="富文本") {
+            $(this).text("markdown");
+            var html = editor.txt.html();
+            wangeditor = $("#wangeditor").remove();
+            $("#editor-area").append('<div id="my-editormd">\n' +
+                '\t\t\t\t<textarea class="editormd-markdown-textarea">[(${article}?${article.content})]</textarea>\n' +
+                '\t\t\t\t<textarea class="editormd-html-textarea" lay-verify="article_content"></textarea>\n' +
+                '\t\t\t</div>');
+            var turndownService = new TurndownService()
+            var markdown = turndownService.turndown(html)
+            // $("textarea[class='editormd-html-textarea editormd-markdown-textarea']").val(markdown);
+            $(".editormd-markdown-textarea").val(markdown+" ");
+            md_editor = editormd("my-editormd", {//注意1：这里的就是上面的DIV的id属性值
+                width   : "100%",
+                height  : 640,
+                syncScrolling : "single",
+                path    : "/editormd/lib/",//注意2：你的路径
+                saveHTMLToTextarea : true,//注意3：这个配置，方便post提交表单
+
+                /**上传图片相关配置如下*/
+                imageUpload : true,
+                imageFormats : ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+                imageUploadURL : "/smart-api/upload/editormdPic/",//注意你后端的上传图片服务地址
+
+                onfullscreen : function() {
+                    $("#my-editormd").css({"z-index":"10000"})
+                },
+                onfullscreenExit : function() {
+                    $("#my-editormd").css({"z-index":"0"})
+                }
+            });
+            $(".editormd-html-textarea").attr("name", "content");
+            $(".editormd-markdown-textarea").attr("name", "");
+        }
+        return false;
+    })
 
 layui.use(['form','layer'], function(){
 	var form = layui.form;
@@ -69,7 +149,7 @@ layui.use(['form','layer'], function(){
         },
         article_content:function (value,item) {
             console.log(value);
-            if ($.trim(value)=="<p><br></p>"){
+            if ($.trim(value)=="<p><br></p>"||$.trim(value)==""){
                 return "请输入文章内容";
             }
         },

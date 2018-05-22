@@ -1,10 +1,7 @@
 package com.limin.blog.controller.admin;
 
 import com.github.pagehelper.PageInfo;
-import com.limin.blog.model.ForumReply;
-import com.limin.blog.model.ForumReplyExample;
-import com.limin.blog.model.ForumTopic;
-import com.limin.blog.model.ForumTopicExample;
+import com.limin.blog.model.*;
 import com.limin.blog.service.ForumService;
 import com.limin.blog.util.ResponseUtil;
 import com.limin.blog.vo.Response;
@@ -123,6 +120,60 @@ public class ForumController {
     public Response updateReplyStatus(@RequestParam(value = "replyId")Integer replyId,
                                       @RequestParam(value = "status")Integer status){
         forumService.updateReplyStatus(replyId,status);
+        return ResponseUtil.success();
+    }
+
+    @GetMapping(value = "theme")
+    public ModelAndView theme(){
+        ModelAndView mv = new ModelAndView("admin/forum/theme");
+        mv.addObject("type","forum/theme");
+        return mv;
+    }
+    @ResponseBody
+    @GetMapping(value = "themePage")
+    public Response themePage(@RequestParam(value = "pageNum",defaultValue = "1")Integer pageNum,
+                              @RequestParam(value = "pageSize",defaultValue = "10")Integer pageSize,
+                              @RequestParam(value = "id",required = false)Integer id,
+                              @RequestParam(value = "state",required = false)Integer state){
+        ForumThemeExample example = new ForumThemeExample();
+        ForumThemeExample.Criteria criteria = example.createCriteria();
+        if (id!=null) {
+            criteria.andIdEqualTo(id);
+        }
+        if (state!=null) {
+            criteria.andStatusEqualTo(state);
+        }
+        example.setOrderByClause("id asc");
+        PageInfo pageInfo = forumService.selectThemeByExample(example, pageNum, pageSize);
+        return ResponseUtil.success(pageInfo);
+    }
+
+    @ResponseBody
+    @PostMapping(value = "themeAdd")
+    public Response themeAdd(@RequestParam(value = "name",required = false)String name){
+        ForumTheme theme = forumService.addTheme(name);
+        return ResponseUtil.success(theme.getId());
+    }
+
+    @ResponseBody
+    @GetMapping(value = "themeDisable")
+    public Response themeDisable(@RequestParam(value = "id",required = false)Integer id){
+        forumService.disableTheme(id);
+        return ResponseUtil.success();
+    }
+
+    @ResponseBody
+    @GetMapping(value = "themeEnable")
+    public Response themeEnable(@RequestParam(value = "id",required = false)Integer id){
+        forumService.enableTheme(id);
+        return ResponseUtil.success();
+    }
+
+    @ResponseBody
+    @PostMapping(value = "updateThemeName")
+    public Response updateThemeName(@RequestParam(value = "id")Integer id,
+                                 @RequestParam(value = "name")String name){
+        forumService.updateThemeName(id,name);
         return ResponseUtil.success();
     }
 }

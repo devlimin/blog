@@ -66,8 +66,10 @@
                     </dl>
                 </li>
                 <li th:class="${#strings.contains(type,'forum')} ? 'layui-nav-item layui-nav-itemed': 'layui-nav-item'">
-                    <a href="javascript:;">帖子管理</a>
+                    <a href="javascript:;">论坛管理</a>
                     <dl class="layui-nav-child">
+                        <dd th:class="${type}=='forum/theme'?'layui-this':''">
+                            <a th:href="@{/admin/forum/theme}">论坛主题</a></dd>
                         <dd th:class="${type}=='forum/topic'?'layui-this':''">
                             <a th:href="@{/admin/forum/topic}">帖子信息</a></dd>
                         <dd th:class="${type}=='forum/reply'?'layui-this':''">

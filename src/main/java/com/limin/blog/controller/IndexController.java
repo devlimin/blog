@@ -2,6 +2,7 @@ package com.limin.blog.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.limin.blog.enums.ArticleEnum;
+import com.limin.blog.enums.SysCategoryEnum;
 import com.limin.blog.mapper.SysCategoryMapper;
 import com.limin.blog.model.*;
 import com.limin.blog.service.ArticleService;
@@ -50,6 +51,7 @@ public class IndexController {
     public ModelAndView index(@RequestParam(value = "sysCateId",defaultValue = "-1")Integer sysCateId){
         ModelAndView mv = new ModelAndView("index");
         SysCategoryExample sysCategoryExample = new SysCategoryExample();
+        sysCategoryExample.createCriteria().andStatusEqualTo(SysCategoryEnum.PUBLISHED.getVal());
         sysCategoryExample.setOrderByClause("id asc");
         List<SysCategory> sysCategories=  sysCategoryMapper.selectByExample(sysCategoryExample);
         mv.addObject("sysCategories", sysCategories);
