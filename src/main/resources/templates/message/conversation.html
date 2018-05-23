@@ -12,11 +12,11 @@
     <div id="main">
         <div class="layui-tab layui-tab-brief">
             <ul class="layui-tab-title">
-                <li th:class="${type}!='2'?'layui-this':''">
-                    <a style="text-decoration: none;cursor: pointer" th:href="@{/message/man/conversation(type=1,pageNum=1)}">朋友私信</a>
+                <li th:class="${type}=='3'?'layui-this':''">
+                    <a style="text-decoration: none;cursor: pointer" th:href="@{/message/man/conversation(type=3,pageNum=1)}">朋友私信</a>
                 </li>
-                <li th:class="${type}=='2'?'layui-this':''">
-                    <a style="text-decoration: none;cursor: pointer" th:href="@{/message/man/conversation(type=2,pageNum=1)}">系统通知</a>
+                <li th:class="${type}=='4'?'layui-this':''">
+                    <a style="text-decoration: none;cursor: pointer" th:href="@{/message/man/conversation(type=4,pageNum=1)}">系统通知</a>
                 </li>
             </ul>
             <div class="layui-tab-content">

@@ -4,16 +4,16 @@ $(function () {
         var layer = layui.layer;
         var element = layui.element;
 
-        page(0, 1, 2);
+        page(0, 1, 10);
 
         element.on('tab(test1)', function(data){
             layid = this.getAttribute('lay-id');
             // location.hash = 'test1='+ layid;
             if (layid == 0){
-                page(0,1,2);
+                page(0,1,10);
             }
             if (layid == 1){
-                page(1,1,1);
+                page(1,1,10);
             }
         })
 

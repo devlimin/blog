@@ -19,6 +19,8 @@ public class Message {
 
     private Integer status;
 
+    private Integer type;
+
     public Integer getId() {
         return id;
     }
@@ -81,5 +83,13 @@ public class Message {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
     }
 }

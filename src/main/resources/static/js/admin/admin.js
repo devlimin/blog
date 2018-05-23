@@ -4,3 +4,4 @@ function isPositiveInteger(num){//是否为正整数
     }
     return true;
 }
+var pageNum = 10

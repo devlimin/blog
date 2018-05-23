@@ -6,19 +6,19 @@ $(document).on("click","#search-btn",function() {
 layui.use(['laypage','element'], function(){
     var laypage = layui.laypage;
 	var element = layui.element;
-    page(0,1,2);
+    page(0,1,10);
     //监听Tab切换，以改变地址hash值
     element.on('tab(test1)', function(data){
         layid = this.getAttribute('lay-id');
         // location.hash = 'test1='+ layid;
         if (layid == 0){
-            page(0,1,2);
+            page(0,1,10);
 		}
         if (layid == 1){
-            page(1,1,2);
+            page(1,1,10);
         }
         if (layid == 2){
-            page(2,1,2);
+            page(2,1,10);
         }
     })
     function page(status,pageNum,pageSize) {

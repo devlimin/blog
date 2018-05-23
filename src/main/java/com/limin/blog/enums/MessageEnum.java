@@ -1,7 +1,7 @@
 package com.limin.blog.enums;
 
 public enum MessageEnum {
-    DELETED(-1,"删除"),PUBLISHED(0,"发表"),READED(1,"已读"),UNREAD(2,"未读");
+    DELETED(-1,"删除"),PUBLISHED(0,"发表"),READED(1,"已读"),UNREAD(2,"未读"), USER(3, "用户"), ADMIN(4,"管理员");
 
     private Integer val;
     private String msg;

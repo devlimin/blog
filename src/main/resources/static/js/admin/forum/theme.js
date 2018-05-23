@@ -59,10 +59,10 @@ $(function () {
         })
 
         $("#search_btn").click(function () {
-            page(1,5);
+            page(1,pageNum);
             return false;
         })
-        page(1,5);
+        page(1,pageNum);
         function page(pageNum,pageSize) {
             if(!isPositiveInteger($("input[name='cid']").val())){
                 layer.msg('主题id为正整数', {icon: 5,anim: 6});

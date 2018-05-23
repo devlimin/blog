@@ -29,5 +29,5 @@ public interface MessageMapper {
 
     int updateByPrimaryKey(Message record);
 
-    List<Message> getConversations(Integer userId);
+    List<Message> getConversations(@Param("userId")Integer userId,@Param("type")Integer type);
 }

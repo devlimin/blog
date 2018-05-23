@@ -28,9 +28,9 @@ public class MessageService {
         return message;
     }
 
-    public PageInfo<Message> conversations(Integer userId, Integer pageNum, Integer pageSize){
+    public PageInfo<Message> conversations(Integer type, Integer userId, Integer pageNum, Integer pageSize){
         PageHelper.startPage(pageNum,pageSize);
-        List<Message> messages =messageMapper.getConversations(userId);
+        List<Message> messages =messageMapper.getConversations(userId,type);
         PageInfo<Message> pageInfo = new PageInfo(messages);
         return pageInfo;
     }

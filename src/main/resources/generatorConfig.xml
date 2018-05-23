@@ -54,18 +54,18 @@
         <!--<table tableName="token">-->
             <!--<generatedKey column="ID" sqlStatement="MySql" identity="true" />-->
         <!--</table>-->
-        <!--<table tableName="message">-->
-            <!--<generatedKey column="ID" sqlStatement="MySql" identity="true" />-->
-        <!--</table>-->
+        <table tableName="message">
+            <generatedKey column="ID" sqlStatement="MySql" identity="true" />
+        </table>
         <!--<table tableName="forum_theme">-->
             <!--<generatedKey column="ID" sqlStatement="MySql" identity="true" />-->
         <!--</table>-->
         <!--<table tableName="forum_topic">-->
             <!--<generatedKey column="ID" sqlStatement="MySql" identity="true" />-->
         <!--</table>-->
-        <table tableName="forum_reply">
-            <generatedKey column="ID" sqlStatement="MySql" identity="true" />
-        </table>
+        <!--<table tableName="forum_reply">-->
+            <!--<generatedKey column="ID" sqlStatement="MySql" identity="true" />-->
+        <!--</table>-->
         <!--<table tableName="follow">-->
             <!--<generatedKey column="ID" sqlStatement="MySql" identity="true" />-->
         <!--</table>-->

@@ -35,12 +35,12 @@ public class MessageController {
     private FollowService followService;
 
     @GetMapping(value = "man/conversation")
-    public ModelAndView conversations(@RequestParam(value = "type",defaultValue = "1")Integer type,
+    public ModelAndView conversations(@RequestParam(value = "type",defaultValue = "3")Integer type,
                                   @RequestParam(value = "pageNum",defaultValue = "1")Integer pageNum,
                                   @RequestParam(value = "pageSize",defaultValue = "10")Integer pageSize,
                                   HttpSession session){
         User login_user = (User) session.getAttribute(BlogConst.LOGIN_SESSION_KEY);
-        PageInfo<Message> conversations = messageService.conversations(login_user.getId(), pageNum, pageSize);
+        PageInfo<Message> conversations = messageService.conversations(type,login_user.getId(), pageNum, pageSize);
         List<MessageVo> messageVos = new ArrayList<>();
         if (conversations.getList()!=null&& conversations.getList().size()>0) {
             for (Message message : conversations.getList()) {
@@ -127,6 +127,7 @@ public class MessageController {
         }
         message.setIsRead(MessageEnum.UNREAD.getVal());
         message.setStatus(MessageEnum.PUBLISHED.getVal());
+        message.setType(MessageEnum.USER.getVal());
         messageService.add(message);
         MessageVo messageVo = new MessageVo();
         messageVo.setMessage(message);
