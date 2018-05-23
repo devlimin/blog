@@ -1,6 +1,9 @@
 package com.limin.blog.controller.admin;
 
 import com.github.pagehelper.PageInfo;
+import com.limin.blog.constant.BlogConst;
+import com.limin.blog.enums.MessageEnum;
+import com.limin.blog.model.AdminUser;
 import com.limin.blog.model.Message;
 import com.limin.blog.model.MessageExample;
 import com.limin.blog.model.User;
@@ -14,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
 import java.util.Date;
 
 @Controller("adminMessageController")
@@ -94,5 +98,27 @@ public class MessageController {
         ModelAndView mv = new ModelAndView("admin/message/send");
         mv.addObject("type","message/send");
         return mv;
+    }
+    @ResponseBody
+    @PostMapping(value = "add")
+    public Response add(@RequestParam(value = "toUserId")Integer toUserId,
+                        @RequestParam(value = "content")String content,
+                        HttpSession session){
+        AdminUser login_user = (AdminUser) session.getAttribute(BlogConst.LOGIN_ADMIN_KEY);
+        Message message = new Message();
+        message.setUserId(login_user.getId());
+        message.setToUserId(toUserId);
+        message.setContent(content);
+        message.setReleaseDate(new Date());
+        if (toUserId<login_user.getId()) {
+            message.setConversationId(toUserId+"-"+login_user.getId());
+        } else {
+            message.setConversationId(login_user.getId()+"-"+toUserId);
+        }
+        message.setIsRead(MessageEnum.UNREAD.getVal());
+        message.setStatus(MessageEnum.PUBLISHED.getVal());
+        message.setType(MessageEnum.ADMIN.getVal());
+        messageService.add(message);
+        return ResponseUtil.success();
     }
 }

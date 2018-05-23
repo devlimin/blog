@@ -1,5 +1,6 @@
 package com.limin.blog.config;
 
+import com.limin.blog.inteceptor.AdminInterceptor;
 import com.limin.blog.inteceptor.LoginInterceptor;
 import com.limin.blog.inteceptor.TokenInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +14,14 @@ public class WebConfig extends WebMvcConfigurerAdapter{
     TokenInterceptor tokenInterceptor;
     @Autowired
     LoginInterceptor loginInterceptor;
+    @Autowired
+    AdminInterceptor adminInterceptor;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         super.addInterceptors(registry);
         registry.addInterceptor(tokenInterceptor);
         registry.addInterceptor(loginInterceptor).addPathPatterns("/**/man/**");
+        registry.addInterceptor(adminInterceptor).addPathPatterns("/admin/**").excludePathPatterns("/admin/account").excludePathPatterns("/admin/login");
     }
 }

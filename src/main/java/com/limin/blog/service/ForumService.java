@@ -33,6 +33,7 @@ public class ForumService {
 
     public List<ForumTheme> selectAllForumTheme(){
         ForumThemeExample example = new ForumThemeExample();
+        example.createCriteria().andStatusEqualTo(ForumTopicEnum.PUBLISHED.getVal());
         example.setOrderByClause("id asc");
         return forumThemeMapper.selectByExample(example);
     }

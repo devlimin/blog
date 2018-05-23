@@ -73,7 +73,7 @@ $(function () {
                             html+='<td>' +
                                         '<button class="layui-btn layui-btn-xs detail">详情</button>' +
                                         '<button class="layui-btn layui-btn-xs updatestate" >状态更改</button>' +
-                                        '<button class="layui-btn layui-btn-xs updatepass" >重置密码</button>' +
+                                        '<button class="layui-btn layui-btn-xs sendMsg" >发消息</button>' +
                                     '</td>'
                                 +'</tr>'
                         })
@@ -153,6 +153,7 @@ $(function () {
             })
 
         })
+
         var userIdstatus;
         var index;
         var tr;
@@ -221,26 +222,59 @@ $(function () {
 
             })
         })
-        $(document).on("click",".updatepsss",function () {
-            var userId = $(this).parent().parent().attr("id");
-            $.ajax({
-                url:'',
-                data:'',
-                type:'post',
-                success:function (resp) {
-                    if (resp.code==0) {
 
-                    } else {
-                        layer.msg(resp.msg, {icon: 5,anim: 6});
-                    }
-                    return false;
-                },
-                error:function (resp) {
-                    layer.msg("系统出现问题，请联系管理员", {icon: 5,anim: 6});
-                    return false;
-                }
-
+        var userId;
+        $(document).on("click",".sendMsg",function () {
+            userId = $(this).parent().parent().attr("id");
+            index = layer.open({
+                type: 1,
+                skin: 'layui-layer-rim', //加上边框
+                area: ['420px', '300px'], //宽高
+                title: "发私信",
+                content: ' <div style="margin: 10px">' +
+                '<div class="layui-form-item layui-form-text">\n' +
+                '    <label class="layui-form-label" style="padding-left: 0px;width: 50px;">内容</label>\n' +
+                '    <div class="layui-input-block" style="margin-left: 60px;">\n' +
+                '      <textarea id="msg_content" style="height: 150px;" placeholder="请输入内容" class="layui-textarea"></textarea>\n' +
+                '    </div>\n' +
+                '  </div>' +
+                '  <div class="layui-form-item">\n' +
+                '    <div class="layui-input-block" style="margin-left: 60px;">\n' +
+                '      <button id="send" class="layui-btn">发送</button>\n' +
+                '      <button id="cancle" class="layui-btn layui-btn-primary">取消</button>\n' +
+                '    </div>\n' +
+                '  </div>' +
+                '</div> '
             })
+        })
+        $(document).on("click", "#send", function () {
+            var toUserId = userId;
+            var content = $.trim($("#msg_content").val());
+            if(content=="") {
+                layer.msg("不能为空", {icon: 5,anim: 6});
+                return false;
+            }
+            var data = "toUserId=" + toUserId + "&content=" + content;
+            $.ajax({
+                url: "/admin/message/add",
+                data: data,
+                type: "post",
+                success: function (resp) {
+                    if (resp.code == 0) {
+
+                        layer.close(index);
+                    } else {
+                        layer.msg(resp.msg, {icon: 5, anim: 6});
+                    }
+                },
+                error: function (resp) {
+                    layer.msg(resp.msg, {icon: 5, anim: 6});
+                }
+            })
+            layer.close(index);
+        })
+        $(document).on("click", "#cancle", function () {
+            layer.close(index);
         })
     });
 })

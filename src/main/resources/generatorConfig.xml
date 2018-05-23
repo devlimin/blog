@@ -54,9 +54,9 @@
         <!--<table tableName="token">-->
             <!--<generatedKey column="ID" sqlStatement="MySql" identity="true" />-->
         <!--</table>-->
-        <table tableName="message">
-            <generatedKey column="ID" sqlStatement="MySql" identity="true" />
-        </table>
+        <!--<table tableName="message">-->
+            <!--<generatedKey column="ID" sqlStatement="MySql" identity="true" />-->
+        <!--</table>-->
         <!--<table tableName="forum_theme">-->
             <!--<generatedKey column="ID" sqlStatement="MySql" identity="true" />-->
         <!--</table>-->
@@ -69,5 +69,8 @@
         <!--<table tableName="follow">-->
             <!--<generatedKey column="ID" sqlStatement="MySql" identity="true" />-->
         <!--</table>-->
+        <table tableName="admin_user">
+            <generatedKey column="ID" sqlStatement="MySql" identity="true" />
+        </table>
     </context>
 </generatorConfiguration>

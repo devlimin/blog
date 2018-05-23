@@ -71,7 +71,8 @@ public class MessageController {
     }
 
     @GetMapping(value = "man/detail")
-    public ModelAndView detail(@RequestParam(value = "conversationId")String conversationId,
+    public ModelAndView detail(@RequestParam(value = "type",defaultValue = "3")Integer type,
+                               @RequestParam(value = "conversationId")String conversationId,
                                @RequestParam(value = "pageNum",defaultValue = "1")Integer pageNum,
                                @RequestParam(value = "pageSize",defaultValue = "10")Integer pageSize,
                                HttpSession session){
@@ -100,6 +101,7 @@ public class MessageController {
         messageVoPageInfo.setList(messageVos);
         mv.addObject("messageVos",messageVoPageInfo);
         mv.addObject("conversationId",conversationId);
+        mv.addObject("type",type);
         return mv;
     }
 

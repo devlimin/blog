@@ -1,10 +1,43 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/admin}">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <title>用户信息</title>
+    <link th:href="@{/css/admin/user/info.css}" rel="stylesheet"/>
+    <script th:src="@{/js/admin/message/send.js}"></script>
 </head>
 <body>
+<div layout:fragment="content">
+    <form class="layui-form">
+        <div class="layui-form-item search-row">
+            <div class="layui-inline">
+                <label class="search-label">用户id</label>
+                <div class="search-input">
+                    <input type="text" name="id" class="layui-input" value="">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <button class="layui-btn" id="search_btn"><i class="layui-icon"></i>查询</button>
+            </div>
+            <div class="layui-inline">
+            </div>
+        </div>
+        <input type="hidden" name="page" id="pg">
+        <input type="hidden" name="size" id="se">
+    </form>
 
+    <table id="table" class="table">
+        <tr id="thead" style="background-color: #f2f2f2;">
+            <th>ID</th>
+            <th>邮箱</th>
+            <th>用户名</th>
+            <th>入驻时间</th>
+            <th>状态</th>
+            <th>操作</th>
+        </tr>
+    </table>
+    <div id="page" class="text-center"></div>
+</div>
 </body>
 </html>

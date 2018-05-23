@@ -11,9 +11,10 @@
 <div layout:fragment="content">
     <div id="main">
         <div>
-            <a th:href="@{/message/man/conversation}" class="layui-btn pull-right"
+            <a th:href="@{/message/man/conversation(type=${type})}" class="layui-btn pull-right"
             style="margin-right: 5px;margin-top: 5px; text-decoration: none">返回</a>
-            <button id="letter-btn" class="layui-btn">私信</button>
+
+            <button th:if="${#strings.equals(param.type,'3')}" id="letter-btn" class="layui-btn">私信</button>
         </div>
         <div style="clear: both"></div>
         <input id="toUserId" type="hidden" th:value="${toUserId}">
