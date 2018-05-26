@@ -17,6 +17,6 @@ $(function() {
             $("#type-list div:nth-child(2) a:nth-child(3)").css({"background-color":"red","color":"white"})
         }
     } else if(href.search("user")!=-1){
-        $("#type-list div:nth-child(3) a:nth-child(3)").css({"background-color":"red","color":"white"})
+        $("#type-list div:nth-child(3) a:nth-child(2)").css({"background-color":"red","color":"white"})
     }
 })

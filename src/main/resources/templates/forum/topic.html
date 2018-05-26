@@ -30,10 +30,10 @@
                             <span style="" th:text="${topic.userName}"></span>
                             <input type="hidden" id="toUserId" th:value="${topic.userId}">
                             <input type="hidden" id="loginUserId" th:value="${session.login_user}!=null?${session.login_user.id}:''">
-                            <button th:if="(${session.login_user}==null)or((${session.login_user.id}!=${topic.userId})and((${follow}!=null)and(${follow.status}!='2')))" id="follow"
+                            <button th:if="(${session.login_user}==null)or((${session.login_user.id}!=${topic.userId})and((${follow}!=null)and(${follow.status}!='2'))or(${follow}==null))" id="follow"
                                     th:class="(${follow}==null)or(${follow.status}=='0')?'unfollow layui-btn layui-btn-primary layui-btn-xs':'follow layui-btn layui-btn-xs'"
                                     th:text="(${follow}==null)or(${follow.status}=='0')?'关注':'已关注'"></button>
-                            <button th:if="(${session.login_user}==null)or((${session.login_user.id}!=${topic.userId})and((${follow}!=null)and(${follow.status}!='2')))"
+                            <button th:if="(${session.login_user}==null)or((${session.login_user.id}!=${topic.userId})and((${follow}!=null)and(${follow.status}!='2'))or(${follow}==null))"
                                     class="layui-btn layui-btn-xs" id="mail">私信</button>
                             <button id="black" th:if="(${session.login_user}==null)or(${session.login_user.id}!=${topic.userId})"
                                     th:class="(${follow}!=null)and(${follow.status}=='2')?'layui-btn layui-btn-xs black':'layui-btn layui-btn-primary layui-btn-xs white'"

@@ -21,7 +21,7 @@ public class EmailHelper {
             helper.setFrom("stormlimin@163.com");
             helper.setTo(to);
             helper.setSubject(subject);
-            helper.setText(text);
+            helper.setText(text,true);
             mailSender.send(message);
         } catch (MessagingException e) {
             e.printStackTrace();

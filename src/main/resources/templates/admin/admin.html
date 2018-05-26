@@ -22,15 +22,14 @@
 <body>
 <div class="layui-layout layui-layout-admin">
     <div class="layui-header">
-        <div class="layui-logo">layui 后台布局</div>
+        <div class="layui-logo">系统后台</div>
         <ul class="layui-nav layui-layout-right">
             <li class="layui-nav-item">
                 <a href="javascript:;">
                     <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
-                    管理员
+                    [[${session.admin_user.name}]]
                 </a>
                 <dl class="layui-nav-child">
-                    <dd><a href="">基本资料</a></dd>
                     <dd><a th:href="@{/admin/logout}">退出</a></dd>
                 </dl>
             </li>
@@ -81,8 +80,6 @@
                     <dl class="layui-nav-child">
                         <dd th:class="${type}=='message/msg'?'layui-this':''">
                             <a th:href="@{/admin/message/msg}">消息信息</a></dd>
-                        <dd th:class="${type}=='message/send'?'layui-this':''">
-                            <a href="javascript:;">发消息</a></dd>
                     </dl>
                 </li>
             </ul>

@@ -25,10 +25,10 @@
 							<span><a style="text-decoration: none;" th:href="@{/article/list/{id}(id=${user.id})}" th:text="${user.name}"></a></span>
 							<input type="hidden" id="toUserId" th:value="${user.id}">
 							<input type="hidden" id="loginUserId" th:value="${session.login_user}!=null?${session.login_user.id}:''">
-							<button th:if="(${session.login_user}==null)or((${session.login_user.id}!=${user.id})and((${follow}!=null)and(${follow.status}!='2')))" id="follow"
+							<button th:if="(${session.login_user}==null)or((${session.login_user.id}!=${user.id})and((${follow}!=null)and(${follow.status}!='2'))or(${follow}==null))" id="follow"
 									 th:class="(${follow}==null)or(${follow.status}=='0')?'unfollow layui-btn layui-btn-primary layui-btn-xs':'follow layui-btn layui-btn-xs'"
 										th:text="(${follow}==null)or(${follow.status}=='0')?'关注':'已关注'"></button>
-							<button th:if="(${session.login_user}==null)or((${session.login_user.id}!=${user.id})and((${follow}!=null)and(${follow.status}!='2')))"
+							<button th:if="(${session.login_user}==null)or((${session.login_user.id}!=${user.id})and((${follow}!=null)and(${follow.status}!='2'))or(${follow}==null))"
 									class="layui-btn layui-btn-xs" id="mail">私信</button>
 							<button id="black" th:if="(${session.login_user}==null)or(${session.login_user.id}!=${user.id})"
 									th:class="(${follow}!=null)and(${follow.status}=='2')?'layui-btn layui-btn-xs black':'layui-btn layui-btn-primary layui-btn-xs white'"
@@ -47,14 +47,12 @@
 			<div id="content" th:utext="${article.content}">
 			</div>
 			<div>
-				<i class="layui-icon" style="font-size: 30px; color: red;">&#xe6c6;</i>
 				<span style="float: right" th:text="${article.updateDate}!=null?${'最后更改时间：'+#dates.format(article.updateDate,'yyyy年MM月dd日 hh:mm:ss')}:''"></span>
 			</div>
 			<input type="hidden" id="aid" th:value="${article.id}">
 		</div>
 		<div id="comment">
 			<div th:if="${article.isComment}" class="comment-write">
-				<img th:src="${user.headUrl}" style="border-radius: 50%;">
 				<form class="comment-input">
 					<textarea class="form-control" placeholder="写下你的评论..."></textarea>
 					<a>发送</a>

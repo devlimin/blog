@@ -7,7 +7,6 @@
 
     <context id="mysql" targetRuntime="MyBatis3">
         <commentGenerator>
-            <!-- 是否去除自动生成的注释 true：是 ： false:否 -->
             <property name="suppressAllComments" value="true"/>
             <property name="addRemarkComments" value="true"/>
         </commentGenerator>
@@ -69,8 +68,8 @@
         <!--<table tableName="follow">-->
             <!--<generatedKey column="ID" sqlStatement="MySql" identity="true" />-->
         <!--</table>-->
-        <table tableName="admin_user">
-            <generatedKey column="ID" sqlStatement="MySql" identity="true" />
-        </table>
+        <!--<table tableName="admin_user">-->
+            <!--<generatedKey column="ID" sqlStatement="MySql" identity="true" />-->
+        <!--</table>-->
     </context>
 </generatorConfiguration>

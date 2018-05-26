@@ -22,7 +22,8 @@
             <div class="layui-tab-content">
                 <div class="layui-tab-item layui-show">
                     <div class="conversation" th:each="messageVo : ${messageVos.list}">
-                        <a th:if="${#strings.equals(param.type,'3')}" th:href="@{/message/man/detail(conversationId=${messageVo.message.conversationId},pageNum=1,type=3)}">
+                        <a th:if="${#strings.equals(type,'3')}"
+                           th:href="@{/message/man/detail(conversationId=${messageVo.message.conversationId},pageNum=1,type=3)}">
                             <object><a style="margin-right: 10px;float: left;" th:href="@{/article/list/{id}(id=${messageVo.user.id})}">
                                 <img style="width: 50px;height: 50px;border-radius: 50%;display: inline-block;" th:src="@{${messageVo.user.headUrl}}"></a></object>
                             <div style="float: left">
@@ -34,11 +35,10 @@
                                 <div th:text="${#dates.format(messageVo.message.releaseDate,'yyyy.MM.dd hh:mm:ss')}"></div>
                                 <div style="float: right" th:text="'共'+${messageVo.count}+'条对话'"></div>
                             </div>
-
                             <div style="clear: both"></div>
                             <hr style="margin-top: 20px;"/>
                         </a>
-                        <a th:if="${#strings.equals(param.type,'4')}" th:href="@{/message/man/detail(conversationId=${messageVo.message.conversationId},pageNum=1,type=4)}">
+                        <a th:if="${#strings.equals(type,'4')}" th:href="@{/message/man/detail(conversationId=${messageVo.message.conversationId},pageNum=1,type=4)}">
                             <span style="margin-right: 10px;float: left">
                                 <img style="width: 50px;height: 50px;border-radius: 50%;display: inline-block;" th:src="@{${messageVo.user.headUrl}}"></span>
                             <div style="float: left">

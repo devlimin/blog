@@ -43,6 +43,12 @@ public class UserService {
     public User regist(String email, String password){
         //邮箱唯一检查
         emailCheck(email);
+
+        //删除原有的以该email注册的账号
+        UserExample userExample = new UserExample();
+        userExample.createCriteria().andEmailEqualTo(email);
+        userMapper.deleteByExample(userExample);
+
         User user = new User();
         user.setEmail(email);
         user.setSalt(UUID.randomUUID().toString().substring(0,5));

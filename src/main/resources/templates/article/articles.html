@@ -43,11 +43,11 @@
 					<div>
 						<span th:text="${user.name}"></span>
 						<button id="follow"
-								th:if="(${session.login_user}==null)or((${session.login_user.id}!=${user.id})and((${follow}!=null)and(${follow.status}!='2')))"
+								th:if="(${session.login_user}==null)or((${session.login_user.id}!=${user.id})and((${follow}!=null)and(${follow.status}!='2'))or(${follow}==null))"
 								th:class="(${follow}==null)or(${follow.status}=='0')?'unfollow layui-btn layui-btn-sm layui-btn-primary':'follow layui-btn layui-btn-sm'"
 								th:text="(${follow}==null)or(${follow.status}=='0')?'关注':'已关注'"></button>
 						<button id="mail"
-								th:if="(${session.login_user}==null)or((${session.login_user.id}!=${user.id})and((${follow}!=null)and(${follow.status}!='2')))"
+								th:if="(${session.login_user}==null)or((${session.login_user.id}!=${user.id})and((${follow}!=null)and(${follow.status}!='2'))or(${follow}==null))"
 								class="layui-btn layui-btn-sm">私信</button>
 						<button id="black" th:if="(${session.login_user}==null)or(${session.login_user.id}!=${user.id})"
 								th:class="(${follow}!=null)and(${follow.status}=='2')?'layui-btn layui-btn-sm black':'layui-btn layui-btn-primary layui-btn-sm white'"
